@@ -6,9 +6,9 @@ final class ImagesListCell: UITableViewCell {
     
     // MARK: - IBOutlet
     
-    @IBOutlet private var cellImage: UIImageView!
-    @IBOutlet private var likeButton: UIButton!
-    @IBOutlet private var dateLabel: UILabel!
+    @IBOutlet private weak var cellImage: UIImageView!
+    @IBOutlet private weak var likeButton: UIButton!
+    @IBOutlet private weak var dateLabel: UILabel!
     
     // MARK: - Public Properties
 
@@ -19,7 +19,7 @@ final class ImagesListCell: UITableViewCell {
     func configure(with imageName: String, date: String, isLiked: Bool) {
         cellImage.image = UIImage(named: imageName)
         dateLabel.text = date
-        let likeImageName = isLiked ? "Like button" : "Don't like button"
+        let likeImageName = isLiked ? "like_button_on" : "like_button_off"
         likeButton.setImage(UIImage(named: likeImageName), for: .normal)
     }
 }
