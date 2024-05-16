@@ -1,3 +1,10 @@
+//
+//  ImagesListCell.swift
+//  ImageFeed
+//
+//  Created by Вадим on 05.05.2024.
+//
+
 import UIKit
 
 // MARK: - ImagesListCell
