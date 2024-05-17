@@ -14,6 +14,7 @@ final class SingleImageViewController: UIViewController{
     // MARK: - IBOutlet
     
     @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var scrollView: UIScrollView!
     
     // MARK: - Public Properties
     
