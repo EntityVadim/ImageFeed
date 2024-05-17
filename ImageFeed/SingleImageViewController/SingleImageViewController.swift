@@ -11,7 +11,29 @@ import UIKit
 
 final class SingleImageViewController: UIViewController{
     
+    // MARK: - Public Properties
+    
+    var image: UIImage? {
+        didSet {
+            guard isViewLoaded else { return }
+            imageView.image = image
+        }
+    }
+    
     // MARK: - IBOutlet
     
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet private weak var imageView: UIImageView!
+    
+    // MARK: - Public Methods
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        imageView.image = image
+    }
+    
+    // MARK: - IBAction
+    
+    @IBAction private func didTapBackButton() {
+        dismiss(animated: true, completion: nil)
+    }
 }

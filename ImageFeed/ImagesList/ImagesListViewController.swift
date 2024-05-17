@@ -24,6 +24,7 @@ final class ImagesListViewController: UIViewController {
         formatter.timeStyle = .none
         return formatter
     }()
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
     // MARK: - Lifecycle
     
@@ -33,8 +34,10 @@ final class ImagesListViewController: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
     
+    // MARK: - Public Methods
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ShowSingleImage" {
+        if segue.identifier == showSingleImageSegueIdentifier {
             guard
                 let viewController = segue.destination as? SingleImageViewController,
                 let indexPath = sender as? IndexPath
@@ -43,7 +46,7 @@ final class ImagesListViewController: UIViewController {
                 return
             }
             let image = UIImage(named: photosName[indexPath.row])
-            viewController.imageView.image = image
+            viewController.image = image
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -54,7 +57,7 @@ final class ImagesListViewController: UIViewController {
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "ShowSingleImage", sender: indexPath)
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
