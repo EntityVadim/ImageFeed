@@ -11,6 +11,10 @@ import UIKit
 
 final class SingleImageViewController: UIViewController{
     
+    // MARK: - IBOutlet
+    
+    @IBOutlet private weak var imageView: UIImageView!
+    
     // MARK: - Public Properties
     
     var image: UIImage? {
@@ -20,11 +24,7 @@ final class SingleImageViewController: UIViewController{
         }
     }
     
-    // MARK: - IBOutlet
-    
-    @IBOutlet private weak var imageView: UIImageView!
-    
-    // MARK: - Public Methods
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
