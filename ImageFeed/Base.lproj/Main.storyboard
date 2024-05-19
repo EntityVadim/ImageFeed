@@ -116,6 +116,9 @@
                                 </subviews>
                                 <viewLayoutGuide key="contentLayoutGuide" id="qSG-8S-EWz"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="pq7-x6-YR8"/>
+                                <connections>
+                                    <outlet property="delegate" destination="hUO-TE-wJ0" id="3kP-HH-pAv"/>
+                                </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uHM-29-L2u">
                                 <rect key="frame" x="8" y="8" width="48" height="48"/>
@@ -187,7 +190,7 @@
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="logout_button"/>
                                 <connections>
-                                    <action selector="didTapLogoutButton:" destination="m7g-sF-PD2" eventType="touchUpInside" id="r5I-OS-6fC"/>
+                                    <action selector="didTapLogoutButton" destination="m7g-sF-PD2" eventType="touchUpInside" id="yer-9F-ZL2"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, World!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XeW-8L-TPe">
