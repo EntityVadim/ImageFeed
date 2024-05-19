@@ -120,7 +120,7 @@
                                     <outlet property="delegate" destination="hUO-TE-wJ0" id="3kP-HH-pAv"/>
                                 </connections>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uHM-29-L2u">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uHM-29-L2u" userLabel="Back Button">
                                 <rect key="frame" x="8" y="8" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="8SK-lh-Kj1"/>
@@ -132,14 +132,28 @@
                                     <action selector="didTapBackButton" destination="hUO-TE-wJ0" eventType="touchUpInside" id="lWL-qp-PlF"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K89-FI-Xn9" userLabel="Share Button">
+                                <rect key="frame" x="190" y="865" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="RV7-WL-tEP"/>
+                                    <constraint firstAttribute="width" constant="50" id="UeB-Fa-lmT"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="share_button"/>
+                                <connections>
+                                    <action selector="didTapShareButton:" destination="hUO-TE-wJ0" eventType="touchUpInside" id="0I9-X3-48M"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="GC5-c6-0yi"/>
                         <color key="backgroundColor" name="YP Black (iOS)"/>
                         <constraints>
+                            <constraint firstItem="K89-FI-Xn9" firstAttribute="centerX" secondItem="GC5-c6-0yi" secondAttribute="centerX" id="DkL-WY-qiu"/>
                             <constraint firstAttribute="bottom" secondItem="vOA-jn-k8y" secondAttribute="bottom" id="FcO-zJ-tnx"/>
                             <constraint firstItem="vOA-jn-k8y" firstAttribute="top" secondItem="6HC-cJ-b7W" secondAttribute="top" id="IPY-jT-PId"/>
                             <constraint firstItem="uHM-29-L2u" firstAttribute="leading" secondItem="GC5-c6-0yi" secondAttribute="leading" constant="8" id="NtX-Ga-m2C"/>
                             <constraint firstItem="vOA-jn-k8y" firstAttribute="leading" secondItem="GC5-c6-0yi" secondAttribute="leading" id="QOL-pB-Z2m"/>
+                            <constraint firstItem="GC5-c6-0yi" firstAttribute="bottom" secondItem="K89-FI-Xn9" secondAttribute="bottom" constant="17" id="ghX-5J-AgY"/>
                             <constraint firstItem="GC5-c6-0yi" firstAttribute="trailing" secondItem="vOA-jn-k8y" secondAttribute="trailing" id="h72-aB-Kb4"/>
                             <constraint firstItem="uHM-29-L2u" firstAttribute="top" secondItem="GC5-c6-0yi" secondAttribute="top" constant="8" id="tJo-vv-gX1"/>
                         </constraints>
@@ -266,6 +280,7 @@
         <image name="like_button_on" width="42" height="42"/>
         <image name="logout_button" width="20" height="22"/>
         <image name="nav_back_button_white" width="24" height="24"/>
+        <image name="share_button" width="51" height="51"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Black (iOS)">
