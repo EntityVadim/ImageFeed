@@ -18,7 +18,7 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet private weak var dateLabel: UILabel!
     
     // MARK: - Public Properties
-
+    
     static let reuseIdentifier = "ImagesListCell"
     
     // MARK: - Configure
