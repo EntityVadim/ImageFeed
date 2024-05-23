@@ -56,9 +56,7 @@ final class ProfileViewController: UIViewController {
         
         // MARK: - Label
         
-        [nameLabel,
-         loginNameLabel,
-         descriptionLabel].forEach { label in
+        [nameLabel, loginNameLabel, descriptionLabel].forEach { label in
             view.addSubview(label)
             label.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -67,9 +65,11 @@ final class ProfileViewController: UIViewController {
             nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
             nameLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
             nameLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            
             loginNameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             loginNameLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             loginNameLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
+            
             descriptionLabel.topAnchor.constraint(equalTo: loginNameLabel.bottomAnchor, constant: 8),
             descriptionLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor)
@@ -77,15 +77,15 @@ final class ProfileViewController: UIViewController {
         
         // MARK: - Button
         
-        let button = UIButton()
-        button.setImage(UIImage(named: "logout_button"), for: .normal)
-        button.addTarget(self, action: #selector(Self.didTapLogoutButton), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
-        button.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        button.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        let logoutButton = UIButton()
+        logoutButton.setImage(UIImage(named: "logout_button"), for: .normal)
+        logoutButton.addTarget(self, action: #selector(Self.didTapLogoutButton), for: .touchUpInside)
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(logoutButton)
+        logoutButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        logoutButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
     }
     
     // MARK: - DidTapLogoutButton
