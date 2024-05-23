@@ -13,9 +13,29 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private var nameLabel: UILabel?
-    private var loginNameLabel: UILabel?
-    private var descriptionLabel: UILabel?
+    private var nameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Екатерина Новикова"
+        label.textColor = .ypWhiteIOS
+        label.font = UIFont.systemFont(ofSize: 23, weight: .semibold)
+        return label
+    }()
+    
+    private var loginNameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "@ekaterina_nov"
+        label.textColor = .ypGrayIOS
+        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        return label
+    }()
+    
+    private var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Hello, World!"
+        label.textColor = .ypWhiteIOS
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        return label
+    }()
     
     // MARK: - Lifecycle
     
@@ -36,29 +56,12 @@ final class ProfileViewController: UIViewController {
         
         // MARK: - Label
         
-        let nameLabel = UILabel()
-        nameLabel.text = "Екатерина Новикова"
-        nameLabel.textColor = .ypWhiteIOS
-        nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .semibold)
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(nameLabel)
-        self.nameLabel = nameLabel
-        
-        let loginNameLabel = UILabel()
-        loginNameLabel.text = "@ekaterina_nov"
-        loginNameLabel.textColor = .ypGrayIOS
-        loginNameLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(loginNameLabel)
-        self.loginNameLabel = loginNameLabel
-        
-        let descriptionLabel = UILabel()
-        descriptionLabel.text = "Hello, World!"
-        descriptionLabel.textColor = .ypWhiteIOS
-        descriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(descriptionLabel)
-        self.descriptionLabel = descriptionLabel
+        [nameLabel,
+         loginNameLabel,
+         descriptionLabel].forEach { label in
+            view.addSubview(label)
+            label.translatesAutoresizingMaskIntoConstraints = false
+        }
         
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
@@ -89,11 +92,8 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapLogoutButton() {
-        nameLabel?.removeFromSuperview()
-        nameLabel = nil
-        loginNameLabel?.removeFromSuperview()
-        loginNameLabel = nil
-        descriptionLabel?.removeFromSuperview()
-        descriptionLabel = nil
+        nameLabel.removeFromSuperview()
+        loginNameLabel.removeFromSuperview()
+        descriptionLabel.removeFromSuperview()
     }
 }
