@@ -211,7 +211,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="n6n-zA-SFa" kind="show" id="FMm-Yv-bqz"/>
+                                    <segue destination="n6n-zA-SFa" kind="show" identifier="ShowWebView" id="FMm-Yv-bqz"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="auth_screen_logo" translatesAutoresizingMaskIntoConstraints="NO" id="p9Y-hD-mrk">
