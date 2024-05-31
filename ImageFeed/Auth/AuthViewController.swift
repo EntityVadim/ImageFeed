@@ -35,7 +35,7 @@ final class AuthViewController: UIViewController {
         }
     }
     
-    // MARK: - Private Methods
+    // MARK: - SetupBackButtonAppearance
     
     private func setupBackButtonAppearance() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
