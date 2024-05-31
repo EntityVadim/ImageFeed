@@ -8,18 +8,30 @@
 import UIKit
 import WebKit
 
+// MARK: - UnsplashAuthorizeURLString
+
 fileprivate let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+
+// MARK: - WebViewViewControllerDelegate
 
 protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
 
+// MARK: - WebViewViewController
+
 final class WebViewViewController: UIViewController {
+    
+    // MARK: - IBOutlet
     
     @IBOutlet private var webView: WKWebView!
     
+    // MARK: - Public Properties
+    
     weak var delegate: WebViewViewControllerDelegate?
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +48,8 @@ final class WebViewViewController: UIViewController {
         webView.load(request)
     }
 }
+
+// MARK: - WKNavigationDelegate
 
 extension WebViewViewController: WKNavigationDelegate {
     func webView(
