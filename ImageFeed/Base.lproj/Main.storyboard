@@ -254,9 +254,8 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zic-qV-MXZ">
-                                <rect key="frame" x="140" y="464" width="150" height="4"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zic-qV-MXZ">
+                                <rect key="frame" x="0.0" y="103" width="430" height="4"/>
                                 <color key="tintColor" name="ypBlack"/>
                             </progressView>
                         </subviews>
@@ -264,8 +263,11 @@
                         <color key="backgroundColor" name="ypWhite"/>
                         <constraints>
                             <constraint firstItem="tb2-pq-uVu" firstAttribute="top" secondItem="iSU-z7-6bm" secondAttribute="top" id="9h4-rO-1MC"/>
+                            <constraint firstItem="zic-qV-MXZ" firstAttribute="top" secondItem="w8L-KF-4xV" secondAttribute="top" id="MoK-Tc-ZBs"/>
                             <constraint firstAttribute="bottom" secondItem="tb2-pq-uVu" secondAttribute="bottom" id="g1a-MT-ca2"/>
+                            <constraint firstItem="w8L-KF-4xV" firstAttribute="trailing" secondItem="zic-qV-MXZ" secondAttribute="trailing" id="iWW-vF-aF4"/>
                             <constraint firstItem="tb2-pq-uVu" firstAttribute="leading" secondItem="iSU-z7-6bm" secondAttribute="leading" id="jWQ-YY-JKq"/>
+                            <constraint firstItem="zic-qV-MXZ" firstAttribute="leading" secondItem="w8L-KF-4xV" secondAttribute="leading" id="mua-j0-bTh"/>
                             <constraint firstAttribute="trailing" secondItem="tb2-pq-uVu" secondAttribute="trailing" id="nFf-Vl-8My"/>
                         </constraints>
                     </view>
@@ -273,6 +275,7 @@
                         <nil key="title"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="progressView" destination="zic-qV-MXZ" id="0LU-yH-7Uz"/>
                         <outlet property="webView" destination="tb2-pq-uVu" id="TAM-Ke-uPF"/>
                     </connections>
                 </viewController>
