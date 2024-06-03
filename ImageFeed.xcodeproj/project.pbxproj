@@ -13,6 +13,7 @@
 		DD06B7382C0896840088A4F3 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD06B7372C0896840088A4F3 /* WebViewViewController.swift */; };
 		DD0FE5AB2BF73C5600D44645 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDC0B3202BE389550035E7DD /* Main.storyboard */; };
 		DD0FE5AC2BF73C7A00D44645 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDC0B3252BE389580035E7DD /* LaunchScreen.storyboard */; };
+		DD85B6372C0D9D030075CF16 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85B6362C0D9D030075CF16 /* OAuth2Service.swift */; };
 		DDAE2E9A2BE6643100487B45 /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE2E992BE6643100487B45 /* ImagesListCell.swift */; };
 		DDC0B31B2BE389550035E7DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC0B31A2BE389550035E7DD /* AppDelegate.swift */; };
 		DDC0B31D2BE389550035E7DD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC0B31C2BE389550035E7DD /* SceneDelegate.swift */; };
@@ -26,6 +27,7 @@
 		DD06B7322C0855EB0088A4F3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DD06B7352C0892080088A4F3 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		DD06B7372C0896840088A4F3 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
+		DD85B6362C0D9D030075CF16 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		DDAE2E992BE6643100487B45 /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		DDC0B3172BE389550035E7DD /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDC0B31A2BE389550035E7DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -54,6 +56,7 @@
 			children = (
 				DD06B7352C0892080088A4F3 /* AuthViewController.swift */,
 				DD06B7372C0896840088A4F3 /* WebViewViewController.swift */,
+				DD85B6362C0D9D030075CF16 /* OAuth2Service.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -196,6 +199,7 @@
 				DD06B7332C0855EB0088A4F3 /* Constants.swift in Sources */,
 				DD03F48E2BF71D8200D9BCFE /* SingleImageViewController.swift in Sources */,
 				DD06B7382C0896840088A4F3 /* WebViewViewController.swift in Sources */,
+				DD85B6372C0D9D030075CF16 /* OAuth2Service.swift in Sources */,
 				DDC0B31D2BE389550035E7DD /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

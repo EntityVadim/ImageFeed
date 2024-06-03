@@ -39,10 +39,10 @@ final class WebViewViewController: UIViewController {
         webView.navigationDelegate = self
         var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
         urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: accessKey),
-            URLQueryItem(name: "redirect_uri", value: redirectURI),
+            URLQueryItem(name: "client_id", value: Constants.accessKey),
+            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: accessScope)
+            URLQueryItem(name: "scope", value: Constants.accessScope)
         ]
         let url = urlComponents.url!
         let request = URLRequest(url: url)
@@ -80,7 +80,7 @@ final class WebViewViewController: UIViewController {
     }
     
     // MARK: - UpdateProgress
-
+    
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
