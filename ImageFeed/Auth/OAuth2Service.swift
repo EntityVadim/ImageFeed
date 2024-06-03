@@ -17,7 +17,7 @@ final class OAuth2Service {
     
     // MARK: - Token Request
     
-    func createTokenRequest(withCode code: String) -> URLRequest {
+    private func createTokenRequest(withCode code: String) -> URLRequest {
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token")!
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.accessKey),
@@ -38,7 +38,7 @@ final class OAuth2Service {
         return tokenRequest
     }
     
-    func fetchOAuthToken(withCode code: String, completion: @escaping (Result<String, Error>) -> Void) {
+    private func fetchOAuthToken(withCode code: String, completion: @escaping (Result<String, Error>) -> Void) {
         let tokenRequest = createTokenRequest(withCode: code)
         let task = URLSession.shared.dataTask(with: tokenRequest) { data, response, error in
             if let error = error {
