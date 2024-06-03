@@ -37,17 +37,33 @@ final class OAuth2Service {
         }
         return tokenRequest
     }
-    
-    private func fetchOAuthToken(withCode code: String, completion: @escaping (Result<String, Error>) -> Void) {
+}
+
+extension OAuth2Service {
+    func fetchOAuthToken(withCode code: String, completion: @escaping (Result<String, Error>) -> Void) {
         let tokenRequest = createTokenRequest(withCode: code)
         let task = URLSession.shared.dataTask(with: tokenRequest) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            guard let data = data else {
-                completion(.failure(NSError(domain: "", code: -1, userInfo: nil)))
-                return
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Сетевая ошибка: \(error.localizedDescription)")
+                    completion(.failure(error))
+                    return
+                }
+                guard let httpResponse = response as? HTTPURLResponse,
+                      200...299 ~= httpResponse.statusCode,
+                      let data = data else {
+                    print("Ошибка сервера или неверный статус-код.")
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: nil)))
+                    return
+                }
+                do {
+                    let responseBody = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
+                    OAuth2TokenStorage.shared.token = responseBody.accessToken
+                    completion(.success(responseBody.accessToken))
+                } catch {
+                    print("Ошибка декодирования: \(error.localizedDescription)")
+                    completion(.failure(error))
+                }
             }
         }
         task.resume()
