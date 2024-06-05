@@ -13,7 +13,7 @@ final class OAuth2Service {
     
     static let shared = OAuth2Service()
     
-    private init() {}
+    init() {}
     
     // MARK: - Token Request
     
@@ -43,27 +43,25 @@ extension OAuth2Service {
     func fetchOAuthToken(withCode code: String, completion: @escaping (Result<String, Error>) -> Void) {
         let tokenRequest = createTokenRequest(withCode: code)
         let task = URLSession.shared.dataTask(with: tokenRequest) { data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    print("Сетевая ошибка: \(error.localizedDescription)")
-                    completion(.failure(error))
-                    return
-                }
-                guard let httpResponse = response as? HTTPURLResponse,
-                      200...299 ~= httpResponse.statusCode,
-                      let data = data else {
-                    print("Ошибка сервера или неверный статус-код.")
-                    completion(.failure(NSError(domain: "", code: -1, userInfo: nil)))
-                    return
-                }
-                do {
-                    let responseBody = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    OAuth2TokenStorage.shared.token = responseBody.accessToken
-                    completion(.success(responseBody.accessToken))
-                } catch {
-                    print("Ошибка декодирования: \(error.localizedDescription)")
-                    completion(.failure(error))
-                }
+            if let error = error {
+                print("Сетевая ошибка: \(error.localizedDescription)")
+                completion(.failure(error))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse,
+                  200...299 ~= httpResponse.statusCode,
+                  let data = data else {
+                print("Ошибка сервера или неверный статус-код.")
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Ошибка сервера или неверный статус-код."])))
+                return
+            }
+            do {
+                let responseBody = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
+                OAuth2TokenStorage.shared.token = responseBody.accessToken
+                completion(.success(responseBody.accessToken))
+            } catch {
+                print("Ошибка декодирования: \(error.localizedDescription)")
+                completion(.failure(error))
             }
         }
         task.resume()

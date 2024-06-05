@@ -7,9 +7,19 @@
 
 import UIKit
 
+// MARK: - AuthViewControllerDelegate
+
+protocol AuthViewControllerDelegate: AnyObject {
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
+}
+
 // MARK: - AuthViewController
 
 final class AuthViewController: UIViewController {
+    
+    // MARK: - Public Properties
+    
+    weak var delegate: AuthViewControllerDelegate?
     
     // MARK: - Private Properties
     
@@ -50,6 +60,7 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        delegate?.authViewController(self, didAuthenticateWithCode: code)
         oauth2Service.fetchOAuthToken(withCode: code) { result in
             switch result {
             case .success(let token):
