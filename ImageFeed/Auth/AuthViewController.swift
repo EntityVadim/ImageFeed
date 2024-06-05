@@ -25,6 +25,8 @@ final class AuthViewController: UIViewController {
     
     private let showWebViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
+    private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let oauthTokenResponseBody = OAuthTokenResponseBody()
     
     // MARK: - Lifecycle
     

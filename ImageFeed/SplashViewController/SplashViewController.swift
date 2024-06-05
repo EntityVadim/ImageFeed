@@ -7,12 +7,18 @@
 
 import UIKit
 
+// MARK: - SplashViewController
+
 final class SplashViewController: UIViewController {
+    
+    // MARK: - Private Properties
     
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oAuthTokenResponseBody = OAuthTokenResponseBody()
     private let oAuth2TokenStorage = OAuth2TokenStorage()
     private let oAuth2Service = OAuth2Service()
+    
+    // MARK: - ViewWillAppear
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -23,14 +29,20 @@ final class SplashViewController: UIViewController {
         }
     }
     
+    // MARK: - ViewWillAppear
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
     }
     
+    // MARK: - PreferredStatusBarStyle
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
+    
+    // MARK: - Private Methods
     
     private func switchToTabBarController() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { fatalError("Could not find window scene") }
@@ -48,6 +60,8 @@ final class SplashViewController: UIViewController {
     }
 }
 
+// MARK: - Prepare
+
 extension SplashViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowAuthenticationScreenSegueIdentifier {
@@ -61,6 +75,8 @@ extension SplashViewController {
         }
     }
 }
+
+// MARK: - AuthViewControllerDelegate
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {

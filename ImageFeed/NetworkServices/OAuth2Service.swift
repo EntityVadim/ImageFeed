@@ -31,13 +31,11 @@ final class OAuth2Service {
         }
         var tokenRequest = URLRequest(url: tokenURL)
         tokenRequest.httpMethod = "POST"
-        tokenRequest.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        if let body = urlComponents.percentEncodedQuery?.data(using: .utf8) {
-            tokenRequest.httpBody = body
-        }
         return tokenRequest
     }
 }
+
+// MARK: - ErrorProcessing
 
 extension OAuth2Service {
     func fetchOAuthToken(withCode code: String, completion: @escaping (Result<String, Error>) -> Void) {
