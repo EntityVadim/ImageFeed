@@ -20,10 +20,4 @@ final class OAuth2TokenStorage {
             UserDefaults.standard.set(newValue, forKey: tokenKey)
         }
     }
-    var isTokenValid: Bool {
-        if let tokenCreationTime = UserDefaults.standard.object(forKey: "TokenCreationTimeKey") as? TimeInterval {
-            return (Date().timeIntervalSince1970 - tokenCreationTime) < 3600
-        }
-        return false
-    }
 }
