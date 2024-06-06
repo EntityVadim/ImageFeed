@@ -42,48 +42,35 @@ extension OAuth2Service {
         let tokenRequest = createTokenRequest(withCode: code)
         let task = URLSession.shared.dataTask(with: tokenRequest) { data, response, error in
             if let error = error {
-                print("Сетевая ошибка: \(error.localizedDescription)")
                 completion(.failure(error))
                 return
             }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                print("Не удалось получить HTTP-ответ.")
+            guard let httpResponse = response as? HTTPURLResponse,
+                  let data = data else {
                 completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Не удалось получить HTTP-ответ."])))
                 return
             }
             switch httpResponse.statusCode {
             case 200:
                 do {
-                    let responseBody = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data!)
+                    let responseBody = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
                     OAuth2TokenStorage.shared.token = responseBody.accessToken
                     completion(.success(responseBody.accessToken))
                 } catch {
-                    print("Ошибка декодирования: \(error.localizedDescription)")
                     completion(.failure(error))
                 }
             case 400:
-                print("Неверный запрос: возможно, отсутствует необходимый параметр.")
+                completion(.failure(NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "Неверный запрос: возможно, отсутствует необходимый параметр."])))
             case 401:
-                print("Ошибка авторизации: неверный токен доступа.")
+                completion(.failure(NSError(domain: "", code: 401, userInfo: [NSLocalizedDescriptionKey: "Ошибка авторизации: неверный токен доступа."])))
             case 403:
-                print("Доступ запрещен: отсутствуют разрешения для выполнения запроса.")
+                completion(.failure(NSError(domain: "", code: 403, userInfo: [NSLocalizedDescriptionKey: "Доступ запрещен: отсутствуют разрешения для выполнения запроса."])))
             case 404:
-                print("Ресурс не найден.")
+                completion(.failure(NSError(domain: "", code: 404, userInfo: [NSLocalizedDescriptionKey: "Ресурс не найден."])))
             case 500, 503:
-                print("Ошибка на сервере.")
+                completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Ошибка на сервере."])))
             default:
-                print("Неизвестная ошибка с кодом \(httpResponse.statusCode).")
-            }
-            if httpResponse.statusCode != 200 {
-                if let data = data,
-                   let json = try? JSONSerialization.jsonObject(with: data, options: []),
-                   let dictionary = json as? [String: Any],
-                   let errors = dictionary["errors"] as? [String] {
-                    for errorMessage in errors {
-                        print("Ошибка: \(errorMessage)")
-                    }
-                }
-                completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Ошибка с кодом \(httpResponse.statusCode)."])))
+                completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Неизвестная ошибка с кодом \(httpResponse.statusCode)."])))
             }
         }
         task.resume()
