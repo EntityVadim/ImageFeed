@@ -26,4 +26,3 @@ enum WebViewConstants {
 enum OAuthConstants {
     static let baseURL = "https://unsplash.com"
 }
-

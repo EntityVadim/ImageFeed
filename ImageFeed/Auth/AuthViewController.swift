@@ -25,8 +25,6 @@ final class AuthViewController: UIViewController {
     
     private let showWebViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
-    private let oauth2TokenStorage = OAuth2TokenStorage()
-    private let oauthTokenResponseBody = OAuthTokenResponseBody()
     
     // MARK: - Lifecycle
     
@@ -39,9 +37,8 @@ final class AuthViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
-            guard
-                let webViewViewController = segue.destination as? WebViewViewController
-            else { fatalError("Failed to prepare for \(showWebViewSegueIdentifier)") }
+            guard let webViewViewController = segue.destination as? WebViewViewController else {
+                fatalError("Failed to prepare for \(showWebViewSegueIdentifier)") }
             webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
@@ -61,7 +58,10 @@ final class AuthViewController: UIViewController {
 // MARK: - WebViewViewControllerDelegate
 
 extension AuthViewController: WebViewViewControllerDelegate {
-    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+    func webViewViewController(
+        _ vc: WebViewViewController,
+        didAuthenticateWithCode code: String
+    ) {
         delegate?.authViewController(self, didAuthenticateWithCode: code)
         oauth2Service.fetchOAuthToken(withCode: code) { result in
             switch result {

@@ -13,19 +13,18 @@ final class SplashViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
-    private let oAuthTokenResponseBody = OAuthTokenResponseBody()
-    private let oAuth2TokenStorage = OAuth2TokenStorage()
-    private let oAuth2Service = OAuth2Service()
+    private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     
     // MARK: - ViewWillAppear
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if oAuth2TokenStorage.token != nil {
+        if OAuth2TokenStorage.shared.token != nil {
             switchToTabBarController()
         } else {
-            performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
+            performSegue(
+                withIdentifier: showAuthenticationScreenSegueIdentifier,
+                sender: nil)
         }
     }
     
@@ -46,7 +45,8 @@ final class SplashViewController: UIViewController {
     
     private func switchToTabBarController() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { fatalError("Could not find window scene") }
-        guard let window = windowScene.windows.first else { fatalError("Could not find a window") }
+        guard let window = windowScene.windows.first else {
+            fatalError("Could not find a window") }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
@@ -54,8 +54,13 @@ final class SplashViewController: UIViewController {
     }
     
     private func showErrorMessage(_ message: String) {
-        let alert = UIAlertController(title: "Ошибка", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: message,
+            preferredStyle: .alert)
+        alert.addAction(UIAlertAction(
+            title: "OK",
+            style: .default))
         self.present(alert, animated: true)
     }
 }
@@ -64,11 +69,12 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowAuthenticationScreenSegueIdentifier {
+        if segue.identifier == showAuthenticationScreenSegueIdentifier {
             guard
                 let navigationController = segue.destination as? UINavigationController,
                 let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else { fatalError("Failed to prepare for \(ShowAuthenticationScreenSegueIdentifier)") }
+            else {
+                fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)") }
             viewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
@@ -79,7 +85,10 @@ extension SplashViewController {
 // MARK: - AuthViewControllerDelegate
 
 extension SplashViewController: AuthViewControllerDelegate {
-    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
+    func authViewController(
+        _ vc: AuthViewController,
+        didAuthenticateWithCode code: String
+    ) {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             self.switchToTabBarController()
