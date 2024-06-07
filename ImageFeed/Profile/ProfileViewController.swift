@@ -16,7 +16,7 @@ final class ProfileViewController: UIViewController {
     private var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Екатерина Новикова"
-        label.textColor = .ypWhiteIOS
+        label.textColor = .ypWhite
         label.font = UIFont.systemFont(ofSize: 23, weight: .semibold)
         return label
     }()
@@ -24,7 +24,7 @@ final class ProfileViewController: UIViewController {
     private var loginNameLabel: UILabel = {
         let label = UILabel()
         label.text = "@ekaterina_nov"
-        label.textColor = .ypGrayIOS
+        label.textColor = .ypGray
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return label
     }()
@@ -32,7 +32,7 @@ final class ProfileViewController: UIViewController {
     private var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "Hello, World!"
-        label.textColor = .ypWhiteIOS
+        label.textColor = .ypWhite
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         return label
     }()
@@ -65,11 +65,9 @@ final class ProfileViewController: UIViewController {
             nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
             nameLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
             nameLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            
             loginNameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             loginNameLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             loginNameLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
-            
             descriptionLabel.topAnchor.constraint(equalTo: loginNameLabel.bottomAnchor, constant: 8),
             descriptionLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor)
