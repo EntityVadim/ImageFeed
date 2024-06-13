@@ -11,11 +11,17 @@ import Foundation
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
+    
+    private init() {}
+    
+    // MARK: - Private Properties
+    
     private var currentAuthCode: String?
     private var currentTask: URLSessionDataTask?
-
-    private init() {}
-
+    private var isFetchingToken: Bool = false
+    
+    // MARK: - CancelPreviousTaskIfNecessary
+    
     func cancelPreviousTaskIfNecessary(forNewAuthCode newAuthCode: String) {
         if let currentAuthCode = currentAuthCode, currentAuthCode == newAuthCode {
             currentTask?.cancel()
@@ -51,11 +57,20 @@ extension OAuth2Service {
         withCode code: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
+        guard !isFetchingToken else {
+            completion(.failure(NSError(
+                domain: "",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "Авторизация уже выполняется."])))
+            return
+        }
+        isFetchingToken = true
         cancelPreviousTaskIfNecessary(forNewAuthCode: code)
         currentAuthCode = code
         let tokenRequest = createTokenRequest(withCode: code)
-        let task = URLSession.shared.dataTask(with: tokenRequest) { data, response, error in
+        let task = URLSession.shared.dataTask(with: tokenRequest) { [weak self] data, response, error in
             DispatchQueue.main.async {
+                self?.isFetchingToken = false
                 if let error = error {
                     completion(.failure(error))
                     return
