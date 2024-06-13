@@ -116,10 +116,10 @@
 		DDC0B3192BE389550035E7DD /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
-				DD5705182C1B1FE80036B530 /* UIBlockingProgressHUD.swift */,
 				DDC0B31A2BE389550035E7DD /* AppDelegate.swift */,
 				DDC0B31C2BE389550035E7DD /* SceneDelegate.swift */,
 				DD06B7322C0855EB0088A4F3 /* Constants.swift */,
+				DD5705182C1B1FE80036B530 /* UIBlockingProgressHUD.swift */,
 				DDE760C32C0F2C5C00A2EA97 /* SplashViewController */,
 				DD85B63C2C0DB9D20075CF16 /* NetworkServices */,
 				DD06B7342C0891EF0088A4F3 /* Auth */,

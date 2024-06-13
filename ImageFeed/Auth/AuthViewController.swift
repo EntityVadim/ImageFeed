@@ -63,10 +63,9 @@ extension AuthViewController: WebViewViewControllerDelegate {
         _ vc: WebViewViewController,
         didAuthenticateWithCode code: String
     ) {
-        ProgressHUD.animate()
-        delegate?.authViewController(self, didAuthenticateWithCode: code)
+        UIBlockingProgressHUD.show()
         oauth2Service.fetchOAuthToken(withCode: code) { result in
-            ProgressHUD.dismiss()
+            UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(let token):
                 print("Авторизационный токен получен: \(token)")
