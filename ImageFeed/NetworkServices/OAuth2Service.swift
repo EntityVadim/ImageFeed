@@ -26,6 +26,7 @@ final class OAuth2Service {
         if let currentAuthCode = currentAuthCode, currentAuthCode == newAuthCode {
             currentTask?.cancel()
         }
+        self.currentAuthCode = newAuthCode
     }
 }
 
@@ -57,6 +58,7 @@ extension OAuth2Service {
         withCode code: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
+        cancelPreviousTaskIfNecessary(forNewAuthCode: code)
         guard !isFetchingToken else {
             completion(.failure(NSError(
                 domain: "",
@@ -65,8 +67,6 @@ extension OAuth2Service {
             return
         }
         isFetchingToken = true
-        cancelPreviousTaskIfNecessary(forNewAuthCode: code)
-        currentAuthCode = code
         let tokenRequest = createTokenRequest(withCode: code)
         let task = URLSession.shared.dataTask(with: tokenRequest) { [weak self] data, response, error in
             DispatchQueue.main.async {
@@ -77,7 +77,10 @@ extension OAuth2Service {
                 }
                 guard let httpResponse = response as? HTTPURLResponse,
                       let data = data else {
-                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Не удалось получить HTTP-ответ."])))
+                    completion(.failure(NSError(
+                        domain: "",
+                        code: -1,
+                        userInfo: [NSLocalizedDescriptionKey: "Не удалось получить HTTP-ответ."])))
                     return
                 }
                 switch httpResponse.statusCode {
