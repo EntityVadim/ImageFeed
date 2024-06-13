@@ -11,8 +11,16 @@ import Foundation
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
-    
+    private var currentAuthCode: String?
+    private var currentTask: URLSessionDataTask?
+
     private init() {}
+
+    func cancelPreviousTaskIfNecessary(forNewAuthCode newAuthCode: String) {
+        if let currentAuthCode = currentAuthCode, currentAuthCode == newAuthCode {
+            currentTask?.cancel()
+        }
+    }
 }
 
 // MARK: - Token Request
@@ -43,6 +51,8 @@ extension OAuth2Service {
         withCode code: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
+        cancelPreviousTaskIfNecessary(forNewAuthCode: code)
+        currentAuthCode = code
         let tokenRequest = createTokenRequest(withCode: code)
         let task = URLSession.shared.dataTask(with: tokenRequest) { data, response, error in
             DispatchQueue.main.async {
@@ -97,6 +107,7 @@ extension OAuth2Service {
                 }
             }
         }
+        currentTask = task
         task.resume()
     }
 }
