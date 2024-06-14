@@ -42,6 +42,20 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let token = OAuth2TokenStorage.shared.token {
+            let profileService = ProfileService()
+            profileService.fetchProfile(token) { [weak self] result in
+                switch result {
+                case .success(let profile):
+                    self?.nameLabel.text = profile.name
+                    self?.loginNameLabel.text = profile.loginName
+                    self?.descriptionLabel.text = profile.bio
+                case .failure(let error):
+                    print("Ошибка при получении профиля: \(error.localizedDescription)")
+                }
+            }
+        }
+        
         // MARK: - Profile Image
         
         let profileImage = UIImage(named: "avatar")
