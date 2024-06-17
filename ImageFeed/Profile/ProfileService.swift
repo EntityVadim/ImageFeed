@@ -10,13 +10,14 @@ import UIKit
 // MARK: - ProfileService
 
 final class ProfileService {
-    
     static let shared = ProfileService()
-    var oAuth2TokenStorage = OAuth2TokenStorage()
-    private var task: URLSessionTask?
-    private(set) var profile: Profile?
     
     private init() {}
+    
+    // MARK: - Private Properties
+    
+    private var task: URLSessionTask?
+    private(set) var profile: Profile?
     
     // MARK: - Helper Method
     
@@ -30,7 +31,7 @@ final class ProfileService {
         return request
     }
     
-    // MARK: - Public Methods
+    // MARK: - FetchProfile
     
     func fetchProfile(
         _ token: String,
@@ -59,6 +60,7 @@ final class ProfileService {
             do {
                 let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
                 let profile = Profile(result: profileResult)
+                self?.profile = profile
                 DispatchQueue.main.async {
                     completion(.success(profile))
                 }

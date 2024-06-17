@@ -11,9 +11,6 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-    private let profileService = ProfileService.shared
-    private var storage = OAuth2TokenStorage.shared
-    
     // MARK: - Private Properties
     
     private var nameLabel: UILabel = {
@@ -36,6 +33,9 @@ final class ProfileViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         return label
     }()
+    
+    private let profileService = ProfileService.shared
+    private var storage = OAuth2TokenStorage.shared
     
     // MARK: - Lifecycle
     
@@ -90,6 +90,15 @@ final class ProfileViewController: UIViewController {
         logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
     }
     
+    // MARK: - UpdateProfileDetails
+    
+    func updateProfileDetails(profile: Profile?) {
+        guard let profile = profile else { return }
+        self.nameLabel.text = profile.name
+        self.loginNameLabel.text = profile.loginName
+        self.descriptionLabel.text = profile.bio
+    }
+    
     // MARK: - DidTapLogoutButton
     
     @objc
@@ -97,12 +106,5 @@ final class ProfileViewController: UIViewController {
         nameLabel.removeFromSuperview()
         loginNameLabel.removeFromSuperview()
         descriptionLabel.removeFromSuperview()
-    }
-    
-    func updateProfileDetails(profile: Profile?) {
-        guard let profile = profile else { return }
-        self.nameLabel.text = profile.name
-        self.loginNameLabel.text = profile.loginName
-        self.descriptionLabel.text = profile.bio
     }
 }
