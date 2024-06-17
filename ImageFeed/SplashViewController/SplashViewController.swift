@@ -14,6 +14,7 @@ final class SplashViewController: UIViewController {
     // MARK: - Private Properties
     
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
+    private var profileService: ProfileService?
     
     // MARK: - ViewWillAppear
     
@@ -63,6 +64,17 @@ final class SplashViewController: UIViewController {
             style: .default))
         self.present(alert, animated: true)
     }
+    
+    private func fetchProfile(_ token: String) {
+        profileService?.fetchProfile(token) { [weak self] result in
+            switch result {
+            case .success(let profile):
+                self?.switchToTabBarController()
+            case .failure(let error):
+                self?.showErrorMessage("Не удалось загрузить данные профиля: \(error.localizedDescription)")
+            }
+        }
+    }
 }
 
 // MARK: - Prepare
@@ -91,7 +103,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     ) {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
-            self.switchToTabBarController()
+            self.fetchProfile(code)
         }
     }
 }

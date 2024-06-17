@@ -13,37 +13,7 @@ final class ProfileService {
     
     private var task: URLSessionDataTask?
     
-    // MARK: - ProfileResult
-    
-    struct ProfileResult: Codable {
-        let username: String
-        let firstName: String?
-        let lastName: String?
-        let bio: String?
-        
-        enum CodingKeys: String, CodingKey {
-            case username
-            case firstName = "first_name"
-            case lastName = "last_name"
-            case bio
-        }
-    }
-    
-    // MARK: - Profile
-    
-    struct Profile {
-        let username: String
-        let name: String
-        let loginName: String
-        let bio: String?
-        
-        init(result: ProfileResult) {
-            self.username = result.username
-            self.name = "\(result.firstName ?? "") \(result.lastName ?? "")"
-            self.loginName = "@\(result.username)"
-            self.bio = result.bio
-        }
-    }
+    static let shared = ProfileService()
     
     // MARK: - Helper Method
     
@@ -66,7 +36,7 @@ final class ProfileService {
         task?.cancel()
         let request = createURLRequest(token: token)
         task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-            guard let self = self else { return }
+            guard self != nil else { return }
             if let error = error {
                 DispatchQueue.main.async {
                     completion(.failure(error))
