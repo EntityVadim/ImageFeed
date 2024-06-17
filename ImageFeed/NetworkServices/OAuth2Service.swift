@@ -18,7 +18,6 @@ final class OAuth2Service {
     
     private var currentAuthCode: String?
     private var currentTask: URLSessionDataTask?
-    private var isFetchingToken: Bool = false
     
     // MARK: - CancelPreviousTaskIfNecessary
     
@@ -58,74 +57,71 @@ extension OAuth2Service {
         withCode code: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
-        cancelPreviousTaskIfNecessary(forNewAuthCode: code)
-        guard !isFetchingToken else {
-            completion(.failure(NSError(
-                domain: "",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "Авторизация уже выполняется."])))
-            return
-        }
-        isFetchingToken = true
         let tokenRequest = createTokenRequest(withCode: code)
-        let task = URLSession.shared.dataTask(with: tokenRequest) { [weak self] data, response, error in
-            DispatchQueue.main.async {
-                self?.isFetchingToken = false
-                if let error = error {
+        let task = URLSession.shared.dataTask(with: tokenRequest) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
                     completion(.failure(error))
-                    return
                 }
-                guard let httpResponse = response as? HTTPURLResponse,
-                      let data = data else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse,
+                  let data = data else {
+                DispatchQueue.main.async {
                     completion(.failure(NSError(
                         domain: "",
                         code: -1,
                         userInfo: [NSLocalizedDescriptionKey: "Не удалось получить HTTP-ответ."])))
-                    return
                 }
-                switch httpResponse.statusCode {
-                case 200:
-                    do {
-                        let responseBody = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
+                return
+            }
+            switch httpResponse.statusCode {
+            case 200:
+                do {
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    let responseBody = try decoder.decode(OAuthTokenResponseBody.self, from: data)
+                    DispatchQueue.main.async {
                         OAuth2TokenStorage.shared.token = responseBody.accessToken
                         completion(.success(responseBody.accessToken))
-                    } catch {
+                    }
+                } catch {
+                    DispatchQueue.main.async {
                         completion(.failure(error))
                     }
-                case 400:
-                    completion(.failure(NSError(
-                        domain: "",
-                        code: 400,
-                        userInfo: [NSLocalizedDescriptionKey: "Неверный запрос: возможно, отсутствует необходимый параметр."])))
-                case 401:
-                    completion(.failure(NSError(
-                        domain: "",
-                        code: 401,
-                        userInfo: [NSLocalizedDescriptionKey: "Ошибка авторизации: неверный токен доступа."])))
-                case 403:
-                    completion(.failure(NSError(
-                        domain: "",
-                        code: 403,
-                        userInfo: [NSLocalizedDescriptionKey: "Доступ запрещен: отсутствуют разрешения для выполнения запроса."])))
-                case 404:
-                    completion(.failure(NSError(
-                        domain: "",
-                        code: 404,
-                        userInfo: [NSLocalizedDescriptionKey: "Ресурс не найден."])))
-                case 500, 503:
-                    completion(.failure(NSError(
-                        domain: "",
-                        code: httpResponse.statusCode,
-                        userInfo: [NSLocalizedDescriptionKey: "Ошибка на сервере."])))
-                default:
-                    completion(.failure(NSError(
-                        domain: "",
-                        code: httpResponse.statusCode,
-                        userInfo: [NSLocalizedDescriptionKey: "Неизвестная ошибка с кодом \(httpResponse.statusCode)."])))
                 }
+            case 400:
+                completion(.failure(NSError(
+                    domain: "",
+                    code: 400,
+                    userInfo: [NSLocalizedDescriptionKey: "Неверный запрос: возможно, отсутствует необходимый параметр."])))
+            case 401:
+                completion(.failure(NSError(
+                    domain: "",
+                    code: 401,
+                    userInfo: [NSLocalizedDescriptionKey: "Ошибка авторизации: неверный токен доступа."])))
+            case 403:
+                completion(.failure(NSError(
+                    domain: "",
+                    code: 403,
+                    userInfo: [NSLocalizedDescriptionKey: "Доступ запрещен: отсутствуют разрешения для выполнения запроса."])))
+            case 404:
+                completion(.failure(NSError(
+                    domain: "",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Ресурс не найден."])))
+            case 500, 503:
+                completion(.failure(NSError(
+                    domain: "",
+                    code: httpResponse.statusCode,
+                    userInfo: [NSLocalizedDescriptionKey: "Ошибка на сервере."])))
+            default:
+                completion(.failure(NSError(
+                    domain: "",
+                    code: httpResponse.statusCode,
+                    userInfo: [NSLocalizedDescriptionKey: "Неизвестная ошибка с кодом \(httpResponse.statusCode)."])))
             }
         }
-        currentTask = task
         task.resume()
     }
 }

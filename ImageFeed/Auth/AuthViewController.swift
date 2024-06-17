@@ -8,12 +8,6 @@
 import UIKit
 import ProgressHUD
 
-// MARK: - AuthViewControllerDelegate
-
-protocol AuthViewControllerDelegate: AnyObject {
-    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
-}
-
 // MARK: - AuthViewController
 
 final class AuthViewController: UIViewController {
@@ -64,8 +58,8 @@ extension AuthViewController: WebViewViewControllerDelegate {
         didAuthenticateWithCode code: String
     ) {
         UIBlockingProgressHUD.show()
-        delegate?.authViewController(self, didAuthenticateWithCode: code)
-        oauth2Service.fetchOAuthToken(withCode: code) { result in
+        oauth2Service.fetchOAuthToken(withCode: code) { [weak self] result in
+            guard let self else { return }
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(let token):

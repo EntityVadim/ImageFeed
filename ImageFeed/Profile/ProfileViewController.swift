@@ -11,11 +11,13 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    private let profileService = ProfileService.shared
+    private var storage = OAuth2TokenStorage.shared
+    
     // MARK: - Private Properties
     
     private var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Екатерина Новикова"
         label.textColor = .ypWhite
         label.font = UIFont.systemFont(ofSize: 23, weight: .semibold)
         return label
@@ -23,7 +25,6 @@ final class ProfileViewController: UIViewController {
     
     private var loginNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "@ekaterina_nov"
         label.textColor = .ypGray
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return label
@@ -31,7 +32,6 @@ final class ProfileViewController: UIViewController {
     
     private var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Hello, World!"
         label.textColor = .ypWhite
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         return label
@@ -42,18 +42,8 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let token = OAuth2TokenStorage.shared.token {
-            let profileService = ProfileService()
-            profileService.fetchProfile(token) { [weak self] result in
-                switch result {
-                case .success(let profile):
-                    self?.nameLabel.text = profile.name
-                    self?.loginNameLabel.text = profile.loginName
-                    self?.descriptionLabel.text = profile.bio
-                case .failure(let error):
-                    print("Ошибка при получении профиля: \(error.localizedDescription)")
-                }
-            }
+        if let profile = profileService.profile {
+            updateProfileDetails(profile: profile)
         }
         
         // MARK: - Profile Image
@@ -107,5 +97,12 @@ final class ProfileViewController: UIViewController {
         nameLabel.removeFromSuperview()
         loginNameLabel.removeFromSuperview()
         descriptionLabel.removeFromSuperview()
+    }
+    
+    func updateProfileDetails(profile: Profile?) {
+        guard let profile = profile else { return }
+        self.nameLabel.text = profile.name
+        self.loginNameLabel.text = profile.loginName
+        self.descriptionLabel.text = profile.bio
     }
 }

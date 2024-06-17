@@ -11,9 +11,12 @@ import UIKit
 
 final class ProfileService {
     
-    private var task: URLSessionDataTask?
-    
     static let shared = ProfileService()
+    var oAuth2TokenStorage = OAuth2TokenStorage()
+    private var task: URLSessionTask?
+    private(set) var profile: Profile?
+    
+    private init() {}
     
     // MARK: - Helper Method
     

@@ -11,7 +11,6 @@ import SwiftKeychainWrapper
 // MARK: - OAuth2TokenStorage
 
 final class OAuth2TokenStorage: OAuth2TokenStorageProtocol {
-    
     private enum Keys: String {
         case token
     }
