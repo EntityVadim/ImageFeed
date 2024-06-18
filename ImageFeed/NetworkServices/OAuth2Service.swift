@@ -58,42 +58,61 @@ extension OAuth2Service {
         completion: @escaping (Result<String, Error>) -> Void
     ) {
         let tokenRequest = createTokenRequest(withCode: code)
-        let task = URLSession.shared.dataTask(with: tokenRequest) { data, response, error in
-            if let error = error {
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse,
-                  let data = data else {
-                DispatchQueue.main.async {
-                    completion(.failure(NetworkError.unknownError))
-                }
-                return
-            }
-            switch httpResponse.statusCode {
-            case 200:
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.keyDecodingStrategy = .convertFromSnakeCase
-                    let responseBody = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                    DispatchQueue.main.async {
-                        OAuth2TokenStorage.shared.token = responseBody.accessToken
-                        completion(.success(responseBody.accessToken))
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
-                    }
-                }
-            default:
-                let error = NetworkErrorHandler.handleErrorResponse(statusCode: httpResponse.statusCode)
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
+        currentTask = URLSession.shared.objectTask(for: tokenRequest, with: OAuthTokenResponseBody.self) { result in
+            switch result {
+            case .success(let responseBody):
+                OAuth2TokenStorage.shared.token = responseBody.accessToken
+                completion(.success(responseBody.accessToken))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
-        task.resume()
+        currentTask?.resume()
     }
 }
+
+//extension OAuth2Service {
+//    func fetchOAuthToken(
+//        withCode code: String,
+//        completion: @escaping (Result<String, Error>) -> Void
+//    ) {
+//        let tokenRequest = createTokenRequest(withCode: code)
+//        let task = URLSession.shared.dataTask(with: tokenRequest) { data, response, error in
+//            if let error = error {
+//                DispatchQueue.main.async {
+//                    completion(.failure(error))
+//                }
+//                return
+//            }
+//            guard let httpResponse = response as? HTTPURLResponse,
+//                  let data = data else {
+//                DispatchQueue.main.async {
+//                    completion(.failure(NetworkError.unknownError))
+//                }
+//                return
+//            }
+//            switch httpResponse.statusCode {
+//            case 200:
+//                do {
+//                    let decoder = JSONDecoder()
+//                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+//                    let responseBody = try decoder.decode(OAuthTokenResponseBody.self, from: data)
+//                    DispatchQueue.main.async {
+//                        OAuth2TokenStorage.shared.token = responseBody.accessToken
+//                        completion(.success(responseBody.accessToken))
+//                    }
+//                } catch {
+//                    DispatchQueue.main.async {
+//                        completion(.failure(error))
+//                    }
+//                }
+//            default:
+//                let error = NetworkErrorHandler.handleErrorResponse(statusCode: httpResponse.statusCode)
+//                DispatchQueue.main.async {
+//                    completion(.failure(error))
+//                }
+//            }
+//        }
+//        task.resume()
+//    }
+//}

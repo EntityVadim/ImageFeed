@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ErrorHandling.swift
 //  ImageFeed
 //
 //  Created by Вадим on 18.06.2024.

@@ -43,26 +43,10 @@ final class ProfileImageService {
     ) {
         task?.cancel()
         let request = createProfileImageURLRequest(username: username, token: token)
-        task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+        task = URLSession.shared.objectTask(for: request, with: UserResult.self) { [weak self] result in
             guard let strongSelf = self else { return }
-            if let error = error {
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
-                return
-            }
-            guard let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
-                DispatchQueue.main.async {
-                    completion(.failure(NSError(
-                        domain: "",
-                        code: statusCode,
-                        userInfo: [NSLocalizedDescriptionKey: "Ошибка сети или сервера с кодом \(statusCode)."])))
-                }
-                return
-            }
-            do {
-                let userResult = try JSONDecoder().decode(UserResult.self, from: data)
+            switch result {
+            case .success(let userResult):
                 strongSelf.avatarURL = userResult.profileImage.small
                 DispatchQueue.main.async {
                     completion(.success(userResult.profileImage.small))
@@ -71,7 +55,7 @@ final class ProfileImageService {
                         object: strongSelf,
                         userInfo: ["URL": userResult.profileImage.small])
                 }
-            } catch {
+            case .failure(let error):
                 DispatchQueue.main.async {
                     completion(.failure(error))
                 }
@@ -80,3 +64,48 @@ final class ProfileImageService {
         task?.resume()
     }
 }
+
+//    func fetchProfileImageURL(
+//        username: String,
+//        token: String,
+//        completion: @escaping (Result<String, Error>) -> Void
+//    ) {
+//        task?.cancel()
+//        let request = createProfileImageURLRequest(username: username, token: token)
+//        task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+//            guard let strongSelf = self else { return }
+//            if let error = error {
+//                DispatchQueue.main.async {
+//                    completion(.failure(error))
+//                }
+//                return
+//            }
+//            guard let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+//                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+//                DispatchQueue.main.async {
+//                    completion(.failure(NSError(
+//                        domain: "",
+//                        code: statusCode,
+//                        userInfo: [NSLocalizedDescriptionKey: "Ошибка сети или сервера с кодом \(statusCode)."])))
+//                }
+//                return
+//            }
+//            do {
+//                let userResult = try JSONDecoder().decode(UserResult.self, from: data)
+//                strongSelf.avatarURL = userResult.profileImage.small
+//                DispatchQueue.main.async {
+//                    completion(.success(userResult.profileImage.small))
+//                    NotificationCenter.default.post(
+//                        name: ProfileImageService.didChangeNotification,
+//                        object: strongSelf,
+//                        userInfo: ["URL": userResult.profileImage.small])
+//                }
+//            } catch {
+//                DispatchQueue.main.async {
+//                    completion(.failure(error))
+//                }
+//            }
+//        }
+//        task?.resume()
+//    }
+//}

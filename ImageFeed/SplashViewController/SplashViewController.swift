@@ -100,7 +100,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()
             switch result {
-            case .success(let (profile, username)):
+            case .success(let (_, username)):
                 ProfileImageService.shared.fetchProfileImageURL(
                     username: username,
                     token: token) { _ in }
