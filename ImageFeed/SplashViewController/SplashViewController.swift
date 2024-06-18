@@ -15,6 +15,7 @@ final class SplashViewController: UIViewController {
     
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     private let storage = OAuth2TokenStorage()
     
     
@@ -95,11 +96,14 @@ extension SplashViewController {
 extension SplashViewController: AuthViewControllerDelegate {
     func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
-        profileService.fetchProfile(token) { [ weak self ] result in
-            UIBlockingProgressHUD.dismiss()
+        ProfileService.shared.fetchProfile(token) { [weak self] result in
             guard let self = self else { return }
+            UIBlockingProgressHUD.dismiss()
             switch result {
-            case .success:
+            case .success(let (profile, username)):
+                ProfileImageService.shared.fetchProfileImageURL(
+                    username: username,
+                    token: token) { _ in }
                 self.switchToTabBarController()
             case .failure(let error):
                 self.showErrorMessage("Не удалось получить профиль: \(error.localizedDescription)")

@@ -21,7 +21,7 @@ final class ProfileService {
     
     // MARK: - Helper Method
     
-    private func createURLRequest(token: String) -> URLRequest {
+    private func createProfileURLRequest(token: String) -> URLRequest {
         guard let profileURL = URL(string: ProfileConstants.urlProfilePath) else {
             fatalError("Неверный URL профиля.")
         }
@@ -35,12 +35,12 @@ final class ProfileService {
     
     func fetchProfile(
         _ token: String,
-        completion: @escaping (Result<Profile, Error>) -> Void
+        completion: @escaping (Result<(Profile, String), Error>) -> Void
     ) {
         task?.cancel()
-        let request = createURLRequest(token: token)
+        let request = createProfileURLRequest(token: token)
         task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-            guard self != nil else { return }
+            guard let self = self else { return }
             if let error = error {
                 DispatchQueue.main.async {
                     completion(.failure(error))
@@ -60,9 +60,9 @@ final class ProfileService {
             do {
                 let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
                 let profile = Profile(result: profileResult)
-                self?.profile = profile
+                self.profile = profile
                 DispatchQueue.main.async {
-                    completion(.success(profile))
+                    completion(.success((profile, profileResult.username)))
                 }
             } catch {
                 DispatchQueue.main.async {

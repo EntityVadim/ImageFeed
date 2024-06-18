@@ -7,6 +7,71 @@
 
 import Foundation
 
+// MARK: - ProfileImageService
+
 final class ProfileImageService {
+    static let shared = ProfileImageService()
     
+    private init() {}
+
+    // MARK: - Private Properties
+
+    private var task: URLSessionTask?
+    private(set) var avatarURL: String?
+
+    // MARK: - Helper Method
+
+    private func createProfileImageURLRequest(
+        username: String,
+        token: String) -> URLRequest {
+        guard let profileImageURL = URL(string: "\(Constants.defaultBaseURL)/users/\(username)/photos") else {
+            fatalError("Неверный URL пользователя.")
+        }
+        var request = URLRequest(url: profileImageURL)
+        request.httpMethod = "GET"
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
+
+    // MARK: - FetchProfileImageURL
+
+    func fetchProfileImageURL(
+        username: String,
+        token: String,
+        completion: @escaping (Result<String, Error>) -> Void
+    ) {
+        task?.cancel()
+        let request = createProfileImageURLRequest(username: username, token: token)
+        task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard let strongSelf = self else { return }
+            if let error = error {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+                return
+            }
+            guard let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+                DispatchQueue.main.async {
+                    completion(.failure(NSError(
+                        domain: "",
+                        code: statusCode,
+                        userInfo: [NSLocalizedDescriptionKey: "Ошибка сети или сервера с кодом \(statusCode)."])))
+                }
+                return
+            }
+            do {
+                let userResult = try JSONDecoder().decode(UserResult.self, from: data)
+                strongSelf.avatarURL = userResult.profileImage.small
+                DispatchQueue.main.async {
+                    completion(.success(userResult.profileImage.small))
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+        task?.resume()
+    }
 }
