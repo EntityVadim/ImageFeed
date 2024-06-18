@@ -11,30 +11,31 @@ import Foundation
 
 final class ProfileImageService {
     static let shared = ProfileImageService()
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     
     private init() {}
-
+    
     // MARK: - Private Properties
-
+    
     private var task: URLSessionTask?
     private(set) var avatarURL: String?
-
+    
     // MARK: - Helper Method
-
+    
     private func createProfileImageURLRequest(
         username: String,
         token: String) -> URLRequest {
-        guard let profileImageURL = URL(string: "\(Constants.defaultBaseURL)/users/\(username)/photos") else {
-            fatalError("Неверный URL пользователя.")
+            guard let profileImageURL = URL(string: "\(Constants.defaultBaseURL)/users/\(username)/photos") else {
+                fatalError("Неверный URL пользователя.")
+            }
+            var request = URLRequest(url: profileImageURL)
+            request.httpMethod = "GET"
+            request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            return request
         }
-        var request = URLRequest(url: profileImageURL)
-        request.httpMethod = "GET"
-        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        return request
-    }
-
+    
     // MARK: - FetchProfileImageURL
-
+    
     func fetchProfileImageURL(
         username: String,
         token: String,
@@ -65,6 +66,10 @@ final class ProfileImageService {
                 strongSelf.avatarURL = userResult.profileImage.small
                 DispatchQueue.main.async {
                     completion(.success(userResult.profileImage.small))
+                    NotificationCenter.default.post(
+                        name: ProfileImageService.didChangeNotification,
+                        object: strongSelf,
+                        userInfo: ["URL": userResult.profileImage.small])
                 }
             } catch {
                 DispatchQueue.main.async {

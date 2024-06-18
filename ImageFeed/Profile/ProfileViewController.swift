@@ -36,15 +36,25 @@ final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private var storage = OAuth2TokenStorage.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         if let profile = profileService.profile {
             updateProfileDetails(profile: profile)
         }
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
         
         // MARK: - Profile Image
         
@@ -97,6 +107,16 @@ final class ProfileViewController: UIViewController {
         self.nameLabel.text = profile.name
         self.loginNameLabel.text = profile.loginName
         self.descriptionLabel.text = profile.bio
+    }
+    
+    // MARK: - UpdateAvatar
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        // TODO [Sprint 11] Обновитt аватар, используя Kingfisher
     }
     
     // MARK: - DidTapLogoutButton
