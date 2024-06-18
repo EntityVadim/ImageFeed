@@ -41,9 +41,10 @@ final class SplashViewController: UIViewController {
     // MARK: - Private Methods
     
     private func switchToTabBarController() {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { fatalError("Could not find window scene") }
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            fatalError("Не удалось обнаружить интерфейс окна") }
         guard let window = windowScene.windows.first else {
-            fatalError("Could not find a window") }
+            fatalError("Не удалось обнаружить окно") }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
@@ -81,7 +82,7 @@ extension SplashViewController {
                 let navigationController = segue.destination as? UINavigationController,
                 let viewController = navigationController.viewControllers[0] as? AuthViewController
             else {
-                fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)") }
+                fatalError("Не удалось подготовиться к \(showAuthenticationScreenSegueIdentifier)") }
             viewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
