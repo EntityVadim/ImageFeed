@@ -48,6 +48,17 @@ final class AuthViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "ypBlack")
     }
+    
+    private func showErrorAlert() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            preferredStyle: .alert)
+        alert.addAction(UIAlertAction(
+            title: "Ок",
+            style: .default))
+        self.present(alert, animated: true)
+    }
 }
 
 // MARK: - WebViewViewControllerDelegate
@@ -59,13 +70,14 @@ extension AuthViewController: WebViewViewControllerDelegate {
     ) {
         UIBlockingProgressHUD.show()
         oauth2Service.fetchOAuthToken(withCode: code) { [weak self] result in
-            guard let self else { return }
+            guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(let token):
                 print("Авторизационный токен получен: \(token)")
             case .failure(let error):
                 print("Ошибка получения токена: \(error.localizedDescription)")
+                self.showErrorAlert()
             }
         }
     }
