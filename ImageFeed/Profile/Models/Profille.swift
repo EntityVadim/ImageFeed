@@ -5,7 +5,7 @@
 //  Created by Вадим on 17.06.2024.
 //
 
-import UIKit
+import Foundation
 
 // MARK: - Profile
 
