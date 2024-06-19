@@ -69,6 +69,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
         didAuthenticateWithCode code: String
     ) {
         UIBlockingProgressHUD.show()
+        self.delegate?.didAuthenticate(self)
         oauth2Service.fetchOAuthToken(withCode: code) { [weak self] result in
             guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()

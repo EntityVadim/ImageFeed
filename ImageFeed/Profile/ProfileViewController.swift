@@ -123,6 +123,7 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapLogoutButton() {
+        storage.logout()
         nameLabel.removeFromSuperview()
         loginNameLabel.removeFromSuperview()
         descriptionLabel.removeFromSuperview()

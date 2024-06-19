@@ -57,3 +57,39 @@ extension URLSession {
             return task
         }
 }
+
+//extension URLSession {
+//    func performRequest<T: Decodable>(
+//        with request: URLRequest,
+//        decodeType: T.Type,
+//        completion: @escaping (Result<T, Error>) -> Void
+//    ) {
+//        let task = dataTask(with: request) { data, response, error in
+//            DispatchQueue.main.async {
+//                if let error = error {
+//                    completion(.failure(error))
+//                    return
+//                }
+//                guard let httpResponse = response as? HTTPURLResponse,
+//                      httpResponse.statusCode == 200,
+//                      let data = data else {
+//                    let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+//                    completion(.failure(NSError(
+//                        domain: "",
+//                        code: statusCode,
+//                        userInfo: [NSLocalizedDescriptionKey: "Ошибка сети или сервера с кодом \(statusCode)."])))
+//                    return
+//                }
+//                do {
+//                    let decoder = JSONDecoder()
+//                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+//                    let decodedObject = try decoder.decode(decodeType, from: data)
+//                    completion(.success(decodedObject))
+//                } catch {
+//                    completion(.failure(error))
+//                }
+//            }
+//        }
+//        task.resume()
+//    }
+//}
