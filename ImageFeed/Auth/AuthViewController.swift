@@ -35,7 +35,7 @@ final class AuthViewController: UIViewController {
             if let webViewViewController = segue.destination as? WebViewViewController {
                 webViewViewController.delegate = self
             } else {
-                print("Ошибка: Destination не является WebViewViewController")
+                print("Не удалось подготовиться к \(showWebViewSegueIdentifier)")
             }
         } else {
             super.prepare(for: segue, sender: sender)
