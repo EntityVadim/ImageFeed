@@ -24,9 +24,10 @@ final class ProfileImageService {
     
     private func createProfileImageURLRequest(
         username: String,
-        token: String) -> URLRequest {
-            guard let profileImageURL = URL(string: "\(Constants.defaultBaseURL)/users/\(username)/photos") else {
-                fatalError("Неверный URL пользователя.")
+        token: String) -> URLRequest? {
+            guard let profileImageURL = URL(string: "\(ProfileConstants.urlUsersPath)\(username)") else {
+                print(NetworkError.invalidURL)
+                return nil
             }
             var request = URLRequest(url: profileImageURL)
             request.httpMethod = "GET"
@@ -36,37 +37,16 @@ final class ProfileImageService {
     
     // MARK: - FetchProfileImageURL
     
-    //    func fetchProfileImageURL(
-    //        username: String,
-    //        token: String,
-    //        completion: @escaping (Result<String, Error>) -> Void
-    //    ) {
-    //        task?.cancel()
-    //
-    //        let request = createProfileImageURLRequest(username: username, token: token)
-    //        task = URLSession.shared.objectTask(for: request, completion: { (result: Result<UserResult, Error>) in
-    //            switch result {
-    //            case .success(let userResult):
-    //                self.avatarURL = userResult.profileImage.small
-    //                NotificationCenter.default.post(
-    //                    name: ProfileImageService.didChangeNotification,
-    //                    object: self,
-    //                    userInfo: ["URL": userResult.profileImage.small])
-    //                completion(.success(userResult.profileImage.small))
-    //            case .failure(let error):
-    //                completion(.failure(error))
-    //            }
-    //        })
-    //    }
-    //}
-    
     func fetchProfileImageURL(
         username: String,
         token: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
         task?.cancel()
-        let request = createProfileImageURLRequest(username: username, token: token)
+        guard let request = createProfileImageURLRequest(username: username, token: token) else {
+            completion(.failure(NetworkError.invalidRequest))
+            return
+        }
         task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             guard let strongSelf = self else { return }
             if let error = error {
@@ -75,27 +55,37 @@ final class ProfileImageService {
                 }
                 return
             }
-            guard let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+            guard let httpResponse = response as? HTTPURLResponse else {
                 DispatchQueue.main.async {
-                    completion(.failure(NSError(
-                        domain: "",
-                        code: statusCode,
-                        userInfo: [NSLocalizedDescriptionKey: "Ошибка сети или сервера с кодом \(statusCode)."])))
+                    completion(.failure(NetworkError.unknownError))
                 }
                 return
             }
-            do {
-                let userResult = try JSONDecoder().decode(UserResult.self, from: data)
-                strongSelf.avatarURL = userResult.profileImage.small
-                DispatchQueue.main.async {
-                    completion(.success(userResult.profileImage.small))
-                    NotificationCenter.default.post(
-                        name: ProfileImageService.didChangeNotification,
-                        object: strongSelf,
-                        userInfo: ["URL": userResult.profileImage.small])
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = data else {
+                    DispatchQueue.main.async {
+                        completion(.failure(NetworkError.emptyData))
+                    }
+                    return
                 }
-            } catch {
+                do {
+                    let userResult = try JSONDecoder().decode(UserResult.self, from: data)
+                    strongSelf.avatarURL = userResult.profileImage.large
+                    DispatchQueue.main.async {
+                        completion(.success(userResult.profileImage.large))
+                        NotificationCenter.default.post(
+                            name: ProfileImageService.didChangeNotification,
+                            object: strongSelf,
+                            userInfo: ["URL": userResult.profileImage.large])
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                }
+            default:
+                let error = NetworkErrorHandler.handleErrorResponse(statusCode: httpResponse.statusCode)
                 DispatchQueue.main.async {
                     completion(.failure(error))
                 }

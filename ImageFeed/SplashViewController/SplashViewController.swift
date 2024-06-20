@@ -43,9 +43,13 @@ final class SplashViewController: UIViewController {
     
     private func switchToTabBarController() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            fatalError("Не удалось обнаружить интерфейс окна") }
+            print("Не удалось обнаружить интерфейс окна")
+            return
+        }
         guard let window = windowScene.windows.first else {
-            fatalError("Не удалось обнаружить окно") }
+            print("Не удалось обнаружить окно")
+            return
+        }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController

@@ -21,45 +21,27 @@ final class ProfileService {
     
     // MARK: - Helper Method
     
-    private func createProfileURLRequest(token: String) -> URLRequest {
+    private func createProfileURLRequest(token: String) -> URLRequest? {
         guard let profileURL = URL(string: ProfileConstants.urlProfilePath) else {
-            fatalError("Неверный URL профиля.")
+            print(NetworkError.invalidURL)
+            return nil
         }
         var request = URLRequest(url: profileURL)
         request.httpMethod = "GET"
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
-
-// MARK: - FetchProfile
-
-//    func fetchProfile(
-//        _ token: String,
-//        completion: @escaping (Result<(Profile, String), Error>) -> Void
-//    ) {
-//        task?.cancel()
-//        let request = createProfileURLRequest(token: token)
-//        task = URLSession.shared.objectTask(for: request) { (result: Result<Profile, Error>) in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let profile):
-//                    self.profile = profile
-//                    completion(.success((profile, profile.username)))
-//                case .failure(let error):
-//                    completion(.failure(error))
-//                }
-//            }
-//        }
-//        task?.resume()
-//    }
-//}
-
+    // MARK: - FetchProfile
+    
     func fetchProfile(
         _ token: String,
         completion: @escaping (Result<(Profile, String), Error>) -> Void
     ) {
         task?.cancel()
-        let request = createProfileURLRequest(token: token)
+        guard let request = createProfileURLRequest(token: token) else {
+            completion(.failure(NetworkError.invalidRequest))
+            return
+        }
         task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             guard let self = self else { return }
             if let error = error {
@@ -68,24 +50,34 @@ final class ProfileService {
                 }
                 return
             }
-            guard let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+            guard let httpResponse = response as? HTTPURLResponse else {
                 DispatchQueue.main.async {
-                    completion(.failure(NSError(
-                        domain: "",
-                        code: statusCode,
-                        userInfo: [NSLocalizedDescriptionKey: "Ошибка сети или сервера с кодом \(statusCode)."])))
+                    completion(.failure(NetworkError.unknownError))
                 }
                 return
             }
-            do {
-                let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
-                let profile = Profile(result: profileResult)
-                self.profile = profile
-                DispatchQueue.main.async {
-                    completion(.success((profile, profileResult.username)))
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = data else {
+                    DispatchQueue.main.async {
+                        completion(.failure(NetworkError.emptyData))
+                    }
+                    return
                 }
-            } catch {
+                do {
+                    let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
+                    let profile = Profile(result: profileResult)
+                    self.profile = profile
+                    DispatchQueue.main.async {
+                        completion(.success((profile, profileResult.username)))
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                }
+            default:
+                let error = NetworkErrorHandler.handleErrorResponse(statusCode: httpResponse.statusCode)
                 DispatchQueue.main.async {
                     completion(.failure(error))
                 }

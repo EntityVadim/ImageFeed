@@ -16,10 +16,12 @@ protocol NetworkErrorProtocol {
 // MARK: - NetworkError
 
 enum NetworkError: Error {
+    case invalidURL
     case invalidRequest
     case authorizationError
     case forbidden
     case notFound
+    case emptyData
     case serverError
     case invalidURLComponents
     case unknownError
@@ -48,6 +50,10 @@ struct NetworkErrorHandler: NetworkErrorProtocol {
                 errorMessage = "Неверные компоненты URL."
             case .unknownError:
                 errorMessage = "Неизвестная ошибка."
+            case .emptyData:
+                errorMessage = "Не удалось получить данные."
+            case .invalidURL:
+                errorMessage = "Неверный URL профиля."
             }
         }
         return errorMessage

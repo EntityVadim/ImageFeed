@@ -52,26 +52,6 @@ private extension OAuth2Service {
 
 // MARK: - ErrorProcessing
 
-//extension OAuth2Service {
-//    func fetchOAuthToken(
-//        withCode code: String,
-//        completion: @escaping (Result<String, Error>) -> Void
-//    ) {
-//        cancelPreviousTaskIfNecessary(forNewAuthCode: code)
-//
-//        let tokenRequest = createTokenRequest(withCode: code)
-//        currentTask = URLSession.shared.objectTask(for: tokenRequest, completion: { (result: Result<OAuthTokenResponseBody, Error>) in
-//            switch result {
-//            case .success(let responseBody):
-//                OAuth2TokenStorage.shared.token = responseBody.accessToken
-//                completion(.success(responseBody.accessToken))
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        })
-//    }
-//}
-
 extension OAuth2Service {
     func fetchOAuthToken(
         withCode code: String,

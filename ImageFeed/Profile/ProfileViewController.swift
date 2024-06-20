@@ -79,19 +79,10 @@ final class ProfileViewController: UIViewController {
         updateAvatar()
         profileImageServiceObserve()
         setupUI()
-//        setupObservers()
     }
     
-    // MARK: - UpdateProfileDetails
+    // MARK: - SetupUI
     
-    func updateProfileDetails(profile: Profile?) {
-        guard let profile = profile else { return }
-        self.nameLabel.text = profile.name
-        self.loginNameLabel.text = profile.loginName
-        self.descriptionLabel.text = profile.bio
-    }
-    
-    // MARK: - Setup
     private func setupUI() {
         [profileImageView,
          logoutButton,
@@ -127,26 +118,20 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    //    private func setupObservers() {
-    //        profileImageServiceObserver = NotificationCenter.default.addObserver(
-    //            forName: ProfileImageService.didChangeNotification,
-    //            object: nil,
-    //            queue: .main
-    //        ) { [weak self] _ in
-    //            guard let self = self else { return }
-    //            self.updateAvatar()
-    //        }
-    //    }
-    
     // MARK: - Update Methods
+    
+    private func updateProfileDetails(profile: Profile?) {
+        guard let profile = profile else { return }
+        self.nameLabel.text = profile.name
+        self.loginNameLabel.text = profile.loginName
+        self.descriptionLabel.text = profile.bio
+    }
     
     private func updateProfileDetailsIfNeeded() {
         if let profile = profileService.profile {
             updateProfileDetails(profile: profile)
         }
     }
-    
-    // MARK: - UpdateAvatar
     
     private func updateAvatar() {
         guard let profileImageURL = ProfileImageService.shared.avatarURL,
@@ -164,8 +149,6 @@ final class ProfileViewController: UIViewController {
             options: [.processor(processor), .cacheOriginalImage]
         )
     }
-    
-    // MARK: - ProfileImageServiceObserve
     
     private func profileImageServiceObserve() {
         profileImageServiceObserver = NotificationCenter.default.addObserver(
