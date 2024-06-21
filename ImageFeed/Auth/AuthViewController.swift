@@ -18,7 +18,6 @@ final class AuthViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let showWebViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
     
     // MARK: - Lifecycle
@@ -30,16 +29,22 @@ final class AuthViewController: UIViewController {
     
     // MARK: - Prepare
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showWebViewSegueIdentifier {
-            if let webViewViewController = segue.destination as? WebViewViewController {
-                webViewViewController.delegate = self
-            } else {
-                print("Не удалось подготовиться к \(showWebViewSegueIdentifier)")
-            }
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == showWebViewSegueIdentifier {
+//            if let webViewViewController = segue.destination as? WebViewViewController {
+//                webViewViewController.delegate = self
+//            } else {
+//                print("Не удалось подготовиться к \(showWebViewSegueIdentifier)")
+//            }
+//        } else {
+//            super.prepare(for: segue, sender: sender)
+//        }
+//    }
+    
+    func presentWebView() {
+        let webViewViewController = WebViewViewController()
+        webViewViewController.delegate = self
+        present(webViewViewController, animated: true)
     }
     
     // MARK: - SetupBackButtonAppearance

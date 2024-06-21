@@ -13,7 +13,6 @@ final class SplashViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private let storage = OAuth2TokenStorage()
@@ -89,7 +88,7 @@ final class SplashViewController: UIViewController {
         let authViewController = AuthViewController()
         authViewController.delegate = self
         authViewController.modalPresentationStyle = .fullScreen
-        present(authViewController, animated: true)
+        present(authViewController, animated: true, completion: nil)
     }
 }
 
