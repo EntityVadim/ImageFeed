@@ -85,7 +85,7 @@ final class SplashViewController: UIViewController {
     }
     
     private func showAuthenticationScreen() {
-        let authViewController = AuthViewController()
+        guard let authViewController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else { return }
         authViewController.delegate = self
         authViewController.modalPresentationStyle = .fullScreen
         present(authViewController, animated: true, completion: nil)
