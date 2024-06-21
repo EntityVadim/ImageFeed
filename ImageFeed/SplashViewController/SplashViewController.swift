@@ -19,7 +19,7 @@ final class SplashViewController: UIViewController {
     private let storage = OAuth2TokenStorage()
     
     
-    // MARK: - ViewWillAppear
+    // MARK: - ViewDidAppear
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -42,18 +42,20 @@ final class SplashViewController: UIViewController {
     // MARK: - Private Methods
     
     private func switchToTabBarController() {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            print(NetworkError.windowSceneEror)
-            return
+        DispatchQueue.main.async {
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+                print(NetworkError.windowSceneError)
+                return
+            }
+            guard let window = windowScene.windows.first else {
+                print(NetworkError.windowError)
+                return
+            }
+            let tabBarController = UIStoryboard(name: "Main", bundle: .main)
+                .instantiateViewController(withIdentifier: "TabBarViewController")
+            window.rootViewController = tabBarController
+            window.makeKeyAndVisible()
         }
-        guard let window = windowScene.windows.first else {
-            print(NetworkError.windowEror)
-            return
-        }
-        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBarViewController")
-        window.rootViewController = tabBarController
-        window.makeKeyAndVisible()
     }
     
     private func showErrorMessage(_ message: String) {
@@ -101,18 +103,19 @@ extension SplashViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func fetchProfile(_ token: String) {
-        UIBlockingProgressHUD.show()
         ProfileService.shared.fetchProfile(token) { [weak self] result in
-            guard let self = self else { return }
-            UIBlockingProgressHUD.dismiss()
-            switch result {
-            case .success(let (_, username)):
-                ProfileImageService.shared.fetchProfileImageURL(
-                    username: username,
-                    token: token) { _ in }
-                self.switchToTabBarController()
-            case .failure(let error):
-                self.showErrorMessage("Не удалось получить профиль: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                UIBlockingProgressHUD.dismiss()
+                switch result {
+                case .success(let (_, username)):
+                    ProfileImageService.shared.fetchProfileImageURL(
+                        username: username,
+                        token: token) { _ in }
+                    self.switchToTabBarController()
+                case .failure(let error):
+                    self.showErrorMessage("Не удалось получить профиль: \(error.localizedDescription)")
+                }
             }
         }
     }

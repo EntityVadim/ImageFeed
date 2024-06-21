@@ -25,8 +25,8 @@ enum NetworkError: Error {
     case serverError
     case invalidURLComponents
     case unknownError
-    case windowSceneEror
-    case windowEror
+    case windowSceneError
+    case windowError
 }
 
 // MARK: - NetworkErrorHandler
@@ -56,9 +56,9 @@ struct NetworkErrorHandler: NetworkErrorProtocol {
                 errorMessage = "Не удалось получить данные."
             case .invalidURL:
                 errorMessage = "Неверный URL профиля."
-            case .windowSceneEror:
+            case .windowSceneError:
                 errorMessage = "Не удалось обнаружить интерфейс окна."
-            case .windowEror:
+            case .windowError:
                 errorMessage = "Не удалось обнаружить окно."
             }
         }
