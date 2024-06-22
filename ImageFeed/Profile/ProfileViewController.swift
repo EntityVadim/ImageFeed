@@ -165,6 +165,12 @@ final class ProfileViewController: UIViewController {
         updateAvatar()
     }
     
+    private func switchToSplashViewController() {
+        guard let window = UIApplication.shared.windows.first else {
+            fatalError("Invalid configuration of switchToSplashViewController")}
+        window.rootViewController = SplashViewController()
+    }
+    
     // MARK: - DidTapLogoutButton
     
     @objc
