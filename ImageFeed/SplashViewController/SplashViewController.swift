@@ -85,31 +85,17 @@ final class SplashViewController: UIViewController {
     }
     
     private func showAuthenticationScreen() {
-        guard let authViewController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else { return }
+        guard let authViewController = UIStoryboard(
+            name: "Main",
+            bundle: .main).instantiateViewController(
+                withIdentifier: "AuthViewController") as? AuthViewController else {
+            return
+        }
         authViewController.delegate = self
         authViewController.modalPresentationStyle = .fullScreen
         present(authViewController, animated: true, completion: nil)
     }
 }
-
-// MARK: - Prepare
-//
-//extension SplashViewController {
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == showAuthenticationScreenSegueIdentifier {
-//            guard
-//                let navigationController = segue.destination as? UINavigationController,
-//                let viewController = navigationController.viewControllers.first as? AuthViewController
-//            else {
-//                print("Не удалось подготовиться к \(showAuthenticationScreenSegueIdentifier)")
-//                return
-//            }
-//            viewController.delegate = self
-//        } else {
-//            super.prepare(for: segue, sender: sender)
-//        }
-//    }
-//}
 
 // MARK: - AuthViewControllerDelegate
 

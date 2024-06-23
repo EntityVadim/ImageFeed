@@ -165,9 +165,17 @@ final class ProfileViewController: UIViewController {
         updateAvatar()
     }
     
+//    private func switchToSplashViewController() {
+//        guard let window = UIApplication.shared.windows.first else {
+//            fatalError("Invalid configuration of switchToSplashViewController")}
+//        window.rootViewController = SplashViewController()
+//    }
+    
     private func switchToSplashViewController() {
-        guard let window = UIApplication.shared.windows.first else {
-            fatalError("Invalid configuration of switchToSplashViewController")}
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else {
+            fatalError("Invalid configuration of switchToSplashViewController")
+        }
         window.rootViewController = SplashViewController()
     }
     
@@ -176,9 +184,5 @@ final class ProfileViewController: UIViewController {
     @objc
     private func didTapLogoutButton() {
         storage.logout()
-        nameLabel.removeFromSuperview()
-        loginNameLabel.removeFromSuperview()
-        descriptionLabel.removeFromSuperview()
-        profileImageView.removeFromSuperview()
     }
 }
