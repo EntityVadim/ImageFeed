@@ -78,6 +78,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
             switch result {
             case .success(let token):
                 print("Авторизационный токен получен: \(token)")
+                delegate?.fetchProfile(token)
             case .failure(let error):
                 print("Ошибка получения токена: \(error.localizedDescription)")
                 self.showErrorAlert()
