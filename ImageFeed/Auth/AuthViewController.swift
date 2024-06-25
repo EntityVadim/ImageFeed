@@ -42,7 +42,7 @@ final class AuthViewController: UIViewController {
         }
     }
     
-    // MARK: - SetupBackButtonAppearance
+    // MARK: - Private Methods
     
     private func setupBackButtonAppearance() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
@@ -71,7 +71,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
         didAuthenticateWithCode code: String
     ) {
         UIBlockingProgressHUD.show()
-        self.delegate?.didAuthenticate(self)
+        delegate?.didAuthenticate(self)
         oauth2Service.fetchOAuthToken(withCode: code) { [weak self] result in
             guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()

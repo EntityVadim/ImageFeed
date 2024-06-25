@@ -10,15 +10,20 @@ import Foundation
 // MARK: - ProfileImageService
 
 final class ProfileImageService {
+    
+    // MARK: - Public Properties
+    
     static let shared = ProfileImageService()
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
-    
-    private init() {}
     
     // MARK: - Private Properties
     
     private var task: URLSessionTask?
     private(set) var avatarURL: String?
+    
+    // MARK: - Initializers
+    
+    private init() {}
     
     // MARK: - Helper Method
     

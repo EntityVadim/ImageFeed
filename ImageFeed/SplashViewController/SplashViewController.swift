@@ -15,7 +15,7 @@ final class SplashViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-    private let storage = OAuth2TokenStorage()
+    private let storage = OAuth2TokenStorage.shared
     
     
     // MARK: - ViewDidAppear
@@ -23,10 +23,13 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         fetchProfileIfNeeded()
+        
         view.backgroundColor = .ypBlack
+        
         let vectorImageView = UIImageView(image: UIImage(named: "vector_logo"))
         vectorImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(vectorImageView)
+        
         NSLayoutConstraint.activate([
             vectorImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             vectorImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
@@ -101,6 +104,7 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func fetchProfile(_ token: String) {
+        UIBlockingProgressHUD.show() // Показываем индикатор загрузки (На заметку, если код сломается)
         ProfileService.shared.fetchProfile(token) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self = self else { return }

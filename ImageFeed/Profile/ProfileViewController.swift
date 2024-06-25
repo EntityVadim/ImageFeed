@@ -67,9 +67,11 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.ypBlack
+        
         if let profile = profileService.profile {
             updateProfileDetails(profile: profile)
         }
+        
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ProfileImageService.didChangeNotification,
@@ -79,6 +81,7 @@ final class ProfileViewController: UIViewController {
                 guard let self = self else { return }
                 self.updateAvatar()
             }
+        
         updateAvatar()
         profileImageServiceObserve()
         setupUI()
@@ -165,16 +168,11 @@ final class ProfileViewController: UIViewController {
         updateAvatar()
     }
     
-    //    private func switchToSplashViewController() {
-    //        guard let window = UIApplication.shared.windows.first else {
-    //            fatalError("Invalid configuration of switchToSplashViewController")}
-    //        window.rootViewController = SplashViewController()
-    //    }
-    
     private func switchToSplashViewController() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first else {
-            fatalError("Invalid configuration of switchToSplashViewController")
+            assertionFailure("Неверная конфигурация метода switchToSplashViewController")
+            return
         }
         window.rootViewController = SplashViewController()
     }

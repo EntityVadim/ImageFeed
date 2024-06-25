@@ -10,16 +10,21 @@ import Foundation
 // MARK: - OAuth2Service
 
 final class OAuth2Service {
-    static let shared = OAuth2Service()
     
-    private init() {}
+    // MARK: - Public Properties
+    
+    static let shared = OAuth2Service()
     
     // MARK: - Private Properties
     
     private var currentAuthCode: String?
     private var currentTask: URLSessionDataTask?
     
-    // MARK: - CancelPreviousTaskIfNecessary
+    // MARK: - Initializers
+    
+    private init() {}
+    
+    // MARK: - Public Methods
     
     func cancelPreviousTaskIfNecessary(forNewAuthCode newAuthCode: String) {
         if let currentAuthCode = currentAuthCode, currentAuthCode == newAuthCode {
@@ -50,7 +55,7 @@ private extension OAuth2Service {
     }
 }
 
-// MARK: - ErrorProcessing
+// MARK: - FetchOAuthToken
 
 extension OAuth2Service {
     func fetchOAuthToken(

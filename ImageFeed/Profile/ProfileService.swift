@@ -10,14 +10,19 @@ import UIKit
 // MARK: - ProfileService
 
 final class ProfileService {
-    static let shared = ProfileService()
     
-    private init() {}
+    // MARK: - Public Properties
+    
+    static let shared = ProfileService()
     
     // MARK: - Private Properties
     
     private var task: URLSessionTask?
     private(set) var profile: Profile?
+    
+    // MARK: - Initializers
+    
+    private init() {}
     
     // MARK: - Helper Method
     

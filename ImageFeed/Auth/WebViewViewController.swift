@@ -30,6 +30,7 @@ final class WebViewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
+        
         var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString)!
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.accessKey),
@@ -37,15 +38,17 @@ final class WebViewViewController: UIViewController {
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: Constants.accessScope)
         ]
+        
         let url = urlComponents.url!
+        
         let request = URLRequest(url: url)
         webView.load(request)
         estimatedProgressObservation = webView.observe(
             \.estimatedProgress,
-            options: [.new],
-            changeHandler: { [weak self] _, _ in
-                self?.updateProgress()
-            })
+             options: [.new],
+             changeHandler: { [weak self] _, _ in
+                 self?.updateProgress()
+             })
     }
     
     // MARK: - UpdateProgress

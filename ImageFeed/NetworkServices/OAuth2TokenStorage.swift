@@ -11,12 +11,10 @@ import SwiftKeychainWrapper
 // MARK: - OAuth2TokenStorage
 
 final class OAuth2TokenStorage: OAuth2TokenStorageProtocol {
-    private enum Keys: String {
-        case token
-    }
+    
+    // MARK: - Public Properties
     
     static let shared = OAuth2TokenStorage()
-    private let keyChain = KeychainWrapper.standard
     
     var token: String? {
         get {
@@ -31,7 +29,23 @@ final class OAuth2TokenStorage: OAuth2TokenStorageProtocol {
         }
     }
     
+    // MARK: - Private Properties
+    
+    private let keyChain = KeychainWrapper.standard
+    
+    // MARK: - Initializers
+
+    private init() {}
+    
+    // MARK: - Public Methods
+    
     func logout() {
         keyChain.removeObject(forKey: Keys.token.rawValue)
+    }
+    
+    // MARK: - Private Methods
+    
+    private enum Keys: String {
+        case token
     }
 }

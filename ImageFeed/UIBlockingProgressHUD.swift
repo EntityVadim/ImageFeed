@@ -8,6 +8,8 @@
 import UIKit
 import ProgressHUD
 
+// MARK: - UIBlockingProgressHUD
+
 final class UIBlockingProgressHUD {
     private static var window: UIWindow? {
         return UIApplication.shared.connectedScenes
