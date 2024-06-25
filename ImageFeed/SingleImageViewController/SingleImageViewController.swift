@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - SingleImageViewController
 
-final class SingleImageViewController: UIViewController{
+final class SingleImageViewController: UIViewController {
     
     // MARK: - IBOutlet
     

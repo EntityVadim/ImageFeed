@@ -10,9 +10,28 @@ import Foundation
 // MARK: - OAuth2Service
 
 final class OAuth2Service {
+    
+    // MARK: - Public Properties
+    
     static let shared = OAuth2Service()
     
+    // MARK: - Private Properties
+    
+    private var currentAuthCode: String?
+    private var currentTask: URLSessionDataTask?
+    
+    // MARK: - Initializers
+    
     private init() {}
+    
+    // MARK: - Public Methods
+    
+    func cancelPreviousTaskIfNecessary(forNewAuthCode newAuthCode: String) {
+        if let currentAuthCode = currentAuthCode, currentAuthCode == newAuthCode {
+            currentTask?.cancel()
+        }
+        self.currentAuthCode = newAuthCode
+    }
 }
 
 // MARK: - Token Request
@@ -28,7 +47,7 @@ private extension OAuth2Service {
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
         guard let tokenURL = urlComponents.url else {
-            fatalError("Invalid URL components.")
+            fatalError(NetworkErrorHandler.errorMessage(from: NetworkErrorHandler.handleInvalidURLComponents()))
         }
         var tokenRequest = URLRequest(url: tokenURL)
         tokenRequest.httpMethod = "POST"
@@ -36,7 +55,7 @@ private extension OAuth2Service {
     }
 }
 
-// MARK: - ErrorProcessing
+// MARK: - FetchOAuthToken
 
 extension OAuth2Service {
     func fetchOAuthToken(
@@ -54,10 +73,7 @@ extension OAuth2Service {
             guard let httpResponse = response as? HTTPURLResponse,
                   let data = data else {
                 DispatchQueue.main.async {
-                    completion(.failure(NSError(
-                        domain: "",
-                        code: -1,
-                        userInfo: [NSLocalizedDescriptionKey: "Не удалось получить HTTP-ответ."])))
+                    completion(.failure(NetworkError.unknownError))
                 }
                 return
             }
@@ -76,36 +92,11 @@ extension OAuth2Service {
                         completion(.failure(error))
                     }
                 }
-            case 400:
-                completion(.failure(NSError(
-                    domain: "",
-                    code: 400,
-                    userInfo: [NSLocalizedDescriptionKey: "Неверный запрос: возможно, отсутствует необходимый параметр."])))
-            case 401:
-                completion(.failure(NSError(
-                    domain: "",
-                    code: 401,
-                    userInfo: [NSLocalizedDescriptionKey: "Ошибка авторизации: неверный токен доступа."])))
-            case 403:
-                completion(.failure(NSError(
-                    domain: "",
-                    code: 403,
-                    userInfo: [NSLocalizedDescriptionKey: "Доступ запрещен: отсутствуют разрешения для выполнения запроса."])))
-            case 404:
-                completion(.failure(NSError(
-                    domain: "",
-                    code: 404,
-                    userInfo: [NSLocalizedDescriptionKey: "Ресурс не найден."])))
-            case 500, 503:
-                completion(.failure(NSError(
-                    domain: "",
-                    code: httpResponse.statusCode,
-                    userInfo: [NSLocalizedDescriptionKey: "Ошибка на сервере."])))
             default:
-                completion(.failure(NSError(
-                    domain: "",
-                    code: httpResponse.statusCode,
-                    userInfo: [NSLocalizedDescriptionKey: "Неизвестная ошибка с кодом \(httpResponse.statusCode)."])))
+                let error = NetworkErrorHandler.handleErrorResponse(statusCode: httpResponse.statusCode)
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
             }
         }
         task.resume()

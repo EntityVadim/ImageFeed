@@ -5,23 +5,47 @@
 //  Created by Вадим on 03.06.2024.
 //
 
-import Foundation
+import UIKit
+import SwiftKeychainWrapper
 
 // MARK: - OAuth2TokenStorage
 
-final class OAuth2TokenStorage {
+final class OAuth2TokenStorage: OAuth2TokenStorageProtocol {
+    
+    // MARK: - Public Properties
+    
     static let shared = OAuth2TokenStorage()
-    
-    private init() {}
-    
-    private let tokenKey = "OAuth2Token"
     
     var token: String? {
         get {
-            return UserDefaults.standard.string(forKey: tokenKey)
+            return keyChain.string(forKey: Keys.token.rawValue)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: tokenKey)
+            if let token = newValue {
+                keyChain.set(token, forKey: Keys.token.rawValue)
+            } else {
+                keyChain.removeObject(forKey: Keys.token.rawValue)
+            }
         }
+    }
+    
+    // MARK: - Private Properties
+    
+    private let keyChain = KeychainWrapper.standard
+    
+    // MARK: - Initializers
+
+    private init() {}
+    
+    // MARK: - Public Methods
+    
+    func logout() {
+        keyChain.removeObject(forKey: Keys.token.rawValue)
+    }
+    
+    // MARK: - Private Methods
+    
+    private enum Keys: String {
+        case token
     }
 }
