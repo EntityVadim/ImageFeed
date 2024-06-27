@@ -17,6 +17,7 @@ final class ImagesListViewController: UIViewController {
     
     // MARK: - Private Properties
     
+    private var imagesListService = ImagesListService.shared
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
@@ -49,6 +50,17 @@ final class ImagesListViewController: UIViewController {
             viewController.image = image
         } else {
             super.prepare(for: segue, sender: sender)
+        }
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
+        let photos = imagesListService.photos
+        if indexPath.row + 1 == photos.count {
+            imagesListService.fetchPhotosNextPage()
         }
     }
 }
