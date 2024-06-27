@@ -141,7 +141,7 @@
 			path = TabBarController;
 			sourceTree = "<group>";
 		};
-		DD85B63C2C0DB9D20075CF16 /* NetworkServices */ = {
+		DD85B63C2C0DB9D20075CF16 /* OAuth2 */ = {
 			isa = PBXGroup;
 			children = (
 				DD3C2D562C2008D1000A8F5D /* Models */,
@@ -149,7 +149,7 @@
 				DD3C2D612C201B54000A8F5D /* OAuth2TokenStorageProtocol.swift */,
 				DD85B6362C0D9D030075CF16 /* OAuth2Service.swift */,
 			);
-			path = NetworkServices;
+			path = OAuth2;
 			sourceTree = "<group>";
 		};
 		DD9ED9472C2D5C7E003448C8 /* Models */ = {
@@ -197,7 +197,7 @@
 				DD5705182C1B1FE80036B530 /* UIBlockingProgressHUD.swift */,
 				DD12C5822C215F9F00505F64 /* ErrorHandling */,
 				DDE760C32C0F2C5C00A2EA97 /* SplashViewController */,
-				DD85B63C2C0DB9D20075CF16 /* NetworkServices */,
+				DD85B63C2C0DB9D20075CF16 /* OAuth2 */,
 				DD06B7342C0891EF0088A4F3 /* Auth */,
 				DDDA5FA82BF5E31A006E395D /* Profile */,
 				DD6215D32C245E3900A73840 /* TabBarController */,

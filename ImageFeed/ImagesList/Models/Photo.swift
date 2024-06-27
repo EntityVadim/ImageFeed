@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Photo
 
-struct Photo {
+struct Photo: Decodable {
     let id: String
     let size: CGSize
     let createdAt: Date?
