@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListService {
     
@@ -16,7 +17,7 @@ final class ImagesListService {
     private var lastLoadedPage: Int?
     private var isLoading: Bool = false
     
-    private init() {}
+    let dateFormatter = ISO8601DateFormatter()
     
     private func createPhotoRequest(page: Int) -> URLRequest? {
         guard let url = URL(string: "\(Constants.defaultBaseURL)/photos?page=\(page)&per_page=10") else
@@ -37,7 +38,7 @@ final class ImagesListService {
         }
         URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             guard let self = self else { return }
-            if let error = error {
+            if error != nil {
                 DispatchQueue.main.async {
                     self.isLoading = false
                 }
@@ -56,12 +57,13 @@ final class ImagesListService {
                 return
             }
             do {
-                let newPhotos = try JSONDecoder().decode([Photo].self, from: data)
+                let photoResult = try JSONDecoder().decode([PhotoResult].self, from: data)
                 DispatchQueue.main.async {
-                    self.photos.append(contentsOf: newPhotos)
-                    self.lastLoadedPage = nextPage
-                    self.isLoading = false
-                    NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
+                    self.preparePhoto(photoResult: photoResult)
+                    NotificationCenter.default.post(
+                        name: ImagesListService.didChangeNotification,
+                        object: self,
+                        userInfo: ["photos": self.photos])
                 }
             } catch {
                 DispatchQueue.main.async {
@@ -69,5 +71,19 @@ final class ImagesListService {
                 }
             }
         }.resume()
+    }
+    
+    func preparePhoto(photoResult: [PhotoResult]) {
+        let newPhotos = photoResult.map { item in
+            Photo(
+                id: item.id,
+                size: CGSize(width: item.width, height: item.height),
+                createdAt: dateFormatter.date(from: item.createdAt!),
+                welcomeDescription: item.description,
+                thumbImageURL: item.urls.thumb,
+                largeImageURL: item.urls.full,
+                isLiked: item.likedByUser)
+        }
+        photos.append(contentsOf: newPhotos)
     }
 }
