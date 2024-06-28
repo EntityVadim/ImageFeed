@@ -38,6 +38,7 @@ final class ImagesListViewController: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         setupTableView()
         subscribeToNotifications()
+        imagesListService.fetchPhotosNextPage()
     }
     
     // MARK: - Setup
@@ -57,7 +58,7 @@ final class ImagesListViewController: UIViewController {
     @objc private func didReceivePhotosUpdate(notification: Notification) {
         guard let photos = notification.userInfo?["photos"] as? [Photo] else { return }
         self.photos = photos
-        tableView.performBatchUpdates(nil)
+        //tableView.performBatchUpdates(nil)
     }
     
     // MARK: - Prepare

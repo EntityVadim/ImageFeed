@@ -10,21 +10,21 @@ import Kingfisher
 
 final class ImagesListService {
     
-    //static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     private(set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
     private var isLoading: Bool = false
+    private var storage = OAuth2TokenStorage.shared
     
     let dateFormatter = ISO8601DateFormatter()
     
-    private func createPhotoRequest(page: Int) -> URLRequest? {
+    private func createPhotoRequest(page: Int, token: String) -> URLRequest? {
         guard let url = URL(string: "\(Constants.defaultBaseURL)/photos?page=\(page)&per_page=10") else
         { return nil }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("Bearer \(Constants.accessKey)", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
     
@@ -32,7 +32,7 @@ final class ImagesListService {
         guard !isLoading else { return }
         isLoading = true
         let nextPage = (lastLoadedPage ?? 0) + 1
-        guard let request = createPhotoRequest(page: nextPage) else {
+        guard let token = storage.token, let request = createPhotoRequest(page: nextPage, token: token) else {
             isLoading = false
             return
         }
