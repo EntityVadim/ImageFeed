@@ -10,7 +10,7 @@ import Kingfisher
 
 final class ImagesListService {
     
-    static let shared = ImagesListService()
+    //static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     private(set) var photos: [Photo] = []
@@ -36,7 +36,7 @@ final class ImagesListService {
             isLoading = false
             return
         }
-        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             guard let self = self else { return }
             if error != nil {
                 DispatchQueue.main.async {
@@ -65,12 +65,14 @@ final class ImagesListService {
                         object: self,
                         userInfo: ["photos": self.photos])
                 }
+                print(photoResult)
             } catch {
                 DispatchQueue.main.async {
                     self.isLoading = false
                 }
             }
-        }.resume()
+        }
+            task.resume()
     }
     
     func preparePhoto(photoResult: [PhotoResult]) {

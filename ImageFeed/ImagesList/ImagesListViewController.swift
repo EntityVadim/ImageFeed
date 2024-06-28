@@ -17,15 +17,17 @@ final class ImagesListViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private var imagesListService = ImagesListService.shared
+    private let storage = OAuth2TokenStorage.shared
+    private let imagesListService = ImagesListService()
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    //private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     private var photos: [Photo] = []
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
+        dateFormatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     
@@ -34,6 +36,28 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        setupTableView()
+        subscribeToNotifications()
+    }
+    
+    // MARK: - Setup
+    
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UINib(nibName: "ImagesListCell", bundle: nil), forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
+    }
+    
+    private func subscribeToNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceivePhotosUpdate), name: ImagesListService.didChangeNotification, object: nil)
+    }
+    
+    // MARK: - Notifications
+    
+    @objc private func didReceivePhotosUpdate(notification: Notification) {
+        guard let photos = notification.userInfo?["photos"] as? [Photo] else { return }
+        self.photos = photos
+        tableView.performBatchUpdates(nil)
     }
     
     // MARK: - Prepare
@@ -47,21 +71,10 @@ final class ImagesListViewController: UIViewController {
                 assertionFailure("Недопустимый пункт назначения перехода.")
                 return
             }
-            let image = UIImage(named: photosName[indexPath.row])
-            viewController.image = image
+            let imageURL = URL(string: photos[indexPath.row].largeImageURL)
+            viewController.largeImageURL = imageURL
         } else {
             super.prepare(for: segue, sender: sender)
-        }
-    }
-    
-    func tableView(
-        _ tableView: UITableView,
-        willDisplay cell: UITableViewCell,
-        forRowAt indexPath: IndexPath
-    ) {
-        let photos = imagesListService.photos
-        if indexPath.row + 1 == photos.count {
-            imagesListService.fetchPhotosNextPage()
         }
     }
 }
@@ -79,16 +92,14 @@ extension ImagesListViewController: UITableViewDelegate {
     func tableView(
         _ tableView: UITableView,
         heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return 0
+            let image = photos[indexPath.row]
+            let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
+            let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
+            let imageWidth = image.size.width
+            let scale = imageViewWidth / imageWidth
+            let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
+            return cellHeight
         }
-        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-        let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
-        let imageWidth = image.size.width
-        let scale = imageViewWidth / imageWidth
-        let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
-        return cellHeight
-    }
     
     func updateTableViewAnimated() {
         let oldCount = photos.count
@@ -103,6 +114,27 @@ extension ImagesListViewController: UITableViewDelegate {
             } completion: { _ in }
         }
     }
+    
+//        func tableView(
+//            _ tableView: UITableView,
+//            willDisplay cell: UITableViewCell,
+//            forRowAt indexPath: IndexPath
+//        ) {
+//            //let photos = imagesListService.photos
+//            if indexPath.row + 1 == photos.count {
+//                imagesListService.fetchPhotosNextPage()
+//            }
+//        }
+    
+    func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
+        if indexPath.row == photos.count - 1 {
+            imagesListService.fetchPhotosNextPage()
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -111,21 +143,23 @@ extension ImagesListViewController: UITableViewDataSource {
     func tableView(
         _ tableView: UITableView,
         numberOfRowsInSection section: Int) -> Int {
-        return photosName.count
-    }
+            return photos.count
+        }
     
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: ImagesListCell.reuseIdentifier,
-            for: indexPath) as? ImagesListCell else {
-            return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: ImagesListCell.reuseIdentifier,
+                for: indexPath) as? ImagesListCell else {
+                return UITableViewCell()
+            }
+            //let imageName = photos[indexPath.row]
+            //let dateText = dateFormatter.string(from: Date())
+            //let isLiked = indexPath.row % 2 == 0
+            //cell.configure(with: imageName, date: dateText, isLiked: isLiked)
+            let photo = photos[indexPath.row]
+            cell.configure(with: photo)
+            return cell
         }
-        let imageName = photosName[indexPath.row]
-        let dateText = dateFormatter.string(from: Date())
-        let isLiked = indexPath.row % 2 == 0
-        cell.configure(with: imageName, date: dateText, isLiked: isLiked)
-        return cell
-    }
 }

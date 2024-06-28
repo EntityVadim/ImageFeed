@@ -26,6 +26,7 @@ final class SingleImageViewController: UIViewController {
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
+    var largeImageURL: URL!
     
     // MARK: - Lifecycle
     
