@@ -20,7 +20,6 @@ final class ImagesListViewController: UIViewController {
     private let storage = OAuth2TokenStorage.shared
     private let imagesListService = ImagesListService()
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    //private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     private var photos: [Photo] = []
     
     private lazy var dateFormatter: DateFormatter = {
@@ -46,7 +45,6 @@ final class ImagesListViewController: UIViewController {
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UINib(nibName: "ImagesListCell", bundle: nil), forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
     }
     
     private func subscribeToNotifications() {
@@ -58,7 +56,8 @@ final class ImagesListViewController: UIViewController {
     @objc private func didReceivePhotosUpdate(notification: Notification) {
         guard let photos = notification.userInfo?["photos"] as? [Photo] else { return }
         self.photos = photos
-        //tableView.performBatchUpdates(nil)
+        tableView.reloadData()
+        //        tableView.performBatchUpdates(nil)
     }
     
     // MARK: - Prepare
@@ -116,23 +115,12 @@ extension ImagesListViewController: UITableViewDelegate {
         }
     }
     
-//        func tableView(
-//            _ tableView: UITableView,
-//            willDisplay cell: UITableViewCell,
-//            forRowAt indexPath: IndexPath
-//        ) {
-//            //let photos = imagesListService.photos
-//            if indexPath.row + 1 == photos.count {
-//                imagesListService.fetchPhotosNextPage()
-//            }
-//        }
-    
     func tableView(
         _ tableView: UITableView,
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
-        if indexPath.row == photos.count - 1 {
+        if indexPath.row + 1 == photos.count {
             imagesListService.fetchPhotosNextPage()
         }
     }
@@ -153,12 +141,9 @@ extension ImagesListViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: ImagesListCell.reuseIdentifier,
                 for: indexPath) as? ImagesListCell else {
+                print("wrong cell!")
                 return UITableViewCell()
             }
-            //let imageName = photos[indexPath.row]
-            //let dateText = dateFormatter.string(from: Date())
-            //let isLiked = indexPath.row % 2 == 0
-            //cell.configure(with: imageName, date: dateText, isLiked: isLiked)
             let photo = photos[indexPath.row]
             cell.configure(with: photo)
             return cell

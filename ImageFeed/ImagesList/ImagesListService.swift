@@ -65,14 +65,13 @@ final class ImagesListService {
                         object: self,
                         userInfo: ["photos": self.photos])
                 }
-                print(photoResult)
             } catch {
                 DispatchQueue.main.async {
                     self.isLoading = false
                 }
             }
         }
-            task.resume()
+        task.resume()
     }
     
     func preparePhoto(photoResult: [PhotoResult]) {

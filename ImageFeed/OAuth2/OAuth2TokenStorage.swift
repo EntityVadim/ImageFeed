@@ -34,7 +34,7 @@ final class OAuth2TokenStorage: OAuth2TokenStorageProtocol {
     private let keyChain = KeychainWrapper.standard
     
     // MARK: - Initializers
-
+    
     private init() {}
     
     // MARK: - Public Methods

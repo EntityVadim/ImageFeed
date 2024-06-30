@@ -10,13 +10,13 @@ import Kingfisher
 
 // MARK: - ImagesListCell
 
-final class ImagesListCell: UITableViewCell {
+public final class ImagesListCell: UITableViewCell {
     
     // MARK: - IBOutlet
     
-    @IBOutlet private weak var cellImage: UIImageView!
-    @IBOutlet private weak var likeButton: UIButton!
-    @IBOutlet private weak var dateLabel: UILabel!
+    @IBOutlet weak var cellImage: UIImageView!
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var dateLabel: UILabel!
     
     // MARK: - Public Properties
     
@@ -29,14 +29,14 @@ final class ImagesListCell: UITableViewCell {
         cellImage.kf.indicatorType = .activity
         let url = URL(string: photo.thumbImageURL)
         cellImage.kf.setImage(with: url)
-        //            placeholder: placeholder,
-        //            options: [
-        //                .transition(.fade(1)),
-        //                .cacheOriginalImage
-        //            ])
+        if photo.isLiked {
+            likeButton.setImage(UIImage.likeButtonOn, for: .normal)
+        } else {
+            likeButton.setImage(UIImage.likeButtonOff, for: .normal)
+        }
     }
     
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
     }
