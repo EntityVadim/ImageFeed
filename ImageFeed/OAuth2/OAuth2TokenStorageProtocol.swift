@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - OAuth2TokenStorageProtocol
+
 protocol OAuth2TokenStorageProtocol {
     var token: String? { get set }
 }

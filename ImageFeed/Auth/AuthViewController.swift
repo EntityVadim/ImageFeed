@@ -28,7 +28,7 @@ final class AuthViewController: UIViewController {
         setupBackButtonAppearance()
     }
     
-    // MARK: - Prepare
+    // MARK: - PrepareAuth
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {

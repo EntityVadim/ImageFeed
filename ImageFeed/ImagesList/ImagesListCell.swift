@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 // MARK: - ImagesListCell
 
@@ -13,20 +14,41 @@ final class ImagesListCell: UITableViewCell {
     
     // MARK: - IBOutlet
     
-    @IBOutlet private weak var cellImage: UIImageView!
-    @IBOutlet private weak var likeButton: UIButton!
-    @IBOutlet private weak var dateLabel: UILabel!
+    @IBOutlet weak var cellImage: UIImageView!
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var dateLabel: UILabel!
     
     // MARK: - Public Properties
     
     static let reuseIdentifier = "ImagesListCell"
+    let imagesListServise = ImagesListService.shared
+    weak var delegate: ImagesListCellDelegate?
     
     // MARK: - Configure
     
-    func configure(with imageName: String, date: String, isLiked: Bool) {
-        cellImage.image = UIImage(named: imageName)
-        dateLabel.text = date
-        let likeImageName = isLiked ? "like_button_on" : "like_button_off"
-        likeButton.setImage(UIImage(named: likeImageName), for: .normal)
+    func configure(with photo: Photo) {
+        let placeholder = UIImage(named: "stub")
+        cellImage.kf.indicatorType = .activity
+        let url = URL(string: photo.thumbImageURL)
+        cellImage.kf.setImage(with: url)
+        if photo.isLiked {
+            likeButton.setImage(UIImage.likeButtonOn, for: .normal)
+        } else {
+            likeButton.setImage(UIImage.likeButtonOff, for: .normal)
+        }
+    }
+    
+    func setIsLiked(_ isLiked: Bool) {
+        let imageName = isLiked ? "like_button_on" : "like_button_off"
+        likeButton.setImage(UIImage(named: imageName), for: .normal)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
+    }
+    
+    @IBAction func likeButtonClicked(_ sender: Any) {
+        delegate?.imageListCellDidTapLike(self)
     }
 }
