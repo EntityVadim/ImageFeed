@@ -83,8 +83,87 @@ final class ImagesListService {
                 welcomeDescription: item.description,
                 thumbImageURL: item.urls.thumb,
                 largeImageURL: item.urls.full,
-                isLiked: item.likedByUser)
+                isLiked: item.isLiked)
         }
         photos.append(contentsOf: newPhotos)
+    }
+    
+    
+    func changeLike(photoId: String, isLiked: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let token = storage.token else {
+            completion(.failure(NetworkError.authorizationError))
+            return
+        }
+        let urlString = "\(Constants.defaultBaseURL)/photos/\(photoId)/like"
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        var request = URLRequest(url: url)
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = isLiked ? "DELETE" : "POST"
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                DispatchQueue.main.async {
+                    completion(.failure(NetworkError.unknownError))
+                }
+                return
+            }
+            switch httpResponse.statusCode {
+            case 200:
+                self.updatePhotoLikeStatus(photoId: photoId, isLiked: isLiked)
+                DispatchQueue.main.async {
+                    completion(.success(()))
+                }
+            default:
+                let error = NetworkErrorHandler.handleErrorResponse(statusCode: httpResponse.statusCode)
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    private func updatePhotoLikeStatus(photoId: String, isLiked: Bool) {
+        DispatchQueue.main.async {
+            if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                let photo = self.photos[index]
+                let newPhoto = Photo(
+                    id: photo.id,
+                    size: photo.size,
+                    createdAt: photo.createdAt,
+                    welcomeDescription: photo.welcomeDescription,
+                    thumbImageURL: photo.thumbImageURL,
+                    largeImageURL: photo.largeImageURL,
+                    isLiked: !isLiked
+                )
+                self.photos[index] = newPhoto
+                NotificationCenter.default.post(
+                    name: .didChangePhotoLikeStatus,
+                    object: self,
+                    userInfo: ["photo": newPhoto]
+                )
+            } else {
+                print("Фотография с ID \(photoId) не найдена.")
+            }
+        }
+    }
+}
+
+extension Notification.Name {
+    static let didChangePhotoLikeStatus = Notification.Name("didChangePhotoLikeStatus")
+}
+
+extension Array {
+    mutating func withReplaced(itemAt index: Int, newValue: Element) {
+        guard index >= 0 && index < count else { return }
+        self[index] = newValue
     }
 }
