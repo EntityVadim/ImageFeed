@@ -15,10 +15,12 @@ final class ImagesListViewController: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView!
     
+    
+    
     // MARK: - Private Properties
     
     private let storage = OAuth2TokenStorage.shared
-    private let imagesListService = ImagesListService()
+    private let imagesListService = ImagesListService.shared
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private var photos: [Photo] = []
     

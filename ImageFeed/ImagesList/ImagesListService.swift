@@ -10,14 +10,16 @@ import Kingfisher
 
 final class ImagesListService {
     
+    static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     private(set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
     private var isLoading: Bool = false
     private var storage = OAuth2TokenStorage.shared
+    private let dateFormatter = ISO8601DateFormatter()
     
-    let dateFormatter = ISO8601DateFormatter()
+    private init() {}
     
     private func createPhotoRequest(page: Int, token: String) -> URLRequest? {
         guard let url = URL(string: "\(Constants.defaultBaseURL)/photos?page=\(page)&per_page=10") else
@@ -94,14 +96,14 @@ final class ImagesListService {
             completion(.failure(NetworkError.authorizationError))
             return
         }
-        let urlString = "\(Constants.defaultBaseURL)/photos/\(photoId)/like"
+        let urlString = "\(Constants.defaultBaseURL)/photos/?\(photoId)/&&lik"
         guard let url = URL(string: urlString) else {
             completion(.failure(NetworkError.invalidURL))
             return
         }
         var request = URLRequest(url: url)
-        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.httpMethod = isLiked ? "DELETE" : "POST"
+        request.httpMethod = isLiked ? "POST" : "DELETE"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 DispatchQueue.main.async {
@@ -142,7 +144,7 @@ final class ImagesListService {
                     welcomeDescription: photo.welcomeDescription,
                     thumbImageURL: photo.thumbImageURL,
                     largeImageURL: photo.largeImageURL,
-                    isLiked: !isLiked
+                    isLiked: !photo.isLiked
                 )
                 self.photos[index] = newPhoto
                 NotificationCenter.default.post(
@@ -157,10 +159,12 @@ final class ImagesListService {
     }
 }
 
+// Расширение для оповещения
 extension Notification.Name {
     static let didChangePhotoLikeStatus = Notification.Name("didChangePhotoLikeStatus")
 }
 
+// Расширение для массива, чтобы заменить элемент
 extension Array {
     mutating func withReplaced(itemAt index: Int, newValue: Element) {
         guard index >= 0 && index < count else { return }

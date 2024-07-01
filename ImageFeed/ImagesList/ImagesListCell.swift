@@ -10,7 +10,7 @@ import Kingfisher
 
 // MARK: - ImagesListCell
 
-public final class ImagesListCell: UITableViewCell {
+final class ImagesListCell: UITableViewCell {
     
     // MARK: - IBOutlet
     
@@ -21,6 +21,7 @@ public final class ImagesListCell: UITableViewCell {
     // MARK: - Public Properties
     
     static let reuseIdentifier = "ImagesListCell"
+    let imagesListServise = ImagesListService.shared
     weak var delegate: ImagesListCellDelegate?
     
     // MARK: - Configure
@@ -42,7 +43,7 @@ public final class ImagesListCell: UITableViewCell {
         likeButton.setImage(UIImage(named: imageName), for: .normal)
     }
     
-    public override func prepareForReuse() {
+    override func prepareForReuse() {
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
     }
