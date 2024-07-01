@@ -74,7 +74,7 @@ final class ImagesListService {
         task.resume()
     }
     
-    func preparePhoto(photoResult: [PhotoResult]) {
+    private func preparePhoto(photoResult: [PhotoResult]) {
         let newPhotos = photoResult.map { item in
             Photo(
                 id: item.id,

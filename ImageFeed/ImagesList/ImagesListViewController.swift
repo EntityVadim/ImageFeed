@@ -60,7 +60,7 @@ final class ImagesListViewController: UIViewController {
         //        tableView.performBatchUpdates(nil)
     }
     
-    // MARK: - Prepare
+    // MARK: - PrepareImagesList
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {
@@ -141,11 +141,32 @@ extension ImagesListViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: ImagesListCell.reuseIdentifier,
                 for: indexPath) as? ImagesListCell else {
-                print("wrong cell!")
+                print("Неправильная ячейка!")
                 return UITableViewCell()
             }
             let photo = photos[indexPath.row]
             cell.configure(with: photo)
+            cell.delegate = self
             return cell
         }
 }
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLiked: !photo.isLiked) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(_):
+                self.photos = self.imagesListService.photos
+                cell.setIsLiked(!photo.isLiked)
+            case .failure(let error):
+                print("Не удалось поставить лайк: \(error)")
+            }
+            UIBlockingProgressHUD.dismiss()
+        }
+    }
+}
+
