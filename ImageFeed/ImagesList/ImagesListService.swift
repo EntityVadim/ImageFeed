@@ -171,3 +171,10 @@ extension Array {
         self[index] = newValue
     }
 }
+
+extension ImagesListService {
+    func clearImagesList() {
+        photos.removeAll()
+        lastLoadedPage = nil
+    }
+}

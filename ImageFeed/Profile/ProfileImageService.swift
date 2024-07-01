@@ -99,3 +99,9 @@ final class ProfileImageService {
         task?.resume()
     }
 }
+
+extension ProfileImageService {
+    func clearProfileImage() {
+        avatarURL = nil
+    }
+}

@@ -15,7 +15,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
     
     private let profileService = ProfileService.shared
-    private var storage = OAuth2TokenStorage.shared
+    //private var storage = OAuth2TokenStorage.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     
     // MARK: - Label
@@ -170,19 +170,19 @@ final class ProfileViewController: UIViewController {
         updateAvatar()
     }
     
-    private func switchToSplashViewController() {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = windowScene.windows.first else {
-            assertionFailure("Неверная конфигурация метода switchToSplashViewController")
-            return
-        }
-        window.rootViewController = SplashViewController()
-    }
+    //    private func switchToSplashViewController() {
+    //        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+    //              let window = windowScene.windows.first else {
+    //            assertionFailure("Неверная конфигурация метода switchToSplashViewController")
+    //            return
+    //        }
+    //        window.rootViewController = SplashViewController()
+    //    }
     
     // MARK: - DidTapLogoutButton
     
     @objc
     private func didTapLogoutButton() {
-        storage.logout()
+        ProfileLogoutService.shared.logout()
     }
 }

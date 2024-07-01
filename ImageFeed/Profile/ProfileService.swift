@@ -91,3 +91,9 @@ final class ProfileService {
         task?.resume()
     }
 }
+
+extension ProfileService {
+    func clearProfile() {
+        profile = nil
+    }
+}
