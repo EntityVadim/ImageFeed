@@ -84,7 +84,7 @@ final class ImagesListService {
                 createdAt: dateFormatter.date(from: item.createdAt!),
                 welcomeDescription: item.description,
                 thumbImageURL: item.urls.thumb,
-                largeImageURL: item.urls.full,
+                fullImageUrl: item.urls.full,
                 isLiked: item.isLiked)
         }
         photos.append(contentsOf: newPhotos)
@@ -143,7 +143,7 @@ final class ImagesListService {
                     createdAt: photo.createdAt,
                     welcomeDescription: photo.welcomeDescription,
                     thumbImageURL: photo.thumbImageURL,
-                    largeImageURL: photo.largeImageURL,
+                    fullImageUrl: photo.fullImageUrl,
                     isLiked: !photo.isLiked
                 )
                 self.photos[index] = newPhoto

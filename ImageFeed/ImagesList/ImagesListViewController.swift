@@ -73,8 +73,8 @@ final class ImagesListViewController: UIViewController {
                 assertionFailure("Недопустимый пункт назначения перехода.")
                 return
             }
-            let imageURL = URL(string: photos[indexPath.row].largeImageURL)
-            viewController.largeImageURL = imageURL
+            let photo = photos[indexPath.row]
+            viewController.fullImageUrl = photo.fullImageUrl // Передаем полноразмерный URL
         } else {
             super.prepare(for: segue, sender: sender)
         }
