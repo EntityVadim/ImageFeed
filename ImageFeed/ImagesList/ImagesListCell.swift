@@ -30,7 +30,13 @@ final class ImagesListCell: UITableViewCell {
         let placeholder = UIImage(named: "stub")
         cellImage.kf.indicatorType = .activity
         let url = URL(string: photo.thumbImageURL)
-        cellImage.kf.setImage(with: url)
+        cellImage.kf.setImage(
+            with: url,
+            placeholder: placeholder,
+            options: [
+                .transition(.fade(0.1)),
+                .cacheOriginalImage
+            ])
         if photo.isLiked {
             likeButton.setImage(UIImage.likeButtonOn, for: .normal)
         } else {

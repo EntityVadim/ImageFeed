@@ -91,7 +91,7 @@ final class ImagesListService {
     }
     
     
-    func changeLike(photoId: String, isLiked: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         guard let token = storage.token else {
             completion(.failure(NetworkError.authorizationError))
             return
@@ -102,7 +102,7 @@ final class ImagesListService {
             return
         }
         var request = URLRequest(url: url)
-        request.httpMethod = isLiked ? "POST" : "DELETE"
+        request.httpMethod = isLike ? "POST" : "DELETE"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -119,7 +119,7 @@ final class ImagesListService {
             }
             switch httpResponse.statusCode {
             case 200:
-                self.updatePhotoLikeStatus(photoId: photoId, isLiked: isLiked)
+                self.updatePhotoLikeStatus(photoId: photoId, isLiked: isLike)
                 DispatchQueue.main.async {
                     completion(.success(()))
                 }
