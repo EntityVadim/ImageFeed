@@ -14,9 +14,17 @@ final class ProfileLogoutService {
     private init() { }
     
     func logout() {
-        cleanCookies()
-        clearLocalData()
-        switchToSplashViewController()
+        let alert = UIAlertController(title: "Выход из аккаунта", message: "Вы уверены, что хотите выйти?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Подтвердить", style: .destructive, handler: { _ in
+            self.cleanCookies()
+            self.clearLocalData()
+            self.switchToSplashViewController()
+        }))
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            rootViewController.present(alert, animated: true, completion: nil)
+        }
     }
     
     private func cleanCookies() {
