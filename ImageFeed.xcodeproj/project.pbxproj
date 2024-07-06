@@ -39,6 +39,7 @@
 		DDC0B31D2BE389550035E7DD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC0B31C2BE389550035E7DD /* SceneDelegate.swift */; };
 		DDC0B31F2BE389550035E7DD /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC0B31E2BE389550035E7DD /* ImagesListViewController.swift */; };
 		DDC0B3242BE389580035E7DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDC0B3232BE389580035E7DD /* Assets.xcassets */; };
+		DDD79D362C3983CB009D3C25 /* NetworkErrorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD79D352C3983CB009D3C25 /* NetworkErrorProtocol.swift */; };
 		DDDB85162BF5DD650080188D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDB85152BF5DD650080188D /* ProfileViewController.swift */; };
 		DDE760C22C0F25B600A2EA97 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE760C12C0F25B600A2EA97 /* SplashViewController.swift */; };
 /* End PBXBuildFile section */
@@ -75,6 +76,7 @@
 		DDC0B3232BE389580035E7DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DDC0B3262BE389580035E7DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DDC0B3282BE389580035E7DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DDD79D352C3983CB009D3C25 /* NetworkErrorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorProtocol.swift; sourceTree = "<group>"; };
 		DDDB85152BF5DD650080188D /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		DDE760C12C0F25B600A2EA97 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -116,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				DD12C57E2C2158CD00505F64 /* ErrorHandling.swift */,
+				DDD79D352C3983CB009D3C25 /* NetworkErrorProtocol.swift */,
 			);
 			path = ErrorHandling;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				DDDB85162BF5DD650080188D /* ProfileViewController.swift in Sources */,
 				DD4B0F632C204F6C00FD9468 /* AuthViewControllerDelegate.swift in Sources */,
 				DD6215D22C245E2100A73840 /* TabBarController.swift in Sources */,
+				DDD79D362C3983CB009D3C25 /* NetworkErrorProtocol.swift in Sources */,
 				DD76F1142C32CB67005823D7 /* ProfileLogoutService.swift in Sources */,
 				DD12C5842C21659C00505F64 /* UserResult.swift in Sources */,
 				DDC0B31B2BE389550035E7DD /* AppDelegate.swift in Sources */,

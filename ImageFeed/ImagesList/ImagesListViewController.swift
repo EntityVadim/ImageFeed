@@ -15,14 +15,20 @@ final class ImagesListViewController: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView!
     
-    
-    
     // MARK: - Private Properties
     
     private let storage = OAuth2TokenStorage.shared
     private let imagesListService = ImagesListService.shared
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private var photos: [Photo] = []
+    
+    private lazy var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .none
+        dateFormatter.locale = Locale(identifier: "ru_RU")
+        return dateFormatter
+    }()
     
     // MARK: - Lifecycle
     
@@ -34,29 +40,12 @@ final class ImagesListViewController: UIViewController {
         imagesListService.fetchPhotosNextPage()
     }
     
-    // MARK: - Setup
-    
-    private func setupTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-    }
-    
-    private func subscribeToNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceivePhotosUpdate), name: ImagesListService.didChangeNotification, object: nil)
-    }
-    
-    // MARK: - Notifications
-    
-    @objc private func didReceivePhotosUpdate(notification: Notification) {
-        guard let photos = notification.userInfo?["photos"] as? [Photo] else { return }
-        self.photos = photos
-        tableView.reloadData()
-        //        tableView.performBatchUpdates(nil)
-    }
-    
     // MARK: - PrepareImagesList
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(
+        for segue: UIStoryboardSegue,
+        sender: Any?
+    ) {
         if segue.identifier == showSingleImageSegueIdentifier {
             guard
                 let viewController = segue.destination as? SingleImageViewController,
@@ -70,6 +59,30 @@ final class ImagesListViewController: UIViewController {
         } else {
             super.prepare(for: segue, sender: sender)
         }
+    }
+    
+    // MARK: - Setup
+    
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
+    private func subscribeToNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didReceivePhotosUpdate),
+            name: ImagesListService.didChangeNotification,
+            object: nil)
+    }
+    
+    // MARK: - Notifications
+    
+    @objc private func didReceivePhotosUpdate(notification: Notification) {
+        guard let photos = notification.userInfo?["photos"] as? [Photo] else { return }
+        self.photos = photos
+        tableView.reloadData()
+        //        tableView.performBatchUpdates(nil)
     }
 }
 
@@ -139,6 +152,11 @@ extension ImagesListViewController: UITableViewDataSource {
                 return UITableViewCell()
             }
             let photo = photos[indexPath.row]
+            if let createdAt = photo.createdAt {
+                cell.dateLabel.text = dateFormatter.string(from: createdAt)
+            } else {
+                cell.dateLabel.text = "Дата неизвестна"
+            }
             cell.configure(with: photo)
             cell.delegate = self
             return cell

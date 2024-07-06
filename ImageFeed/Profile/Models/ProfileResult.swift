@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - Profile
-
 struct Profile: Decodable {
     let username: String
     let name: String?
@@ -22,8 +20,6 @@ struct Profile: Decodable {
         self.bio = result.bio
     }
 }
-
-// MARK: - ProfileResult
 
 struct ProfileResult: Codable {
     let username: String

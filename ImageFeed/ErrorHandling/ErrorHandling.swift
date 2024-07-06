@@ -7,12 +7,6 @@
 
 import Foundation
 
-// MARK: - NetworkErrorProtocol
-
-protocol NetworkErrorProtocol {
-    static func errorMessage(from error: Error) -> String
-}
-
 // MARK: - NetworkError
 
 enum NetworkError: Error {
@@ -32,10 +26,8 @@ enum NetworkError: Error {
 // MARK: - NetworkErrorHandler
 
 struct NetworkErrorHandler: NetworkErrorProtocol {
-    
     static func errorMessage(from error: Error) -> String {
         var errorMessage = "Произошла ошибка при загрузке данных"
-        
         if let networkError = error as? NetworkError {
             switch networkError {
             case .invalidRequest:

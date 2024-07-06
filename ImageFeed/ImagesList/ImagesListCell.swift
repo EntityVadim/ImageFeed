@@ -21,10 +21,13 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Public Properties
     
     static let reuseIdentifier = "ImagesListCell"
-    let imagesListServise = ImagesListService.shared
     weak var delegate: ImagesListCellDelegate?
     
-    // MARK: - Configure
+    // MARK: - Private Properties
+    
+    private let imagesListServise = ImagesListService.shared
+    
+    // MARK: - Public Methods
     
     func configure(with photo: Photo) {
         let placeholder = UIImage(named: "stub")
@@ -35,8 +38,7 @@ final class ImagesListCell: UITableViewCell {
             placeholder: placeholder,
             options: [
                 .transition(.fade(0.1)),
-                .cacheOriginalImage
-            ])
+                .cacheOriginalImage])
         if photo.isLiked {
             likeButton.setImage(UIImage.likeButtonOn, for: .normal)
         } else {
@@ -53,6 +55,8 @@ final class ImagesListCell: UITableViewCell {
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
     }
+    
+    // MARK: - IBAction
     
     @IBAction func likeButtonClicked(_ sender: Any) {
         delegate?.imageListCellDidTapLike(self)

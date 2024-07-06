@@ -21,7 +21,9 @@ final class ImagesListService {
     
     private init() {}
     
-    private func createPhotoRequest(page: Int, token: String) -> URLRequest? {
+    private func createPhotoRequest(
+        page: Int,
+        token: String) -> URLRequest? {
         guard let url = URL(string: "\(Constants.defaultBaseURL)/photos?page=\(page)&per_page=10") else
         { return nil }
         var request = URLRequest(url: url)
@@ -77,11 +79,16 @@ final class ImagesListService {
     }
     
     private func preparePhoto(photoResult: [PhotoResult]) {
-        let newPhotos = photoResult.map { item in
-            Photo(
+        let newPhotos = photoResult.compactMap { item -> Photo? in
+            guard let createdAtString = item.createdAt,
+                  let createdAtDate = dateFormatter.date(from: createdAtString) else {
+                print("Дата создания для фотографии с ID \(item.id) отсутствует или имеет неверный формат.")
+                return nil
+            }
+            return Photo(
                 id: item.id,
                 size: CGSize(width: item.width, height: item.height),
-                createdAt: dateFormatter.date(from: item.createdAt!),
+                createdAt: createdAtDate,
                 welcomeDescription: item.description,
                 thumbImageURL: item.urls.thumb,
                 fullImageUrl: item.urls.full,
@@ -90,8 +97,11 @@ final class ImagesListService {
         photos.append(contentsOf: newPhotos)
     }
     
-    
-    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+    func changeLike(
+        photoId: String,
+        isLike: Bool,
+        _ completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         guard let token = storage.token else {
             completion(.failure(NetworkError.authorizationError))
             return
@@ -133,7 +143,10 @@ final class ImagesListService {
         task.resume()
     }
     
-    private func updatePhotoLikeStatus(photoId: String, isLiked: Bool) {
+    private func updatePhotoLikeStatus(
+        photoId: String,
+        isLiked: Bool
+    ) {
         DispatchQueue.main.async {
             if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
                 let photo = self.photos[index]

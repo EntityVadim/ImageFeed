@@ -7,9 +7,6 @@
 
 import Foundation
 
-
-// MARK: - PhotoResult
-
 struct PhotoResult: Decodable {
     let id: String
     let createdAt: String?
@@ -29,8 +26,6 @@ struct PhotoResult: Decodable {
         case isLiked = "liked_by_user"
     }
 }
-
-// MARK: - UrlsResult
 
 struct UrlsResult: Decodable {
     let thumb: String

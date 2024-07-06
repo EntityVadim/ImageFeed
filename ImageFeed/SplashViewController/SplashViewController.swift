@@ -105,7 +105,6 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func fetchProfile(_ token: String) {
-         
         ProfileService.shared.fetchProfile(token) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self else { return }

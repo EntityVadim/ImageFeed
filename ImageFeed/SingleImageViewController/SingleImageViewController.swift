@@ -74,15 +74,26 @@ final class SingleImageViewController: UIViewController {
         let imageViewSize = imageView.frame.size
         let horizontalInset = max(0, (scrollViewSize.width - imageViewSize.width) / 2)
         let verticalInset = max(0, (scrollViewSize.height - imageViewSize.height) / 2)
-        scrollView.contentInset = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
+        scrollView.contentInset = UIEdgeInsets(
+            top: verticalInset,
+            left: horizontalInset,
+            bottom: verticalInset,
+            right: horizontalInset)
     }
     
     private func showError() {
-        let alert = UIAlertController(title: "Ошибка", message: "Что-то пошло не так. Попробовать ещё раз?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Не надо", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { _ in
-            self.loadFullImage()
-        }))
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: "Что-то пошло не так. Попробовать ещё раз?",
+            preferredStyle: .alert)
+        alert.addAction(UIAlertAction(
+            title: "Не надо",
+            style: .cancel,
+            handler: nil))
+        alert.addAction(UIAlertAction(
+            title: "Повторить",
+            style: .default,
+            handler: { _ in self.loadFullImage() }))
         present(alert, animated: true)
     }
     
