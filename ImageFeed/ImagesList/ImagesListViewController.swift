@@ -24,14 +24,6 @@ final class ImagesListViewController: UIViewController {
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private var photos: [Photo] = []
     
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        dateFormatter.locale = Locale(identifier: "ru_RU")
-        return formatter
-    }()
-    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -74,7 +66,7 @@ final class ImagesListViewController: UIViewController {
                 return
             }
             let photo = photos[indexPath.row]
-            viewController.fullImageUrl = photo.fullImageUrl // Передаем полноразмерный URL
+            viewController.fullImageUrl = photo.fullImageUrl
         } else {
             super.prepare(for: segue, sender: sender)
         }

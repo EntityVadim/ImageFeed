@@ -96,7 +96,7 @@ final class ImagesListService {
             completion(.failure(NetworkError.authorizationError))
             return
         }
-        let urlString = "\(Constants.defaultBaseURL)/photos/\(photoId)/like"
+        let urlString = "\(PhotosLike.photosLike)/\(photoId)/like"
         guard let url = URL(string: urlString) else {
             completion(.failure(NetworkError.invalidURL))
             return
@@ -118,7 +118,7 @@ final class ImagesListService {
                 return
             }
             switch httpResponse.statusCode {
-            case 200:
+            case 200...299:
                 self.updatePhotoLikeStatus(photoId: photoId, isLiked: isLike)
                 DispatchQueue.main.async {
                     completion(.success(()))
@@ -147,28 +147,10 @@ final class ImagesListService {
                     isLiked: !photo.isLiked
                 )
                 self.photos[index] = newPhoto
-                NotificationCenter.default.post(
-                    name: .didChangePhotoLikeStatus,
-                    object: self,
-                    userInfo: ["photo": newPhoto]
-                )
             } else {
                 print("Фотография с ID \(photoId) не найдена.")
             }
         }
-    }
-}
-
-// Расширение для оповещения
-extension Notification.Name {
-    static let didChangePhotoLikeStatus = Notification.Name("didChangePhotoLikeStatus")
-}
-
-// Расширение для массива, чтобы заменить элемент
-extension Array {
-    mutating func withReplaced(itemAt index: Int, newValue: Element) {
-        guard index >= 0 && index < count else { return }
-        self[index] = newValue
     }
 }
 
