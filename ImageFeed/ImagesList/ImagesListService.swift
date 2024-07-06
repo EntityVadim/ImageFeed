@@ -90,7 +90,7 @@ final class ImagesListService {
                 size: CGSize(width: item.width, height: item.height),
                 createdAt: createdAtDate,
                 welcomeDescription: item.description,
-                thumbImageURL: item.urls.thumb,
+                thumbImageURL: item.urls.regular,
                 fullImageUrl: item.urls.full,
                 isLiked: item.isLiked)
         }
