@@ -21,6 +21,7 @@ final class ImagesListViewController: UIViewController {
     private let imagesListService = ImagesListService.shared
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private var photos: [Photo] = []
+    private var isLoadingNewPage = false
     
     private lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -61,7 +62,7 @@ final class ImagesListViewController: UIViewController {
         }
     }
     
-    // MARK: - Setup
+    // MARK: - Private Methods
     
     private func setupTableView() {
         tableView.delegate = self
@@ -76,13 +77,38 @@ final class ImagesListViewController: UIViewController {
             object: nil)
     }
     
+    private func updateTableViewAnimated(
+        with newPhotos: [Photo],
+        animated: Bool
+    ) {
+        let oldCount = photos.count
+        let newCount = newPhotos.count
+        let diff = newCount - oldCount
+        photos = newPhotos
+        if animated {
+            tableView.performBatchUpdates {
+                if diff > 0 {
+                    let indexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
+                    tableView.insertRows(at: indexPaths, with: .automatic)
+                } else if diff < 0 {
+                    let indexPaths = (newCount..<oldCount).map { IndexPath(row: $0, section: 0) }
+                    tableView.deleteRows(at: indexPaths, with: .automatic)
+                }
+            } completion: { _ in
+                if diff != 0 {
+                    self.tableView.reloadData()
+                }
+            }
+        } else {
+            tableView.reloadData()
+        }
+    }
+    
     // MARK: - Notifications
     
     @objc private func didReceivePhotosUpdate(notification: Notification) {
-        guard let photos = notification.userInfo?["photos"] as? [Photo] else { return }
-        self.photos = photos
-        tableView.reloadData()
-        //        tableView.performBatchUpdates(nil)
+        guard let newPhotos = notification.userInfo?["photos"] as? [Photo] else { return }
+        updateTableViewAnimated(with: newPhotos, animated: true)
     }
 }
 
@@ -107,20 +133,6 @@ extension ImagesListViewController: UITableViewDelegate {
             let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
             return cellHeight
         }
-    
-    func updateTableViewAnimated() {
-        let oldCount = photos.count
-        let newCount = imagesListService.photos.count
-        photos = imagesListService.photos
-        if oldCount != newCount {
-            tableView.performBatchUpdates {
-                let indexPaths = (oldCount..<newCount).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                tableView.insertRows(at: indexPaths, with: .automatic)
-            } completion: { _ in }
-        }
-    }
     
     func tableView(
         _ tableView: UITableView,

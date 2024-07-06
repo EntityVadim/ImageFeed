@@ -157,7 +157,7 @@ final class ImagesListService {
                     welcomeDescription: photo.welcomeDescription,
                     thumbImageURL: photo.thumbImageURL,
                     fullImageUrl: photo.fullImageUrl,
-                    isLiked: !photo.isLiked
+                    isLiked: isLiked
                 )
                 self.photos[index] = newPhoto
             } else {
