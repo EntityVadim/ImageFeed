@@ -24,13 +24,13 @@ final class ImagesListService {
     private func createPhotoRequest(
         page: Int,
         token: String) -> URLRequest? {
-        guard let url = URL(string: "\(Constants.defaultBaseURL)/photos?page=\(page)&per_page=10") else
-        { return nil }
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        return request
-    }
+            guard let url = URL(string: "\(Constants.defaultBaseURL)/photos?page=\(page)&per_page=10") else
+            { return nil }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            return request
+        }
     
     func fetchPhotosNextPage() {
         guard !isLoading else { return }
@@ -63,11 +63,13 @@ final class ImagesListService {
             do {
                 let photoResult = try JSONDecoder().decode([PhotoResult].self, from: data)
                 DispatchQueue.main.async {
+                    self.lastLoadedPage = nextPage
                     self.preparePhoto(photoResult: photoResult)
                     NotificationCenter.default.post(
                         name: ImagesListService.didChangeNotification,
                         object: self,
                         userInfo: ["photos": self.photos])
+                    self.isLoading = false
                 }
             } catch {
                 DispatchQueue.main.async {
