@@ -48,6 +48,11 @@ final class ProfileService {
             return
         }
         task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            defer {
+                DispatchQueue.main.async {
+                    UIBlockingProgressHUD.dismiss()
+                }
+            }
             guard let self = self else { return }
             if let error = error {
                 DispatchQueue.main.async {
