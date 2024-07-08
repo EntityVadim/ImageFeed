@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - UserResult
-
 struct UserResult: Codable {
     let profileImage: ProfileImageSize
     

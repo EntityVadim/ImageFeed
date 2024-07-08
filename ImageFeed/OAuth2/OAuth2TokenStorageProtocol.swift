@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  OAuth2TokenStorageProtocol.swift
 //  ImageFeed
 //
 //  Created by Вадим on 17.06.2024.

@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - SplashViewController
+// MARK: - Splash ViewController
 
 final class SplashViewController: UIViewController {
     
@@ -43,7 +43,7 @@ final class SplashViewController: UIViewController {
         setNeedsStatusBarAppearanceUpdate()
     }
     
-    // MARK: - PreferredStatusBarStyle
+    // MARK: - Status BarStyle
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -81,6 +81,7 @@ final class SplashViewController: UIViewController {
     
     private func fetchProfileIfNeeded() {
         if let token = storage.token {
+            UIBlockingProgressHUD.show() // Показываем индикатор загрузки (На заметку, если код сломается)
             fetchProfile(token)
         } else {
             showAuthenticationScreen()
@@ -104,18 +105,18 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func fetchProfile(_ token: String) {
-        UIBlockingProgressHUD.show() // Показываем индикатор загрузки (На заметку, если код сломается)
         ProfileService.shared.fetchProfile(token) { [weak self] result in
             DispatchQueue.main.async {
-                guard let self = self else { return }
-                UIBlockingProgressHUD.dismiss()
+                guard let self else { return }
                 switch result {
                 case .success(let (_, username)):
                     ProfileImageService.shared.fetchProfileImageURL(
                         username: username,
                         token: token) { _ in }
+                    UIBlockingProgressHUD.dismiss()
                     self.switchToTabBarController()
                 case .failure(let error):
+                    UIBlockingProgressHUD.dismiss()
                     self.showErrorMessage("Не удалось получить профиль: \(error.localizedDescription)")
                 }
             }

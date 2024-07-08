@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - OAuth2Service
+// MARK: - OAuth2 Service
 
 final class OAuth2Service {
     
@@ -55,7 +55,7 @@ private extension OAuth2Service {
     }
 }
 
-// MARK: - FetchOAuthToken
+// MARK: - Fetch OAuthToken
 
 extension OAuth2Service {
     func fetchOAuthToken(

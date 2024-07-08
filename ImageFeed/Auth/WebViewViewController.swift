@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-// MARK: - WebViewViewController
+// MARK: - WebView ViewController
 
 final class WebViewViewController: UIViewController {
     
@@ -51,7 +51,7 @@ final class WebViewViewController: UIViewController {
              })
     }
     
-    // MARK: - UpdateProgress
+    // MARK: - Update Progress
     
     private func updateProgress() {
         progressView.setProgress(Float(webView.estimatedProgress), animated: true)

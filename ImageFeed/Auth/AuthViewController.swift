@@ -5,10 +5,10 @@
 //  Created by Вадим on 30.05.2024.
 //
 
-import UIKit
 import ProgressHUD
+import UIKit
 
-// MARK: - AuthViewController
+// MARK: - Auth ViewController
 
 final class AuthViewController: UIViewController {
     
@@ -28,9 +28,12 @@ final class AuthViewController: UIViewController {
         setupBackButtonAppearance()
     }
     
-    // MARK: - Prepare
+    // MARK: - PrepareAuth
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(
+        for segue: UIStoryboardSegue,
+        sender: Any?
+    ) {
         if segue.identifier == showWebViewSegueIdentifier {
             if let webViewViewController = segue.destination as? WebViewViewController {
                 webViewViewController.delegate = self

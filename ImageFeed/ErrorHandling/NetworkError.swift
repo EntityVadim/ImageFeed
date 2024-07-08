@@ -1,17 +1,11 @@
 //
-//  ErrorHandling.swift
+//  NetworkError.swift
 //  ImageFeed
 //
 //  Created by Вадим on 18.06.2024.
 //
 
 import Foundation
-
-// MARK: - NetworkErrorProtocol
-
-protocol NetworkErrorProtocol {
-    static func errorMessage(from error: Error) -> String
-}
 
 // MARK: - NetworkError
 
@@ -29,13 +23,11 @@ enum NetworkError: Error {
     case windowError
 }
 
-// MARK: - NetworkErrorHandler
+// MARK: - NetworkError Handler
 
 struct NetworkErrorHandler: NetworkErrorProtocol {
-    
     static func errorMessage(from error: Error) -> String {
         var errorMessage = "Произошла ошибка при загрузке данных"
-        
         if let networkError = error as? NetworkError {
             switch networkError {
             case .invalidRequest:

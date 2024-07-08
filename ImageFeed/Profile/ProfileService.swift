@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - ProfileService
+// MARK: - Profile Service
 
 final class ProfileService {
     
@@ -36,7 +36,7 @@ final class ProfileService {
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
-    // MARK: - FetchProfile
+    // MARK: - Fetch Profile
     
     func fetchProfile(
         _ token: String,
@@ -48,6 +48,11 @@ final class ProfileService {
             return
         }
         task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            defer {
+                DispatchQueue.main.async {
+                    UIBlockingProgressHUD.dismiss()
+                }
+            }
             guard let self = self else { return }
             if let error = error {
                 DispatchQueue.main.async {
@@ -89,5 +94,13 @@ final class ProfileService {
             }
         }
         task?.resume()
+    }
+}
+
+// MARK: - Clear Profile
+
+extension ProfileService {
+    func clearProfile() {
+        profile = nil
     }
 }
