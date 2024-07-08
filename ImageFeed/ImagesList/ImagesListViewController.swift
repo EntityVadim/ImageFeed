@@ -165,9 +165,9 @@ extension ImagesListViewController: UITableViewDataSource {
             }
             let photo = photos[indexPath.row]
             if let createdAt = photo.createdAt {
-                cell.dateLabel.text = dateFormatter.string(from: createdAt)
+                cell.updateDateLabel(withText: dateFormatter.string(from: createdAt))
             } else {
-                cell.dateLabel.text = "Дата неизвестна"
+                cell.updateDateLabel(withText: "Дата неизвестна")
             }
             cell.configure(with: photo)
             cell.delegate = self

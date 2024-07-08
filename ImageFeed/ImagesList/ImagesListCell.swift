@@ -16,7 +16,7 @@ final class ImagesListCell: UITableViewCell {
     
     @IBOutlet private weak var cellImage: UIImageView!
     @IBOutlet private weak var likeButton: UIButton!
-    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet private weak var dateLabel: UILabel!
     
     // MARK: - Public Properties
     
@@ -54,6 +54,10 @@ final class ImagesListCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
+    }
+    
+    func updateDateLabel(withText text: String) {
+        dateLabel.text = text
     }
     
     // MARK: - IBAction
