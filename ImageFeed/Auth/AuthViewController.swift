@@ -5,10 +5,10 @@
 //  Created by Вадим on 30.05.2024.
 //
 
-import UIKit
 import ProgressHUD
+import UIKit
 
-// MARK: - AuthViewController
+// MARK: - Auth ViewController
 
 final class AuthViewController: UIViewController {
     

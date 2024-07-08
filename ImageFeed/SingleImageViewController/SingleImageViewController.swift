@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - SingleImageViewController
+// MARK: - SingleImage ViewController
 
 final class SingleImageViewController: UIViewController {
     

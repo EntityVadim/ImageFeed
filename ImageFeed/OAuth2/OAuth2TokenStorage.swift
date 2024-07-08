@@ -5,10 +5,10 @@
 //  Created by Вадим on 03.06.2024.
 //
 
-import UIKit
 import SwiftKeychainWrapper
+import UIKit
 
-// MARK: - OAuth2TokenStorage
+// MARK: - OAuth2 TokenStorage
 
 final class OAuth2TokenStorage: OAuth2TokenStorageProtocol {
     

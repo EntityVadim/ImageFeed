@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - SplashViewController
+// MARK: - Splash ViewController
 
 final class SplashViewController: UIViewController {
     
@@ -43,7 +43,7 @@ final class SplashViewController: UIViewController {
         setNeedsStatusBarAppearanceUpdate()
     }
     
-    // MARK: - PreferredStatusBarStyle
+    // MARK: - Status BarStyle
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent

@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - ImagesListViewController
+// MARK: - ImagesList ViewController
 
 final class ImagesListViewController: UIViewController {
     
@@ -174,6 +174,8 @@ extension ImagesListViewController: UITableViewDataSource {
             return cell
         }
 }
+
+// MARK: - ImagesListCellDelegate
 
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {

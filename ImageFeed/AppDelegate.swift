@@ -5,8 +5,8 @@
 //  Created by Вадим on 02.05.2024.
 //
 
-import UIKit
 import ProgressHUD
+import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

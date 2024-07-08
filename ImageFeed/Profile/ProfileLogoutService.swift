@@ -8,10 +8,19 @@
 import Foundation
 import WebKit
 
+// MARK: - Profile LogoutService
+
 final class ProfileLogoutService {
+    
+    // MARK: - Public Properties
+    
     static let shared = ProfileLogoutService()
     
-    private init() { }
+    // MARK: - Initializers
+    
+    private init() {}
+    
+    // MARK: - Public Methods
     
     func logout() {
         let alert = UIAlertController(
@@ -35,6 +44,8 @@ final class ProfileLogoutService {
             rootViewController.present(alert, animated: true, completion: nil)
         }
     }
+    
+    // MARK: - Private Methods
     
     private func cleanCookies() {
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)

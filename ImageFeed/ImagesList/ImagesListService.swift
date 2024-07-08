@@ -5,13 +5,19 @@
 //  Created by Вадим on 27.06.2024.
 //
 
-import UIKit
 import Kingfisher
+import UIKit
+
+// MARK: - ImagesList Service
 
 final class ImagesListService {
     
+    // MARK: - Public Properties
+    
     static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    
+    // MARK: - Private Properties
     
     private(set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
@@ -19,18 +25,11 @@ final class ImagesListService {
     private var storage = OAuth2TokenStorage.shared
     private let dateFormatter = ISO8601DateFormatter()
     
+    // MARK: - Initializers
+    
     private init() {}
     
-    private func createPhotoRequest(
-        page: Int,
-        token: String) -> URLRequest? {
-            guard let url = URL(string: "\(Constants.defaultBaseURL)/photos?page=\(page)&per_page=10") else
-            { return nil }
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
-            request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            return request
-        }
+    // MARK: - Public Methods
     
     func fetchPhotosNextPage() {
         guard !isLoading else { return }
@@ -80,25 +79,6 @@ final class ImagesListService {
         task.resume()
     }
     
-    private func preparePhoto(photoResult: [PhotoResult]) {
-        let newPhotos = photoResult.compactMap { item -> Photo? in
-            guard let createdAtString = item.createdAt,
-                  let createdAtDate = dateFormatter.date(from: createdAtString) else {
-                print("Дата создания для фотографии с ID \(item.id) отсутствует или имеет неверный формат.")
-                return nil
-            }
-            return Photo(
-                id: item.id,
-                size: CGSize(width: item.width, height: item.height),
-                createdAt: createdAtDate,
-                welcomeDescription: item.description,
-                thumbImageURL: item.urls.regular,
-                fullImageUrl: item.urls.full,
-                isLiked: item.isLiked)
-        }
-        photos.append(contentsOf: newPhotos)
-    }
-    
     func changeLike(
         photoId: String,
         isLike: Bool,
@@ -145,6 +125,38 @@ final class ImagesListService {
         task.resume()
     }
     
+    // MARK: - Private Methods
+    
+    private func createPhotoRequest(
+        page: Int,
+        token: String) -> URLRequest? {
+            guard let url = URL(string: "\(Constants.defaultBaseURL)/photos?page=\(page)&per_page=10") else
+            { return nil }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            return request
+        }
+    
+    private func preparePhoto(photoResult: [PhotoResult]) {
+        let newPhotos = photoResult.compactMap { item -> Photo? in
+            guard let createdAtString = item.createdAt,
+                  let createdAtDate = dateFormatter.date(from: createdAtString) else {
+                print("Дата создания для фотографии с ID \(item.id) отсутствует или имеет неверный формат.")
+                return nil
+            }
+            return Photo(
+                id: item.id,
+                size: CGSize(width: item.width, height: item.height),
+                createdAt: createdAtDate,
+                welcomeDescription: item.description,
+                thumbImageURL: item.urls.regular,
+                fullImageUrl: item.urls.full,
+                isLiked: item.isLiked)
+        }
+        photos.append(contentsOf: newPhotos)
+    }
+    
     private func updatePhotoLikeStatus(
         photoId: String,
         isLiked: Bool
@@ -168,6 +180,8 @@ final class ImagesListService {
         }
     }
 }
+
+// MARK: - Clear ImagesList
 
 extension ImagesListService {
     func clearImagesList() {

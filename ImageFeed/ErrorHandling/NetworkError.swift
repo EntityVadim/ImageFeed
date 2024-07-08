@@ -1,5 +1,5 @@
 //
-//  ErrorHandling.swift
+//  NetworkError.swift
 //  ImageFeed
 //
 //  Created by Вадим on 18.06.2024.
@@ -23,7 +23,7 @@ enum NetworkError: Error {
     case windowError
 }
 
-// MARK: - NetworkErrorHandler
+// MARK: - NetworkError Handler
 
 struct NetworkErrorHandler: NetworkErrorProtocol {
     static func errorMessage(from error: Error) -> String {

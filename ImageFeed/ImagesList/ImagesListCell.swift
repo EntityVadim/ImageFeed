@@ -5,17 +5,17 @@
 //  Created by Вадим on 05.05.2024.
 //
 
-import UIKit
 import Kingfisher
+import UIKit
 
-// MARK: - ImagesListCell
+// MARK: - ImagesList Cell
 
 final class ImagesListCell: UITableViewCell {
     
     // MARK: - IBOutlet
     
-    @IBOutlet weak var cellImage: UIImageView!
-    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet private weak var cellImage: UIImageView!
+    @IBOutlet private weak var likeButton: UIButton!
     @IBOutlet weak var dateLabel: UILabel!
     
     // MARK: - Public Properties
@@ -58,7 +58,7 @@ final class ImagesListCell: UITableViewCell {
     
     // MARK: - IBAction
     
-    @IBAction func likeButtonClicked(_ sender: Any) {
+    @IBAction private func likeButtonClicked(_ sender: Any) {
         delegate?.imageListCellDidTapLike(self)
     }
 }

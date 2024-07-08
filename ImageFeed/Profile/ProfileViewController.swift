@@ -5,10 +5,10 @@
 //  Created by Вадим on 16.05.2024.
 //
 
-import UIKit
 import Kingfisher
+import UIKit
 
-// MARK: - ProfileViewController
+// MARK: - Profile ViewController
 
 final class ProfileViewController: UIViewController {
     

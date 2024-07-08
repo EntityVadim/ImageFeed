@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - ProfileImageService
+// MARK: - Profile ImageService
 
 final class ProfileImageService {
     
@@ -40,7 +40,7 @@ final class ProfileImageService {
             return request
         }
     
-    // MARK: - FetchProfileImageURL
+    // MARK: - Fetch ProfileImage
     
     func fetchProfileImageURL(
         username: String,
@@ -99,6 +99,8 @@ final class ProfileImageService {
         task?.resume()
     }
 }
+
+// MARK: - Clear ProfileImage
 
 extension ProfileImageService {
     func clearProfileImage() {
