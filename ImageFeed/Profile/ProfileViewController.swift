@@ -128,26 +128,18 @@ final class ProfileViewController: UIViewController {
     // MARK: - Update Methods
     
     private func updateProfileDetails(profile: Profile?) {
-        guard let profile = profile else { return }
+        guard let profile else { return }
         self.nameLabel.text = profile.name
         self.loginNameLabel.text = profile.loginName
         self.descriptionLabel.text = profile.bio
     }
     
-    private func updateProfileDetailsIfNeeded() {
-        if let profile = profileService.profile {
-            updateProfileDetails(profile: profile)
-        }
-    }
-    
     private func updateAvatar() {
         guard let profileImageURL = ProfileImageService.shared.avatarURL,
               let url = URL(string: profileImageURL) else { return }
-        
         let cache = ImageCache.default
         cache.clearMemoryCache()
         cache.clearDiskCache()
-        
         let processor = RoundCornerImageProcessor(cornerRadius: 35)
         profileImageView.kf.indicatorType = .activity
         profileImageView.kf.setImage(
