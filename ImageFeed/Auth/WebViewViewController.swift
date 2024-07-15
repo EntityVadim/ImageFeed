@@ -39,7 +39,9 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     }
     
     deinit {
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
+        webView.removeObserver(
+            self,
+            forKeyPath: #keyPath(WKWebView.estimatedProgress))
     }
     
     // MARK: - Public Methods
