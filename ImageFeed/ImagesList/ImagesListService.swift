@@ -88,7 +88,7 @@ final class ImagesListService {
             completion(.failure(NetworkError.authorizationError))
             return
         }
-        let urlString = "\(PhotosLike.photosLike)/\(photoId)/like"
+        let urlString = "\(PhotosLikeConstants .photosLike)/\(photoId)/like"
         guard let url = URL(string: urlString) else {
             completion(.failure(NetworkError.invalidURL))
             return
