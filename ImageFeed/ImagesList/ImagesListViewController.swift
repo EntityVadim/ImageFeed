@@ -61,9 +61,14 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     // MARK: - Private Methods
     
-    private func setupTableView() {
+    func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    func configure(_ presenter: ImagesListPresenterProtocol) {
+        self.presenter = presenter
+        presenter.view = self
     }
     
     // MARK: - ImagesListViewControllerProtocol Methods

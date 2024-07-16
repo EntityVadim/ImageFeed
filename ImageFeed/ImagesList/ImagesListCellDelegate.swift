@@ -15,7 +15,7 @@ protocol ImagesListCellDelegate: AnyObject {
 
 // MARK: - ImagesListPresenterProtocol
 
-protocol ImagesListPresenterProtocol: AnyObject {
+public protocol ImagesListPresenterProtocol: AnyObject {
     var view: ImagesListViewControllerProtocol? { get set }
     func viewDidLoad()
     func didSelectRowAt(indexPath: IndexPath)
@@ -25,7 +25,7 @@ protocol ImagesListPresenterProtocol: AnyObject {
 
 // MARK: - ImagesListViewControllerProtocol
 
-protocol ImagesListViewControllerProtocol: AnyObject {
+public protocol ImagesListViewControllerProtocol: AnyObject {
     func updateTableView(with newPhotos: [Photo], animated: Bool)
     func navigateToSingleImageViewController(with url: String)
     func updateLikeButton(at indexPath: IndexPath, isLiked: Bool)
