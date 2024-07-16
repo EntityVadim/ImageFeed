@@ -10,12 +10,11 @@ import UIKit
 
 // MARK: - Profile ViewController
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     
     // MARK: - Private Properties
     
-    private let profileService = ProfileService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
+    private var presenter: ProfilePresenterProtocol?
     
     // MARK: - Label
     
@@ -58,7 +57,7 @@ final class ProfileViewController: UIViewController {
     private lazy var logoutButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "logout_button"), for: .normal)
-        button.addTarget(self, action: #selector(Self.didTapLogoutButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapLogoutButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -68,23 +67,9 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.ypBlack
-        
-        if let profile = profileService.profile {
-            updateProfileDetails(profile: profile)
-        }
-        
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
-        
-        updateAvatar()
-        profileImageServiceObserve()
+        presenter = ProfilePresenter()
+        presenter?.view = self
+        presenter?.viewDidLoad()
         setupUI()
     }
     
@@ -127,16 +112,14 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Update Methods
     
-    private func updateProfileDetails(profile: Profile?) {
+    func updateProfileDetails(profile: Profile?) {
         guard let profile else { return }
         self.nameLabel.text = profile.name
         self.loginNameLabel.text = profile.loginName
         self.descriptionLabel.text = profile.bio
     }
     
-    private func updateAvatar() {
-        guard let profileImageURL = ProfileImageService.shared.avatarURL,
-              let url = URL(string: profileImageURL) else { return }
+    func updateAvatar(with url: URL) {
         let cache = ImageCache.default
         cache.clearMemoryCache()
         cache.clearDiskCache()
@@ -149,22 +132,10 @@ final class ProfileViewController: UIViewController {
         )
     }
     
-    private func profileImageServiceObserve() {
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.didChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            guard let self = self else { return }
-            self.updateAvatar()
-        }
-        updateAvatar()
-    }
-    
     // MARK: - DidTapLogoutButton
     
     @objc
     private func didTapLogoutButton() {
-        ProfileLogoutService.shared.logout()
+        presenter?.didTapLogoutButton()
     }
 }
