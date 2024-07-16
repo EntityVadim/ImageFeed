@@ -110,12 +110,12 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         ])
     }
     
+    // MARK: - Update Methods
+    
     func configure(_ presenter: ProfilePresenterProtocol) {
         self.presenter = presenter
         presenter.view = self
     }
-    
-    // MARK: - Update Methods
     
     func updateProfileDetails(profile: Profile?) {
         guard let profile else { return }

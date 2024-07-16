@@ -10,9 +10,7 @@ import XCTest
 
 final class ProfileViewControllerTests: XCTestCase {
     func testViewControllerCallsViewDidLoad() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let viewController = storyboard.instantiateViewController(
-            withIdentifier: "ProfileViewController") as! ProfileViewController
+        let viewController = ProfileViewController()
         let presenter = ProfilePresenterSpy()
         viewController.configure(presenter)
         _ = viewController.view
@@ -21,7 +19,11 @@ final class ProfileViewControllerTests: XCTestCase {
     
     func testPresenterCallsUpdateProfileDetails() {
         let viewController = ProfileViewControllerSpy()
-        let presenter = ProfilePresenter()
+        let profileService = ProfileService()
+        let profileImageService = ProfileImageService()
+        let presenter = ProfilePresenter(
+            profileService: profileService,
+            profileImageService: profileImageService)
         viewController.configure(presenter)
         presenter.view = viewController
         presenter.viewDidLoad()
@@ -30,7 +32,11 @@ final class ProfileViewControllerTests: XCTestCase {
     
     func testPresenterCallsUpdateAvatar() {
         let viewController = ProfileViewControllerSpy()
-        let presenter = ProfilePresenter()
+        let profileService = ProfileService()
+        let profileImageService = ProfileImageService()
+        let presenter = ProfilePresenter(
+            profileService: profileService,
+            profileImageService: profileImageService)
         viewController.configure(presenter)
         presenter.view = viewController
         presenter.viewDidLoad()
