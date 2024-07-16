@@ -16,7 +16,7 @@ protocol WebViewViewControllerDelegate: AnyObject {
 
 // MARK: - WebViewViewControllerProtocol
 
-protocol WebViewViewControllerProtocol: AnyObject {
+public protocol WebViewViewControllerProtocol: AnyObject {
     var presenter: WebViewPresenterProtocol? { get set }
     func load(request: URLRequest)
     func setProgressValue(_ newValue: Float)
@@ -25,7 +25,7 @@ protocol WebViewViewControllerProtocol: AnyObject {
 
 // MARK: - WebViewPresenterProtocol
 
-protocol WebViewPresenterProtocol {
+public protocol WebViewPresenterProtocol {
     var view: WebViewViewControllerProtocol? { get set }
     func viewDidLoad()
     func didUpdateProgressValue(_ newValue: Double)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AuthConfiguration {    
+struct AuthConfiguration {
     let accessKey: String
     let secretKey: String
     let redirectURI: String
