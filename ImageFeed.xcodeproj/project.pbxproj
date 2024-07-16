@@ -184,13 +184,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		DD58A6A72C4650F100ABE4AC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		DD6215D32C245E3900A73840 /* TabBarController */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,7 +249,6 @@
 				DDC0B3192BE389550035E7DD /* ImageFeed */,
 				DD7DC2EC2C463F870009C5A6 /* ImageFeedTests */,
 				DDC0B3182BE389550035E7DD /* Products */,
-				DD58A6A72C4650F100ABE4AC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
