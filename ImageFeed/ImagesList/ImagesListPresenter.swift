@@ -31,7 +31,7 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     
     func didSelectRowAt(indexPath: IndexPath) {
         let photo = imagesListService.photos[indexPath.row]
-        view?.navigateToSingleImageViewController(with: photo.fullImageUrl)
+        view?.navigateToImageController(with: photo.fullImageUrl)
     }
     
     func willDisplayCell(at indexPath: IndexPath) {

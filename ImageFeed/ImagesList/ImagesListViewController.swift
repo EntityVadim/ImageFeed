@@ -20,6 +20,11 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     private var presenter: ImagesListPresenterProtocol?
     private var photos: [Photo] = []
     
+    func configure(_ presenter: ImagesListPresenterProtocol) {
+        self.presenter = presenter
+        presenter.view = self
+    }
+    
     private lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .long
@@ -66,11 +71,6 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         tableView.dataSource = self
     }
     
-    func configure(_ presenter: ImagesListPresenterProtocol) {
-        self.presenter = presenter
-        presenter.view = self
-    }
-    
     // MARK: - ImagesListViewControllerProtocol Methods
     
     func updateTableView(with newPhotos: [Photo], animated: Bool) {
@@ -97,7 +97,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         }
     }
     
-    func navigateToSingleImageViewController(with url: String) {
+    func navigateToImageController(with url: String) {
         performSegue(withIdentifier: "ShowSingleImage", sender: url)
     }
     

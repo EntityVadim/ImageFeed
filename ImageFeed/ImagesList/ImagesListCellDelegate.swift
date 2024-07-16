@@ -27,6 +27,6 @@ public protocol ImagesListPresenterProtocol: AnyObject {
 
 public protocol ImagesListViewControllerProtocol: AnyObject {
     func updateTableView(with newPhotos: [Photo], animated: Bool)
-    func navigateToSingleImageViewController(with url: String)
+    func navigateToImageController(with url: String)
     func updateLikeButton(at indexPath: IndexPath, isLiked: Bool)
 }

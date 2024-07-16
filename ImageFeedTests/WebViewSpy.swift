@@ -13,7 +13,7 @@ final class WebViewPresenterSpy: WebViewPresenterProtocol {
     var view: WebViewViewControllerProtocol?
 
     func viewDidLoad() { viewDidLoadCalled = true }
-    func didUpdateProgressValue(_ newValue: Double) { }
+    func didUpdateProgressValue(_ newValue: Double) {}
     func code(from url: URL) -> String? { return nil }
 }
 
@@ -22,6 +22,6 @@ final class WebViewViewControllerSpy: WebViewViewControllerProtocol {
     var loadRequestCalled: Bool = false
     
     func load(request: URLRequest) { loadRequestCalled = true }
-    func setProgressValue(_ newValue: Float) { }
-    func setProgressHidden(_ isHidden: Bool) { }
+    func setProgressValue(_ newValue: Float) {}
+    func setProgressHidden(_ isHidden: Bool) {}
 }

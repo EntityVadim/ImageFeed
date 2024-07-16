@@ -16,6 +16,11 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     
     private var presenter: ProfilePresenterProtocol?
     
+    func configure(_ presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
+        presenter.view = self
+    }
+    
     // MARK: - Label
     
     private lazy var nameLabel: UILabel = {
@@ -111,11 +116,6 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     }
     
     // MARK: - Update Methods
-    
-    func configure(_ presenter: ProfilePresenterProtocol) {
-        self.presenter = presenter
-        presenter.view = self
-    }
     
     func updateProfileDetails(profile: Profile?) {
         guard let profile else { return }

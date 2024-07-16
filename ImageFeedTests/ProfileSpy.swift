@@ -13,7 +13,7 @@ final class ProfilePresenterSpy: ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol?
 
     func viewDidLoad() { viewDidLoadCalled = true }
-    func didTapLogoutButton() { }
+    func didTapLogoutButton() {}
 }
 
 final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
