@@ -8,6 +8,8 @@
 import ImageFeed
 import Foundation
 
+// MARK: - WebViewPresenterSpy
+
 final class WebViewPresenterSpy: WebViewPresenterProtocol {
     var viewDidLoadCalled: Bool = false
     var view: WebViewViewControllerProtocol?
@@ -16,6 +18,8 @@ final class WebViewPresenterSpy: WebViewPresenterProtocol {
     func didUpdateProgressValue(_ newValue: Double) {}
     func code(from url: URL) -> String? { return nil }
 }
+
+// MARK: - WebViewViewControllerSpy
 
 final class WebViewViewControllerSpy: WebViewViewControllerProtocol {
     var presenter: ImageFeed.WebViewPresenterProtocol?

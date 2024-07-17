@@ -8,6 +8,8 @@
 import ImageFeed
 import Foundation
 
+// MARK: - ProfilePresenterSpy
+
 final class ProfilePresenterSpy: ProfilePresenterProtocol {
     var viewDidLoadCalled: Bool = false
     var view: ProfileViewControllerProtocol?
@@ -15,6 +17,8 @@ final class ProfilePresenterSpy: ProfilePresenterProtocol {
     func viewDidLoad() { viewDidLoadCalled = true }
     func didTapLogoutButton() {}
 }
+
+// MARK: - ProfileViewControllerSpy
 
 final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
     var updateProfileDetailsCalled: Bool = false

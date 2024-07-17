@@ -183,6 +183,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G3j-PX-g7r">
                                 <rect key="frame" x="16" y="794" width="398" height="48"/>
                                 <color key="backgroundColor" name="ypWhite"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="fgu-8a-m9w"/>
                                 </constraints>

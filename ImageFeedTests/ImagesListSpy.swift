@@ -8,6 +8,8 @@
 import ImageFeed
 import Foundation
 
+// MARK: - ImagesListPresenterSpy
+
 final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     var view: ImagesListViewControllerProtocol?
     var viewDidLoadCalled = false
@@ -18,6 +20,8 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     func willDisplayCell(at indexPath: IndexPath) { fetchPhotosNextPageCalled = true }
     func didTapLikeButton(at indexPath: IndexPath) {}
 }
+
+// MARK: - ImagesListViewControllerSpy
 
 final class ImagesListViewControllerSpy: ImagesListViewControllerProtocol {
     var updateTableViewCalled = false

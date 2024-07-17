@@ -27,11 +27,10 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
-        
+        webView.accessibilityIdentifier = "UnsplashWebView"
         webView.addObserver(
             self,
-            forKeyPath:
-                #keyPath(WKWebView.estimatedProgress),
+            forKeyPath: #keyPath(WKWebView.estimatedProgress),
             options: .new,
             context: nil)
         
