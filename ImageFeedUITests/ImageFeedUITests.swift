@@ -26,25 +26,34 @@ final class ImageFeedUITests: XCTestCase {
         loginTextField.typeText("<Ваш e-mail>") // "<Ваш e-mail>"
         webView.swipeUp()
         
-        /* ❗❗❗ Ревью, помоги пожалуйста:
-        При UI-тестирование, когда нужно вести пароль, у меня почему-то вводит только 3 символа из 20 и тест проваливается, решил
-        проблему полной вставкой пароля, но может быть подскажешь более лучший способ (Ниже закоментированный код мне подсказал
-        однокурсник, но он у меня не работает */
+        // Мой способ
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         passwordTextField.tap()
         UIPasteboard.general.string = "<Ваш пароль>" // "<Ваш пароль>"
         passwordTextField.doubleTap()
         app.menuItems["Paste"].tap()
-        //        let passwordTextField = webView.descendants(matching: .secureTextField).element
-        //        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
-        //        passwordTextField.tap()
-        //        sleep(3)
-        //        XCUIApplication().toolbars.buttons["Done"].tap()
-        //        passwordTextField.tap()
-        //        passwordTextField.typeText("qowfer-1tiVxy-xatryk")
-        //        sleep(3)
-        //        XCUIApplication().toolbars.buttons["Done"].tap()
+        
+        // Способ Артёма
+//        let passwordTextField = webView.descendants(matching: .secureTextField).element
+//        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
+//        passwordTextField.tap()
+//        passwordTextField.typeText("<Ваш пароль>")
+//        sleep(1)
+//        webView.swipeUp()
+//        app.toolbars.buttons["Done"].tap()
+//        sleep(1)
+        
+        // Спасоб Эльдара
+//        let passwordTextField = webView.descendants(matching: .secureTextField).element
+//        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
+//        passwordTextField.tap()
+//        sleep(3)
+//        XCUIApplication().toolbars.buttons["Done"].tap()
+//        passwordTextField.tap()
+//        passwordTextField.typeText("<Ваш пароль>")
+//        sleep(3)
+//        XCUIApplication().toolbars.buttons["Done"].tap()
         
         webView.swipeUp()
         webView.buttons["Login"].tap()
