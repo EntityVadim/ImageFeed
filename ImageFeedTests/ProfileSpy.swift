@@ -7,28 +7,27 @@
 
 import ImageFeed
 import Foundation
+import UIKit
 
 // MARK: - ProfilePresenterSpy
 
 final class ProfilePresenterSpy: ProfilePresenterProtocol {
-    var viewDidLoadCalled: Bool = false
     var view: ProfileViewControllerProtocol?
+    var viewDidLoadCalled = false
+    var didTapLogoutButtonCalled = false
+    var updateAvatarCalled = false
 
     func viewDidLoad() { viewDidLoadCalled = true }
-    func didTapLogoutButton() {}
+    func didTapLogoutButton() { didTapLogoutButtonCalled = true }
+    func updateAvatar(with url: URL) { updateAvatarCalled = true }
 }
 
 // MARK: - ProfileViewControllerSpy
 
 final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
-    var updateProfileDetailsCalled: Bool = false
-    var updateAvatarCalled: Bool = false
+    var updateProfileDetailsCalled = false
+    var updateAvatarCalled = false
     var presenter: ProfilePresenterProtocol?
-
-    func configure(_ presenter: ProfilePresenterProtocol) {
-        self.presenter = presenter
-        presenter.view = self
-    }
 
     func updateProfileDetails(profile: Profile?) { updateProfileDetailsCalled = true }
     func updateAvatar(with url: URL) { updateAvatarCalled = true }
