@@ -25,8 +25,12 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
             queue: .main
         ) { [weak self] notification in
             guard let newPhotos = notification.userInfo?["photos"] as? [Photo] else { return }
-            self?.view?.updateTableView(with: newPhotos, animated: true)
+            self?.handleNewPhotos(newPhotos)
         }
+    }
+    
+    private func handleNewPhotos(_ newPhotos: [Photo]) {
+        view?.updateTableView(with: newPhotos, animated: true)
     }
     
     func didSelectRowAt(indexPath: IndexPath) {

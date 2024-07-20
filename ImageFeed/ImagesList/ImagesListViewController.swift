@@ -66,7 +66,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     // MARK: - Private Methods
     
-    func setupTableView() {
+    private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -76,10 +76,14 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     func updateTableView(with newPhotos: [Photo], animated: Bool) {
         let oldCount = photos.count
         let newCount = newPhotos.count
+        guard !newPhotos.isEmpty else {
+            tableView.reloadData()
+            return
+        }
         let diff = newCount - oldCount
         photos = newPhotos
         if animated {
-            tableView.performBatchUpdates {
+            tableView.performBatchUpdates({
                 if diff > 0 {
                     let indexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
                     tableView.insertRows(at: indexPaths, with: .automatic)
@@ -87,11 +91,11 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
                     let indexPaths = (newCount..<oldCount).map { IndexPath(row: $0, section: 0) }
                     tableView.deleteRows(at: indexPaths, with: .automatic)
                 }
-            } completion: { _ in
+            }, completion: { _ in
                 if diff != 0 {
                     self.tableView.reloadData()
                 }
-            }
+            })
         } else {
             tableView.reloadData()
         }
@@ -102,8 +106,9 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     }
     
     func updateLikeButton(at indexPath: IndexPath, isLiked: Bool) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? ImagesListCell else { return }
-        cell.setIsLiked(isLiked)
+        if let cell = tableView.cellForRow(at: indexPath) as? ImagesListCell {
+            cell.setIsLiked(isLiked)
+        }
     }
 }
 
@@ -163,6 +168,7 @@ extension ImagesListViewController: UITableViewDataSource {
                 cell.updateDateLabel(withText: "Дата неизвестна")
             }
             cell.configure(with: photo)
+            cell.setIsLiked(photo.isLiked)
             cell.delegate = self
             return cell
         }

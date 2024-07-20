@@ -277,8 +277,8 @@
 				DD9ED9472C2D5C7E003448C8 /* Models */,
 				DDC0B31E2BE389550035E7DD /* ImagesListViewController.swift */,
 				DDD8FB582C4662A200211541 /* ImagesListPresenter.swift */,
-				DDAE2E992BE6643100487B45 /* ImagesListCell.swift */,
 				DD32A63E2C32B561004264CF /* ImagesListCellDelegate.swift */,
+				DDAE2E992BE6643100487B45 /* ImagesListCell.swift */,
 				DD9ED94A2C2D5CE1003448C8 /* ImagesListService.swift */,
 			);
 			path = ImagesList;
