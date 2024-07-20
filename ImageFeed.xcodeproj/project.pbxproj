@@ -11,7 +11,6 @@
 		DD06B7332C0855EB0088A4F3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD06B7322C0855EB0088A4F3 /* Constants.swift */; };
 		DD06B7362C0892080088A4F3 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD06B7352C0892080088A4F3 /* AuthViewController.swift */; };
 		DD06B7382C0896840088A4F3 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD06B7372C0896840088A4F3 /* WebViewViewController.swift */; };
-		DD0FE5AB2BF73C5600D44645 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDC0B3202BE389550035E7DD /* Main.storyboard */; };
 		DD0FE5AC2BF73C7A00D44645 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDC0B3252BE389580035E7DD /* LaunchScreen.storyboard */; };
 		DD12C57F2C2158CD00505F64 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD12C57E2C2158CD00505F64 /* NetworkError.swift */; };
 		DD12C5842C21659C00505F64 /* UserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD12C5832C21659C00505F64 /* UserResult.swift */; };
@@ -31,6 +30,7 @@
 		DD58A6B12C46513D00ABE4AC /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = DD58A6B02C46513D00ABE4AC /* SwiftKeychainWrapper */; };
 		DD58A6B32C46514100ABE4AC /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = DD58A6B22C46514100ABE4AC /* Kingfisher */; };
 		DD6215D22C245E2100A73840 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6215D12C245E2100A73840 /* TabBarController.swift */; };
+		DD736CDA2C4982BE00F17264 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDC0B3202BE389550035E7DD /* Main.storyboard */; };
 		DD75AF462C4556CF00ED98DE /* AuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75AF452C4556CF00ED98DE /* AuthConfiguration.swift */; };
 		DD75AF4F2C455BF200ED98DE /* AuthHelperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75AF4E2C455BF200ED98DE /* AuthHelperProtocol.swift */; };
 		DD75AF512C455C3400ED98DE /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75AF502C455C3400ED98DE /* AuthHelper.swift */; };
@@ -482,8 +482,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD736CDA2C4982BE00F17264 /* Main.storyboard in Resources */,
 				DD0FE5AC2BF73C7A00D44645 /* LaunchScreen.storyboard in Resources */,
-				DD0FE5AB2BF73C5600D44645 /* Main.storyboard in Resources */,
 				DDC0B3242BE389580035E7DD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -598,7 +598,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = NR5Q88774S;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.EntityVadim.ImageFeedUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -616,7 +616,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = NR5Q88774S;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.EntityVadim.ImageFeedUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -635,7 +635,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = NR5Q88774S;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.EntityVadim.ImageFeedTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -654,7 +654,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = NR5Q88774S;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.EntityVadim.ImageFeedTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -23,38 +23,14 @@ final class ImageFeedUITests: XCTestCase {
         let loginTextField = webView.descendants(matching: .textField).element
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         loginTextField.tap()
-        loginTextField.typeText("<Ваш e-mail>") // "<Ваш e-mail>"
+        loginTextField.typeText("<Ваш e-mail>")
         webView.swipeUp()
-        
-        // Мой способ
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         passwordTextField.tap()
-        UIPasteboard.general.string = "<Ваш пароль>" // "<Ваш пароль>"
+        UIPasteboard.general.string = "<Ваш пароль>"
         passwordTextField.doubleTap()
         app.menuItems["Paste"].tap()
-        
-        // Способ Артёма
-//        let passwordTextField = webView.descendants(matching: .secureTextField).element
-//        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
-//        passwordTextField.tap()
-//        passwordTextField.typeText("<Ваш пароль>")
-//        sleep(1)
-//        webView.swipeUp()
-//        app.toolbars.buttons["Done"].tap()
-//        sleep(1)
-        
-        // Спасоб Эльдара
-//        let passwordTextField = webView.descendants(matching: .secureTextField).element
-//        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
-//        passwordTextField.tap()
-//        sleep(3)
-//        XCUIApplication().toolbars.buttons["Done"].tap()
-//        passwordTextField.tap()
-//        passwordTextField.typeText("<Ваш пароль>")
-//        sleep(3)
-//        XCUIApplication().toolbars.buttons["Done"].tap()
-        
         webView.swipeUp()
         webView.buttons["Login"].tap()
         let tablesQuery = app.tables
@@ -69,6 +45,7 @@ final class ImageFeedUITests: XCTestCase {
         sleep(2)
         let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
         cellToLike.buttons["like button off"].tap()
+        sleep(2)
         cellToLike.buttons["like button on"].tap()
         sleep(2)
         cellToLike.tap()
@@ -83,8 +60,8 @@ final class ImageFeedUITests: XCTestCase {
     func testProfile() throws {
         sleep(3)
         app.tabBars.buttons.element(boundBy: 1).tap()
-        XCTAssertTrue(app.staticTexts["Ваш Name Lastname"].exists) // Ваш Name Lastname
-        XCTAssertTrue(app.staticTexts["ваш @username"].exists) // ваш @username
+        XCTAssertTrue(app.staticTexts["Name Lastname"].exists)
+        XCTAssertTrue(app.staticTexts["@username"].exists)
         app.buttons["logout button"].tap()
         app.alerts["Выход из аккаунта"].scrollViews.otherElements.buttons["Подтвердить"].tap()
     }

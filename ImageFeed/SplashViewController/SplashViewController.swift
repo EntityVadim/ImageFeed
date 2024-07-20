@@ -81,7 +81,7 @@ final class SplashViewController: UIViewController {
     
     private func fetchProfileIfNeeded() {
         if let token = storage.token {
-            UIBlockingProgressHUD.show() // Показываем индикатор загрузки (На заметку, если код сломается)
+            UIBlockingProgressHUD.show()
             fetchProfile(token)
         } else {
             showAuthenticationScreen()

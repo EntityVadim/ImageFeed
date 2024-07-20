@@ -8,8 +8,6 @@
 import Kingfisher
 import UIKit
 
-// MARK: - Profile ViewController
-
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     
     // MARK: - Private Properties
@@ -23,21 +21,21 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     
     // MARK: - Label
     
-    private lazy var nameLabel: UILabel = {
+    lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypWhite
         label.font = UIFont.systemFont(ofSize: 23, weight: .semibold)
         return label
     }()
     
-    private lazy var loginNameLabel: UILabel = {
+    lazy var loginNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypGray
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return label
     }()
     
-    private lazy var descriptionLabel: UILabel = {
+    lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypWhite
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
@@ -48,7 +46,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     
     // MARK: - Profile Image
     
-    private lazy var profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(systemName: "person.crop.circle.fill")
@@ -59,7 +57,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     
     // MARK: - Button
     
-    private lazy var logoutButton: UIButton = {
+    lazy var logoutButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "logout_button"), for: .normal)
         button.addTarget(self, action: #selector(didTapLogoutButton), for: .touchUpInside)
@@ -125,9 +123,6 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     }
     
     func updateAvatar(with url: URL) {
-        let cache = ImageCache.default
-        cache.clearMemoryCache()
-        cache.clearDiskCache()
         let processor = RoundCornerImageProcessor(cornerRadius: 35)
         profileImageView.kf.indicatorType = .activity
         profileImageView.kf.setImage(
@@ -140,7 +135,25 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     // MARK: - DidTapLogoutButton
     
     @objc
-    private func didTapLogoutButton() {
-        presenter?.didTapLogoutButton()
+    func didTapLogoutButton() {
+        showLogoutAlert()
+    }
+    
+    private func showLogoutAlert() {
+        let alert = UIAlertController(
+            title: "Выход из аккаунта",
+            message: "Вы уверены, что хотите выйти?",
+            preferredStyle: .alert)
+        alert.addAction(UIAlertAction(
+            title: "Подтвердить",
+            style: .destructive,
+            handler: { _ in
+                self.presenter?.didTapLogoutButton()
+            }))
+        alert.addAction(UIAlertAction(
+            title: "Отмена",
+            style: .cancel,
+            handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }

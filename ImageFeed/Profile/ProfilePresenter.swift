@@ -5,6 +5,7 @@
 //  Created by Вадим on 16.07.2024.
 //
 
+import Kingfisher
 import Foundation
 
 final class ProfilePresenter: ProfilePresenterProtocol {
@@ -36,6 +37,9 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     private func updateAvatar() {
         guard let profileImageURL = profileImageService.avatarURL,
               let url = URL(string: profileImageURL) else { return }
+        let cache = ImageCache.default
+        cache.clearMemoryCache()
+        cache.clearDiskCache()
         view?.updateAvatar(with: url)
     }
     
