@@ -17,8 +17,8 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     // MARK: - Private Properties
     
-    private var presenter: ImagesListPresenterProtocol?
-    private var photos: [Photo] = []
+    var presenter: ImagesListPresenterProtocol?
+    var photos: [Photo] = []
     
     func configure(_ presenter: ImagesListPresenterProtocol) {
         self.presenter = presenter

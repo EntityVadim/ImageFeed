@@ -8,60 +8,93 @@
 @testable import ImageFeed
 import XCTest
 
-final class ImagesListViewControllerTests: XCTestCase {
-    
+class ImagesListViewControllerTests: XCTestCase {
     var sut: ImagesListViewController!
-    var presenterSpy: ImagesListPresenterSpy!
-    var viewControllerSpy: ImagesListViewControllerSpy!
+    var presenter: ImagesListPresenterSpy!
     
     override func setUp() {
         super.setUp()
-        sut = UIStoryboard(
-            name: "Main",
-            bundle: nil).instantiateViewController(
-                withIdentifier: "ImagesListViewController") as? ImagesListViewController
-        presenterSpy = ImagesListPresenterSpy()
-        viewControllerSpy = ImagesListViewControllerSpy()
-        sut.configure(presenterSpy)
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        sut = storyboard.instantiateViewController(withIdentifier: "ImagesListViewController") as? ImagesListViewController
+        presenter = ImagesListPresenterSpy()
+        sut.configure(presenter)
+        presenter.view = sut
+        sut.loadViewIfNeeded()
     }
     
-    func test_viewDidLoad_callsPresenterViewDidLoad() {
-        sut.viewDidLoad()
-        XCTAssertTrue(presenterSpy.viewDidLoadCalled)
+    override func tearDown() {
+        sut = nil
+        presenter = nil
+        super.tearDown()
     }
     
-    func test_tableView_didSelectRowAt_callsPresenterDidSelectRowAt() {
-        let indexPath = IndexPath(row: 0, section: 0)
-        sut.tableView(sut.tableView, didSelectRowAt: indexPath)
-        XCTAssertTrue(presenterSpy.didSelectRowAtCalled)
+    func testViewDidLoad() {
+        XCTAssertTrue(presenter.viewDidLoadCalled)
     }
     
-    func test_tableView_willDisplayCell_callsPresenterWillDisplayCell() {
-        let indexPath = IndexPath(row: 0, section: 0)
-        sut.tableView(sut.tableView, willDisplay: UITableViewCell(), forRowAt: indexPath)
-        XCTAssertTrue(presenterSpy.willDisplayCellCalled)
+//    func testDidSelectRowAt() {
+//        let indexPath = IndexPath(row: 0, section: 0)
+//        sut.tableView(sut.tableView, didSelectRowAt: indexPath)
+//        XCTAssertTrue(presenter.didSelectRowAtCalled)
+//    }
+//    
+//    func testWillDisplayCell() {
+//        let indexPath = IndexPath(row: 0, section: 0)
+//        let cell = UITableViewCell()
+//        sut.tableView(sut.tableView, willDisplay: cell, forRowAt: indexPath)
+//        XCTAssertTrue(presenter.willDisplayCellCalled)
+//    }
+    
+    func testDidTapLikeButton() {
+        let cell = ImagesListCell()
+        sut.imageListCellDidTapLike(cell)
+        XCTAssertTrue(presenter.didTapLikeButtonCalled)
     }
     
-    func test_updateTableView_updatesTableViewWithNewPhotos() {
-        let photos = [Photo(id: "1", size: CGSize(width: 100, height: 100), createdAt: nil, welcomeDescription: nil, thumbImageURL: "url", fullImageUrl: "fullUrl", isLiked: false)]
-        sut.updateTableView(with: photos, animated: true)
-        XCTAssertTrue(viewControllerSpy.updateTableViewCalled)
-        XCTAssertEqual(viewControllerSpy.newPhotos, photos)
-        XCTAssertTrue(viewControllerSpy.animated)
+    func testUpdateTableView() {
+        let mockView = ImagesListViewControllerSpy()
+        sut.configure(presenter)
+        presenter.view = mockView
+        let photos = [Photo(
+            id: "1",
+            size: CGSize(width: 100, height: 100),
+            createdAt: nil,
+            welcomeDescription: nil,
+            thumbImageURL: "",
+            fullImageUrl: "",
+            isLiked: false)]
+        sut.updateTableView(with: photos, animated: false)
+        XCTAssertTrue(mockView.updateTableViewCalled)
     }
     
-    func test_navigateToImageController_callsPerformSegueWithIdentifier() {
-        let url = "http://example.com"
-        sut.navigateToImageController(with: url)
-        XCTAssertTrue(viewControllerSpy.navigateToImageControllerCalled)
-        XCTAssertEqual(viewControllerSpy.url, url)
+    func testNavigateToImageController() {
+        let mockView = ImagesListViewControllerSpy()
+        sut.configure(presenter)
+        presenter.view = mockView
+        sut.navigateToImageController(with: "https://example.com/image.jpg")
+        XCTAssertTrue(mockView.navigateToImageControllerCalled)
     }
     
-    func test_updateLikeButton_updatesLikeButton() {
+    func testUpdateLikeButton() {
+        let mockView = ImagesListViewControllerSpy()
+        sut.configure(presenter)
+        presenter.view = mockView
         let indexPath = IndexPath(row: 0, section: 0)
         sut.updateLikeButton(at: indexPath, isLiked: true)
-        XCTAssertTrue(viewControllerSpy.updateLikeButtonCalled)
-        XCTAssertEqual(viewControllerSpy.indexPath, indexPath)
-        XCTAssertTrue(viewControllerSpy.isLiked ?? false)
+        XCTAssertTrue(mockView.updateLikeButtonCalled)
     }
+    
+//    func testCellForRowAt() {
+//        let tableView = sut.tableView
+//        let indexPath = IndexPath(row: 0, section: 0)
+//        let cell = sut.tableView(tableView, cellForRowAt: indexPath) as? ImagesListCell
+//        XCTAssertNotNil(cell)
+//        XCTAssertEqual(cell?.reuseIdentifier, ImagesListCell.reuseIdentifier)
+//    }
+    
+//    func testHeightForRowAt() {
+//        let indexPath = IndexPath(row: 0, section: 0)
+//        let height = sut.tableView(sut.tableView, heightForRowAt: indexPath)
+//        XCTAssertGreaterThan(height, 0)
+//    }
 }

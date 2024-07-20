@@ -14,11 +14,6 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     
     private var presenter: ProfilePresenterProtocol?
     
-    func configure(_ presenter: ProfilePresenterProtocol) {
-        self.presenter = presenter
-        presenter.view = self
-    }
-    
     // MARK: - Label
     
     lazy var nameLabel: UILabel = {
@@ -70,10 +65,15 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.ypBlack
-        presenter = ProfilePresenter()
-        presenter?.view = self
         presenter?.viewDidLoad()
         setupUI()
+    }
+    
+    // MARK: - Configure
+    
+    func configure(_ presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
+        presenter.view = self
     }
     
     // MARK: - SetupUI
