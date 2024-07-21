@@ -17,21 +17,10 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     var willDisplayCellCalled = false
     var didTapLikeButtonCalled = false
     
-    func viewDidLoad() {
-        viewDidLoadCalled = true
-    }
-    
-    func didSelectRowAt(indexPath: IndexPath) {
-        didSelectRowAtCalled = true
-    }
-    
-    func willDisplayCell(at indexPath: IndexPath) {
-        willDisplayCellCalled = true
-    }
-    
-    func didTapLikeButton(at indexPath: IndexPath) {
-        didTapLikeButtonCalled = true
-    }
+    func viewDidLoad() { viewDidLoadCalled = true }
+    func didSelectRowAt(indexPath: IndexPath) { didSelectRowAtCalled = true }
+    func willDisplayCell(at indexPath: IndexPath) { willDisplayCellCalled = true }
+    func didTapLikeButton(at indexPath: IndexPath) { didTapLikeButtonCalled = true }
 }
 
 
@@ -42,15 +31,7 @@ final class ImagesListViewControllerSpy: ImagesListViewControllerProtocol {
     var navigateToImageControllerCalled = false
     var updateLikeButtonCalled = false
     
-    func updateTableView(with newPhotos: [Photo], animated: Bool) {
-        updateTableViewCalled = true
-    }
-    
-    func navigateToImageController(with url: String) {
-        navigateToImageControllerCalled = true
-    }
-    
-    func updateLikeButton(at indexPath: IndexPath, isLiked: Bool) {
-        updateLikeButtonCalled = true
-    }
+    func updateTableView(with newPhotos: [Photo], animated: Bool) { updateTableViewCalled = true }
+    func navigateToImageController(with url: String) { navigateToImageControllerCalled = true }
+    func updateLikeButton(at indexPath: IndexPath, isLiked: Bool) { updateLikeButtonCalled = true }
 }
