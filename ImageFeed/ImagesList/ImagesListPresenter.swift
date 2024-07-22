@@ -7,15 +7,23 @@
 
 import Foundation
 
+// MARK: - ImagesList Presenter
+
 final class ImagesListPresenter: ImagesListPresenterProtocol {
     
     weak var view: ImagesListViewControllerProtocol?
     
+    // MARK: - Private Properties
+    
     private let imagesListService: ImagesListService
+    
+    // MARK: - Initializers
     
     init(imagesListService: ImagesListService = .shared) {
         self.imagesListService = imagesListService
     }
+    
+    // MARK: - Public Methods
     
     func viewDidLoad() {
         imagesListService.fetchPhotosNextPage()
@@ -27,10 +35,6 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
             guard let newPhotos = notification.userInfo?["photos"] as? [Photo] else { return }
             self?.handleNewPhotos(newPhotos)
         }
-    }
-    
-    private func handleNewPhotos(_ newPhotos: [Photo]) {
-        view?.updateTableView(with: newPhotos, animated: true)
     }
     
     func didSelectRowAt(indexPath: IndexPath) {
@@ -57,5 +61,11 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
             }
             UIBlockingProgressHUD.dismiss()
         }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func handleNewPhotos(_ newPhotos: [Photo]) {
+        view?.updateTableView(with: newPhotos, animated: true)
     }
 }

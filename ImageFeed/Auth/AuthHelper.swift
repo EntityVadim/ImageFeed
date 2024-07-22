@@ -7,12 +7,21 @@
 
 import Foundation
 
+// MARK: - AuthHelper
+
 final class AuthHelper: AuthHelperProtocol {
-    let configuration: AuthConfiguration
+    
+    // MARK: - Private Properties
+    
+    private let configuration: AuthConfiguration
+    
+    // MARK: - Initializers
 
     init(configuration: AuthConfiguration = .standard) {
         self.configuration = configuration
     }
+    
+    // MARK: - Public Methods
     
     func authRequest() -> URLRequest? {
         guard let url = authURL() else { return nil }

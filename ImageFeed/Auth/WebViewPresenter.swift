@@ -7,14 +7,23 @@
 
 import Foundation
 
+// MARK: - WebView Presenter
+
 final class WebViewPresenter: WebViewPresenterProtocol {
     
     weak var view: WebViewViewControllerProtocol?
-    var authHelper: AuthHelperProtocol
+    
+    // MARK: - Private Properties
+    
+    private let authHelper: AuthHelperProtocol
+    
+    // MARK: - Initializers
     
     init(authHelper: AuthHelperProtocol) {
         self.authHelper = authHelper
     }
+    
+    // MARK: - Public Methods
     
     func viewDidLoad() {
         guard let request = authHelper.authRequest() else {

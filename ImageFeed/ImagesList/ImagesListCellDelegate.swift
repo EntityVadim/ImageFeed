@@ -7,13 +7,13 @@
 
 import Foundation
 
-// MARK: - ImagesListCellDelegate
+// MARK: - ImagesListCell Delegate
 
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
 }
 
-// MARK: - ImagesListPresenterProtocol
+// MARK: - ImagesListPresenter Protocol
 
 public protocol ImagesListPresenterProtocol: AnyObject {
     var view: ImagesListViewControllerProtocol? { get set }
@@ -23,7 +23,7 @@ public protocol ImagesListPresenterProtocol: AnyObject {
     func didTapLikeButton(at indexPath: IndexPath)
 }
 
-// MARK: - ImagesListViewControllerProtocol
+// MARK: - ImagesListViewController Protocol
 
 public protocol ImagesListViewControllerProtocol: AnyObject {
     func updateTableView(with newPhotos: [Photo], animated: Bool)

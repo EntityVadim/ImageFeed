@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - ProfilePresenterProtocol
+// MARK: - ProfilePresenter Protocol
 
 public protocol ProfilePresenterProtocol: AnyObject {
     var view: ProfileViewControllerProtocol? { get set }
@@ -15,7 +15,7 @@ public protocol ProfilePresenterProtocol: AnyObject {
     func didTapLogoutButton()
 }
 
-// MARK: - ProfileViewControllerProtocol
+// MARK: - ProfileViewController Protocol
 
 public protocol ProfileViewControllerProtocol: AnyObject {
     func updateProfileDetails(profile: Profile?)

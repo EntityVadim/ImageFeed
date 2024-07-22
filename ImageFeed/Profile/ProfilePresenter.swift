@@ -8,17 +8,25 @@
 import Kingfisher
 import Foundation
 
+// MARK: - Profile Presenter
+
 final class ProfilePresenter: ProfilePresenterProtocol {
     
     weak var view: ProfileViewControllerProtocol?
     
+    // MARK: - Private Properties
+    
     private let profileService: ProfileService
     private let profileImageService: ProfileImageService
+    
+    // MARK: - Initializers
     
     init(profileService: ProfileService = .shared, profileImageService: ProfileImageService = .shared) {
         self.profileService = profileService
         self.profileImageService = profileImageService
     }
+    
+    // MARK: - Public Methods
     
     func viewDidLoad() {
         if let profile = profileService.profile {
@@ -34,6 +42,12 @@ final class ProfilePresenter: ProfilePresenterProtocol {
         updateAvatar()
     }
     
+    func didTapLogoutButton() {
+        ProfileLogoutService.shared.logout()
+    }
+    
+    // MARK: - Private Methods
+    
     private func updateAvatar() {
         guard let profileImageURL = profileImageService.avatarURL,
               let url = URL(string: profileImageURL) else { return }
@@ -41,9 +55,5 @@ final class ProfilePresenter: ProfilePresenterProtocol {
         cache.clearMemoryCache()
         cache.clearDiskCache()
         view?.updateAvatar(with: url)
-    }
-    
-    func didTapLogoutButton() {
-        ProfileLogoutService.shared.logout()
     }
 }

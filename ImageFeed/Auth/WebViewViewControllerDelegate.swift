@@ -7,14 +7,14 @@
 
 import Foundation
 
-// MARK: - WebViewViewControllerDelegate
+// MARK: - WebViewViewController Delegate
 
 protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
 
-// MARK: - WebViewViewControllerProtocol
+// MARK: - WebViewViewController Protocol
 
 public protocol WebViewViewControllerProtocol: AnyObject {
     var presenter: WebViewPresenterProtocol? { get set }
@@ -23,7 +23,7 @@ public protocol WebViewViewControllerProtocol: AnyObject {
     func setProgressHidden(_ isHidden: Bool)
 }
 
-// MARK: - WebViewPresenterProtocol
+// MARK: - WebViewPresenter Protocol
 
 public protocol WebViewPresenterProtocol {
     var view: WebViewViewControllerProtocol? { get set }
