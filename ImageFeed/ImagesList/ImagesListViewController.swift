@@ -13,7 +13,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     // MARK: - IBOutlet
     
-    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Public Properties
     

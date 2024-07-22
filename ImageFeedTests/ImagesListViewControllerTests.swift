@@ -63,4 +63,17 @@ final class ImagesListViewControllerTests: XCTestCase {
         presenterSpy.didSelectRowAt(indexPath: IndexPath(row: 0, section: 0))
         XCTAssertTrue(viewControllerSpy.navigateToImageControllerCalled)
     }
+    
+    func testDidSelectRowAt() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        viewController.tableView(viewController.tableView, didSelectRowAt: indexPath)
+        XCTAssertTrue(presenterSpy.didSelectRowAtCalled)
+    }
+    
+    func testWillDisplayCell() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        let cell = UITableViewCell()
+        viewController.tableView(viewController.tableView, willDisplay: cell, forRowAt: indexPath)
+        XCTAssertTrue(presenterSpy.willDisplayCellCalled)
+    }
 }
