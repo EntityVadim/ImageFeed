@@ -11,6 +11,7 @@ import XCTest
 final class ImagesListViewControllerTests: XCTestCase {
     var viewController: ImagesListViewController!
     var presenterSpy: ImagesListPresenterSpy!
+    var viewControllerSpy: ImagesListViewControllerSpy!
     
     override func setUp() {
         super.setUp()
@@ -18,6 +19,8 @@ final class ImagesListViewControllerTests: XCTestCase {
         viewController = storyboard.instantiateViewController(
             withIdentifier: "ImagesListViewController") as? ImagesListViewController
         presenterSpy = ImagesListPresenterSpy()
+        viewControllerSpy = ImagesListViewControllerSpy()
+        presenterSpy.view = viewControllerSpy
         viewController.configure(presenterSpy)
         viewController.loadViewIfNeeded()
     }
@@ -25,6 +28,7 @@ final class ImagesListViewControllerTests: XCTestCase {
     override func tearDown() {
         viewController = nil
         presenterSpy = nil
+        viewControllerSpy = nil
         super.tearDown()
     }
     
@@ -51,5 +55,12 @@ final class ImagesListViewControllerTests: XCTestCase {
         viewController.updateTableView(with: newPhotos, animated: false)
         XCTAssertEqual(viewController.photos.count, 1)
         XCTAssertEqual(viewController.photos.first?.id, "1")
+    }
+    
+    func testNavigateToImageController() {
+        viewControllerSpy.navigateToImageController(
+            with: "https://api.unsplash.com/photos?page=/page&per_page=10")
+        presenterSpy.didSelectRowAt(indexPath: IndexPath(row: 0, section: 0))
+        XCTAssertTrue(viewControllerSpy.navigateToImageControllerCalled)
     }
 }

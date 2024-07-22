@@ -15,17 +15,12 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     @IBOutlet private weak var tableView: UITableView!
     
-    // MARK: - Private Properties
+    // MARK: - Public Properties
     
     var presenter: ImagesListPresenterProtocol?
     var photos: [Photo] = []
     
-    func configure(_ presenter: ImagesListPresenterProtocol) {
-        self.presenter = presenter
-        presenter.view = self
-    }
-    
-    private lazy var dateFormatter: DateFormatter = {
+    lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .long
         dateFormatter.timeStyle = .none
@@ -67,6 +62,13 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    // MARK: - Configure
+    
+    func configure(_ presenter: ImagesListPresenterProtocol) {
+        self.presenter = presenter
+        presenter.view = self
     }
     
     // MARK: - ImagesListViewControllerProtocol Methods
