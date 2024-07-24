@@ -17,7 +17,6 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     // MARK: - Public Properties
     
-    var presenter: ImagesListPresenterProtocol?
     var photos: [Photo] = []
     
     lazy var dateFormatter: DateFormatter = {
@@ -27,6 +26,10 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         dateFormatter.locale = Locale(identifier: "ru_RU")
         return dateFormatter
     }()
+    
+    // MARK: - Private Properties
+    
+    private var presenter: ImagesListPresenterProtocol?
     
     // MARK: - Lifecycle
     

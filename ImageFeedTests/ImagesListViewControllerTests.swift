@@ -20,7 +20,6 @@ final class ImagesListViewControllerTests: XCTestCase {
             withIdentifier: "ImagesListViewController") as? ImagesListViewController
         presenterSpy = ImagesListPresenterSpy()
         viewControllerSpy = ImagesListViewControllerSpy()
-        presenterSpy.view = viewControllerSpy
         viewController.configure(presenterSpy)
         viewController.loadViewIfNeeded()
     }
@@ -39,11 +38,10 @@ final class ImagesListViewControllerTests: XCTestCase {
     
     func testConfigureWithPresenter() {
         viewController.configure(presenterSpy)
-        XCTAssertNotNil(viewController.presenter)
-        XCTAssertTrue(viewController.presenter is ImagesListPresenterSpy)
-        XCTAssertEqual(presenterSpy.view as? ImagesListViewController, viewController)
+        XCTAssertNotNil(presenterSpy.view)
+        XCTAssertTrue(presenterSpy.view === viewController)
     }
-    
+
     func testUpdateTableViewWithNewPhotos() {
         let newPhotos = [Photo(
             id: "1",

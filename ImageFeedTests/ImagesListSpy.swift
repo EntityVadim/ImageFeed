@@ -11,7 +11,7 @@ import Foundation
 // MARK: - ImagesListPresenterSpy
 
 final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
-    var view: ImagesListViewControllerProtocol?
+    weak var view: ImagesListViewControllerProtocol?
     var viewDidLoadCalled = false
     var didSelectRowAtCalled = false
     var willDisplayCellCalled = false
@@ -35,3 +35,4 @@ final class ImagesListViewControllerSpy: ImagesListViewControllerProtocol {
     func navigateToImageController(with url: String) { navigateToImageControllerCalled = true }
     func updateLikeButton(at indexPath: IndexPath, isLiked: Bool) { updateLikeButtonCalled = true }
 }
+
