@@ -30,6 +30,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     // MARK: - Private Properties
     
     private var presenter: ImagesListPresenterProtocol?
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
     // MARK: - Lifecycle
     
@@ -46,7 +47,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         for segue: UIStoryboardSegue,
         sender: Any?
     ) {
-        if segue.identifier == "ShowSingleImage" {
+        if segue.identifier == showSingleImageSegueIdentifier {
             guard
                 let viewController = segue.destination as? SingleImageViewController,
                 let fullImageUrl = sender as? String
@@ -94,11 +95,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
                     let indexPaths = (newCount..<oldCount).map { IndexPath(row: $0, section: 0) }
                     tableView.deleteRows(at: indexPaths, with: .automatic)
                 }
-            }, completion: { _ in
-                if diff != 0 {
-                    self.tableView.reloadData()
-                }
-            })
+            }, completion: nil)
         } else {
             tableView.reloadData()
         }
