@@ -8,7 +8,7 @@
 import ImageFeed
 import Foundation
 
-// MARK: - ImagesListPresenterSpy
+// MARK: - ImagesListPresenter Spy
 
 final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     weak var view: ImagesListViewControllerProtocol?
@@ -23,7 +23,7 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     func didTapLikeButton(at indexPath: IndexPath) { didTapLikeButtonCalled = true }
 }
 
-// MARK: - ImagesListViewControllerSpy
+// MARK: - ImagesListViewController Spy
 
 final class ImagesListViewControllerSpy: ImagesListViewControllerProtocol {
     var updateTableViewCalled = false

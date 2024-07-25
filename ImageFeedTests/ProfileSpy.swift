@@ -7,9 +7,8 @@
 
 import ImageFeed
 import Foundation
-import UIKit
 
-// MARK: - ProfilePresenterSpy
+// MARK: - ProfilePresenter Spy
 
 final class ProfilePresenterSpy: ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol?
@@ -22,7 +21,7 @@ final class ProfilePresenterSpy: ProfilePresenterProtocol {
     func updateAvatar(with url: URL) { updateAvatarCalled = true }
 }
 
-// MARK: - ProfileViewControllerSpy
+// MARK: - ProfileViewController Spy
 
 final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
     var updateProfileDetailsCalled = false

@@ -7,7 +7,6 @@
 
 @testable import ImageFeed
 import XCTest
-import UIKit
 
 final class ProfileViewControllerTests: XCTestCase {
     var presenterSpy: ProfilePresenterSpy!
