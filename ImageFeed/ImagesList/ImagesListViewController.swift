@@ -1,4 +1,3 @@
-//
 //  ImagesListViewController.swift
 //  ImageFeed
 //
@@ -77,24 +76,14 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     // MARK: - ImagesListViewControllerProtocol Methods
     
-    func updateTableView(with newPhotos: [Photo], animated: Bool) {
-        let oldCount = photos.count
-        let newCount = newPhotos.count
-        guard !newPhotos.isEmpty else {
+    func updateTableView(with indexPaths: [IndexPath], animated: Bool) {
+        guard !indexPaths.isEmpty else {
             tableView.reloadData()
             return
         }
-        let diff = newCount - oldCount
-        photos = newPhotos
         if animated {
             tableView.performBatchUpdates({
-                if diff > 0 {
-                    let indexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
-                    tableView.insertRows(at: indexPaths, with: .automatic)
-                } else if diff < 0 {
-                    let indexPaths = (newCount..<oldCount).map { IndexPath(row: $0, section: 0) }
-                    tableView.deleteRows(at: indexPaths, with: .automatic)
-                }
+                tableView.insertRows(at: indexPaths, with: .automatic)
             }, completion: nil)
         } else {
             tableView.reloadData()
@@ -102,7 +91,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     }
     
     func navigateToImageController(with url: String) {
-        performSegue(withIdentifier: "ShowSingleImage", sender: url)
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: url)
     }
     
     func updateLikeButton(at indexPath: IndexPath, isLiked: Bool) {

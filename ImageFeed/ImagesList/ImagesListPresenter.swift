@@ -1,4 +1,3 @@
-//
 //  ImagesListPresenter.swift
 //  ImageFeed
 //
@@ -32,8 +31,10 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
             object: nil,
             queue: .main
         ) { [weak self] notification in
-            guard let newPhotos = notification.userInfo?["photos"] as? [Photo] else { return }
-            self?.handleNewPhotos(newPhotos)
+            guard let self = self, let newPhotos = notification.userInfo?["photos"] as? [Photo] else {
+                return
+            }
+            self.handleNewPhotos(newPhotos)
         }
     }
     
@@ -66,6 +67,12 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     // MARK: - Private Methods
     
     private func handleNewPhotos(_ newPhotos: [Photo]) {
-        view?.updateTableView(with: newPhotos, animated: true)
+        let oldCount = imagesListService.photos.count - newPhotos.count
+        let newCount = imagesListService.photos.count
+        let indexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
+        if let viewController = view as? ImagesListViewController {
+            viewController.photos.append(contentsOf: newPhotos)
+            viewController.updateTableView(with: indexPaths, animated: true)
+        }
     }
 }
