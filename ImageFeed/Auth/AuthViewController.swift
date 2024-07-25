@@ -35,11 +35,16 @@ final class AuthViewController: UIViewController {
         sender: Any?
     ) {
         if segue.identifier == showWebViewSegueIdentifier {
-            if let webViewViewController = segue.destination as? WebViewViewController {
-                webViewViewController.delegate = self
-            } else {
+            guard let webViewViewController = segue.destination as? WebViewViewController
+            else {
                 print("Не удалось подготовиться к \(showWebViewSegueIdentifier)")
+                return
             }
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+            webViewViewController.presenter = webViewPresenter
+            webViewPresenter.view = webViewViewController
+            webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
         }

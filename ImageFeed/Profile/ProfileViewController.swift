@@ -8,32 +8,29 @@
 import Kingfisher
 import UIKit
 
-// MARK: - Profile ViewController
-
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     
     // MARK: - Private Properties
     
-    private let profileService = ProfileService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
+    private var presenter: ProfilePresenterProtocol?
     
     // MARK: - Label
     
-    private lazy var nameLabel: UILabel = {
+    lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypWhite
         label.font = UIFont.systemFont(ofSize: 23, weight: .semibold)
         return label
     }()
     
-    private lazy var loginNameLabel: UILabel = {
+    lazy var loginNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypGray
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return label
     }()
     
-    private lazy var descriptionLabel: UILabel = {
+    lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypWhite
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
@@ -44,7 +41,7 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Profile Image
     
-    private lazy var profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(systemName: "person.crop.circle.fill")
@@ -55,10 +52,10 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Button
     
-    private lazy var logoutButton: UIButton = {
+    lazy var logoutButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "logout_button"), for: .normal)
-        button.addTarget(self, action: #selector(Self.didTapLogoutButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapLogoutButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -68,24 +65,15 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.ypBlack
-        
-        if let profile = profileService.profile {
-            updateProfileDetails(profile: profile)
-        }
-        
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
-        
-        updateAvatar()
-        profileImageServiceObserve()
+        presenter?.viewDidLoad()
         setupUI()
+    }
+    
+    // MARK: - Configure
+    
+    func configure(_ presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
+        presenter.view = self
     }
     
     // MARK: - SetupUI
@@ -127,27 +115,14 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Update Methods
     
-    private func updateProfileDetails(profile: Profile?) {
-        guard let profile = profile else { return }
+    func updateProfileDetails(profile: Profile?) {
+        guard let profile else { return }
         self.nameLabel.text = profile.name
         self.loginNameLabel.text = profile.loginName
         self.descriptionLabel.text = profile.bio
     }
     
-    private func updateProfileDetailsIfNeeded() {
-        if let profile = profileService.profile {
-            updateProfileDetails(profile: profile)
-        }
-    }
-    
-    private func updateAvatar() {
-        guard let profileImageURL = ProfileImageService.shared.avatarURL,
-              let url = URL(string: profileImageURL) else { return }
-        
-        let cache = ImageCache.default
-        cache.clearMemoryCache()
-        cache.clearDiskCache()
-        
+    func updateAvatar(with url: URL) {
         let processor = RoundCornerImageProcessor(cornerRadius: 35)
         profileImageView.kf.indicatorType = .activity
         profileImageView.kf.setImage(
@@ -157,22 +132,10 @@ final class ProfileViewController: UIViewController {
         )
     }
     
-    private func profileImageServiceObserve() {
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.didChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            guard let self = self else { return }
-            self.updateAvatar()
-        }
-        updateAvatar()
-    }
-    
     // MARK: - DidTapLogoutButton
     
     @objc
     private func didTapLogoutButton() {
-        ProfileLogoutService.shared.logout()
+        presenter?.didTapLogoutButton()
     }
 }
