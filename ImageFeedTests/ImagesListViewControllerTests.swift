@@ -50,7 +50,8 @@ final class ImagesListViewControllerTests: XCTestCase {
             thumbImageURL: "thumbURL",
             fullImageUrl: "fullURL",
             isLiked: false)]
-        viewController.updateTableView(with: newPhotos, animated: false)
+        viewController.photos.append(contentsOf: newPhotos)
+        viewController.updateTableView(with: [IndexPath(row: 0, section: 0)], animated: false)
         XCTAssertEqual(viewController.photos.count, 1)
         XCTAssertEqual(viewController.photos.first?.id, "1")
     }

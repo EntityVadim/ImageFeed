@@ -23,7 +23,6 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     func didTapLikeButton(at indexPath: IndexPath) { didTapLikeButtonCalled = true }
 }
 
-
 // MARK: - ImagesListViewControllerSpy
 
 final class ImagesListViewControllerSpy: ImagesListViewControllerProtocol {
@@ -31,8 +30,7 @@ final class ImagesListViewControllerSpy: ImagesListViewControllerProtocol {
     var navigateToImageControllerCalled = false
     var updateLikeButtonCalled = false
     
-    func updateTableView(with newPhotos: [Photo], animated: Bool) { updateTableViewCalled = true }
+    func updateTableView(with indexPaths: [IndexPath], animated: Bool) { updateTableViewCalled = true }
     func navigateToImageController(with url: String) { navigateToImageControllerCalled = true }
     func updateLikeButton(at indexPath: IndexPath, isLiked: Bool) { updateLikeButtonCalled = true }
 }
-
