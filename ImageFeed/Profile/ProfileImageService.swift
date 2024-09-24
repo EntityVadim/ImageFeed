@@ -23,8 +23,7 @@ final class ProfileImageService {
     
     // MARK: - Initializers
     
-//    private init() {}
-    init() {}
+    private init() {}
     
     // MARK: - Helper Method
     

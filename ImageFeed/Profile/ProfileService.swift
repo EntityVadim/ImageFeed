@@ -22,8 +22,7 @@ final class ProfileService {
     
     // MARK: - Initializers
     
-//    private init() {}
-    init() {}
+    private init() {}
     
     // MARK: - Helper Method
     
